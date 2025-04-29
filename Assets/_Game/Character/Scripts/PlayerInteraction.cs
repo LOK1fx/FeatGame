@@ -9,6 +9,9 @@ namespace LOK1game.PlayerDomain
         public event Action OnInteractionFound;
         public event Action OnInteractionLost;
 
+        [SerializeField] private KeyCode _actionKey = KeyCode.F;
+
+        [Space]
         [SerializeField] private LayerMask _interactableLayer;
         [SerializeField] private float _distance;
 
@@ -30,7 +33,7 @@ namespace LOK1game.PlayerDomain
             if (_currentInteractable == null)
                 return;
 
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            if (Input.GetKeyDown(_actionKey))
                 _currentInteractable.OnInteract(_owner);
         }
 
