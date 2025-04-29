@@ -5,6 +5,8 @@ namespace LOK1game
 {
     public class WeaponSword : WeaponBase
     {
+        public override EWeaponId Id => EWeaponId.Sword;
+
         public override void AltUse()
         {
             FireAltUsed();

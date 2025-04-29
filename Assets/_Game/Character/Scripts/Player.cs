@@ -6,7 +6,7 @@ using LOK1game.Game;
 namespace LOK1game.PlayerDomain
 {
     [RequireComponent(typeof(PlayerMovement), typeof(PlayerCamera), typeof(PlayerState))]
-    [RequireComponent(typeof(Health), typeof(PlayerInteraction))]
+    [RequireComponent(typeof(Health), typeof(PlayerInteraction), typeof(PlayerWeaponManager))]
     public class Player : Pawn, IDamagable
     {
         public event Action OnRespawned;
@@ -20,6 +20,7 @@ namespace LOK1game.PlayerDomain
         public PlayerState State { get; private set; }
         public Health Health { get; private set; }
         public PlayerInteraction Interaction { get; private set; }
+        public PlayerWeaponManager WeaponManager { get; private set; }
 
         public bool IsDead { get; private set; }
 
@@ -55,8 +56,10 @@ namespace LOK1game.PlayerDomain
             Camera.Construct(this);
             State = GetComponent<PlayerState>();
             Interaction = GetComponent<PlayerInteraction>();
+            WeaponManager = GetComponent<PlayerWeaponManager>();
 
             Interaction.Construct(this);
+            WeaponManager.Construct(this);
 
             Movement.OnLand += OnLand;
             Movement.OnJump += OnJump;
@@ -86,6 +89,8 @@ namespace LOK1game.PlayerDomain
             playerType = EPlayerType.View;
 
             _stamina = _maxSprintTime;
+
+            WeaponManager.EquipSlot(0);
         }
 
         private void Update()
@@ -134,19 +139,12 @@ namespace LOK1game.PlayerDomain
             Camera.OnInput(this);
             Movement.SetAxisInput(inputAxis);
 
+            #region movement inputs
             if (Input.GetKeyDown(KeyCode.Space))
                 Movement.Jump();
 
             if (Input.GetKeyDown(KeyCode.C))
-            {
-                if (Movement.GetSpeed() >= _minimalSpeedToSlide && State.OnGround)
-                    Movement.StartSlide();
-                else
-                    Movement.StartCrouch();
-            }
-
-            if (Input.GetKey(KeyCode.C) && State.IsSliding == false && Movement.GetSpeed() >= _minimalSpeedToSlide && State.OnGround)
-                Movement.StartSlide();
+                Movement.StartCrouch();
                 
 
             if (Input.GetKeyUp(KeyCode.C))
@@ -158,10 +156,13 @@ namespace LOK1game.PlayerDomain
             else if (Input.GetKeyUp(KeyCode.LeftShift))
                 Movement.StopSprint();
 
+            #endregion
+
             if (Input.GetKeyDown(KeyCode.U))
                 TakeDamage(new Damage(15));
 
             Interaction.OnInput(this);
+            WeaponManager.OnInput();
         }
 
         private void OnLand(float yVelocity)
@@ -220,6 +221,8 @@ namespace LOK1game.PlayerDomain
         {
             if (IsDead)
                 return;
+
+            GetPlayerLogger().Push($"Player dead at {transform.position}");
 
             IsDead = true;
             Movement.Rigidbody.isKinematic = true;

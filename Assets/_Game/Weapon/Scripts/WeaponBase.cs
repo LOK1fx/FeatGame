@@ -4,6 +4,12 @@ using UnityEngine;
 
 namespace LOK1game
 {
+    public enum EWeaponId : byte
+    {
+        None = 0,
+        Sword = 10,
+    }
+
     public abstract class WeaponBase : MonoBehaviour
     {
         public event Action OnUsed;
@@ -11,6 +17,8 @@ namespace LOK1game
         public event Action OnEquiped;
         public event Action OnDequiped;
 
+
+        public abstract EWeaponId Id { get; }
         public Player Player { get; private set; }
 
 

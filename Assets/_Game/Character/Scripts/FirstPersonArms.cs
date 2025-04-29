@@ -6,6 +6,8 @@ namespace LOK1game
     public class FirstPersonArms : MonoBehaviour
     {
         public Transform CameraSocket => _cameraSocket;
+        public Transform RightHandSocket => _rightHandSocket;
+        public Transform LeftHandSocket => _leftHandSocket;
         public Animator Animator { get; private set; }
 
         [SerializeField] private Transform _cameraSocket;
