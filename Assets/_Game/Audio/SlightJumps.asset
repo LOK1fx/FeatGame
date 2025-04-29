@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1233149941 &-7623953646803821300
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SlightJump01_{-7623953646803821300}
+  m_AudioClip: {fileID: 8300000, guid: d907d44571e8e494e909ab4e5a4cd0f7, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &362637284524224808
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SlightJump05_{362637284524224808}
+  m_AudioClip: {fileID: 8300000, guid: ac2d71fcce2dc4b46972434651b9937d, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &1443431539440113415
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SlightJump02_{1443431539440113415}
+  m_AudioClip: {fileID: 8300000, guid: 1fa3fa42898eeeb43b45f224282458ac, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &2380459336568900761
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SlightJump04_{2380459336568900761}
+  m_AudioClip: {fileID: 8300000, guid: bce1d1a278a827049b80f63a68477941, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1307931743 &6418180475301049370
+AudioRandomContainer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SlightJumps
+  m_Volume: 0
+  m_Pitch: 0
+  m_AutomaticTriggerTime: 0
+  m_LoopCount: 1
+  m_VolumeRandomizationRange: {x: 0, y: 0}
+  m_PitchRandomizationRange: {x: -100.3483, y: 100.34866}
+  m_AutomaticTriggerTimeRandomizationRange: {x: 0, y: 0}
+  m_LoopCountRandomizationRange: {x: 0, y: 0}
+  m_Elements:
+  - {fileID: -7623953646803821300}
+  - {fileID: 1443431539440113415}
+  - {fileID: 8363672177525576409}
+  - {fileID: 2380459336568900761}
+  - {fileID: 362637284524224808}
+  m_AvoidRepeatingLast: 0
+  m_PlaybackMode: 2
+  m_TriggerMode: 1
+  m_AutomaticTriggerMode: 1
+  m_LoopMode: 1
+  m_VolumeRandomizationEnabled: 0
+  m_PitchRandomizationEnabled: 1
+  m_AutomaticTriggerTimeRandomizationEnabled: 0
+  m_LoopCountRandomizationEnabled: 0
+--- !u!1233149941 &8363672177525576409
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SlightJump03_{8363672177525576409}
+  m_AudioClip: {fileID: 8300000, guid: f4222bb8df67aad4f80dce6a480b1ea0, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
