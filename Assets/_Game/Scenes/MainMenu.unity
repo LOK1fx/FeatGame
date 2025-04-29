@@ -7156,9 +7156,17 @@ PrefabInstance:
       value: SK_primal
       objectReference: {fileID: 0}
     - target: {fileID: 2123102012866530327, guid: aa33fbbd9669fb649be40031fbf2a18e, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -5208083483720955153, guid: a2b441dfd317e1f4e9d568930efe900b, type: 3}
+    - target: {fileID: 2123102012866530327, guid: aa33fbbd9669fb649be40031fbf2a18e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: c5fa49f1ed2a9364e9d3de50ca1bb2e1, type: 2}
+    - target: {fileID: 4894580207411717546, guid: aa33fbbd9669fb649be40031fbf2a18e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7511412358898007536, guid: aa33fbbd9669fb649be40031fbf2a18e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 

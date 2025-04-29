@@ -7,6 +7,8 @@ namespace LOK1game
     {
         public override EWeaponId Id => EWeaponId.Sword;
 
+        private uint _attackNum = 1;
+
         public override void AltUse()
         {
             FireAltUsed();
@@ -15,6 +17,17 @@ namespace LOK1game
         public override void Use()
         {
             Debug.Log("Sword make a splash attack");
+
+            _attackNum++;
+
+            if (_attackNum % 2 == 0)
+            {
+                animator.SetTrigger("Attack");
+            }
+            else
+            {
+                animator.SetTrigger("Attack02");
+            }
 
             FireUsed();
         }
@@ -26,7 +39,7 @@ namespace LOK1game
 
         protected override void OnEquip()
         {
-            
+            Player.FirstPersonArms.OverrideAnimatior(AnimController);
         }
     }
 }

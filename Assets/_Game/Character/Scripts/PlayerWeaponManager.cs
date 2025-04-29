@@ -9,7 +9,7 @@ namespace LOK1game.PlayerDomain
         public FirstPersonArms Arms { get; private set; }
 
         public int SelectedIndex { get; private set; } = 0;
-        public WeaponBase SelectedWeapon { get; private set; }
+        public WeaponBase SelectedWeapon { get; private set; } = null;
 
 
         [SerializeField] private List<WeaponBase> _weaponPrefabs = new();
@@ -21,10 +21,7 @@ namespace LOK1game.PlayerDomain
         {
             Player = player;
             Arms = player.FirstPersonArms;
-        }
 
-        private void Start()
-        {
             InitializePrefabs();
         }
 
@@ -41,7 +38,7 @@ namespace LOK1game.PlayerDomain
             if (index >= _weapons.Count)
                 return;
 
-            if (SelectedWeapon.gameObject != null)
+            if (SelectedWeapon != null)
                 SelectedWeapon.gameObject.SetActive(false);
 
             SelectedIndex = index;

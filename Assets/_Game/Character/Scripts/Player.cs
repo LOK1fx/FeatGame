@@ -59,7 +59,6 @@ namespace LOK1game.PlayerDomain
             WeaponManager = GetComponent<PlayerWeaponManager>();
 
             Interaction.Construct(this);
-            WeaponManager.Construct(this);
 
             Movement.OnLand += OnLand;
             Movement.OnJump += OnJump;
@@ -90,6 +89,7 @@ namespace LOK1game.PlayerDomain
 
             _stamina = _maxSprintTime;
 
+            WeaponManager.Construct(this);
             WeaponManager.EquipSlot(0);
         }
 

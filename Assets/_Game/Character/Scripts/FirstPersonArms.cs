@@ -17,9 +17,12 @@ namespace LOK1game
         private GameObject _rightHandObject;
         private GameObject _leftHandObject;
 
+        private RuntimeAnimatorController _defaultController;
+
         private void Awake()
         {
             Animator = GetComponent<Animator>();
+            _defaultController = Animator.runtimeAnimatorController;
         }
 
         public void AttachObjectToRightHand(GameObject gameObject)
@@ -48,6 +51,14 @@ namespace LOK1game
 
             Destroy(_leftHandObject);
             _leftHandObject = null;
+        }
+
+        public void OverrideAnimatior(AnimatorOverrideController controller)
+        {
+            if (controller == null)
+                Animator.runtimeAnimatorController = _defaultController;
+            else
+                Animator.runtimeAnimatorController = controller;
         }
 
 

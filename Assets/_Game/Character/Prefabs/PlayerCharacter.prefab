@@ -104,7 +104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponPrefabs:
-  - {fileID: 0}
+  - {fileID: 6167238839392005830, guid: 1b11479c5405382439d1023ec322d2bc, type: 3}
 --- !u!114 &2079026467656603300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,7 +209,7 @@ MonoBehaviour:
     m_Bits: 1
   _crouchPlayerHeight: 1.5
   _jumpCooldown: 0.1
-  _maxJumps: 2
+  _maxJumps: 1
   _maxSlideTime: 1.2
   _minLandVelocity: -1
   _directionTransform: {fileID: 2299041633067559821}
@@ -5856,6 +5856,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 6447fb0e39f3cb04693803b1fb17e791, type: 3}
       propertyPath: m_Name
       value: primalweapon
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6447fb0e39f3cb04693803b1fb17e791, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
