@@ -28,6 +28,9 @@ namespace LOK1game
         [SerializeField] private int _attackRate;
         public float AttackRate => _attackRate;
 
+        [SerializeField] private LayerMask _damagableMask;
+        public LayerMask DamagableMask => _damagableMask;
+
 
         [Space]
         [SerializeField] private AnimatorOverrideController _animController;
