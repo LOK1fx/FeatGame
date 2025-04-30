@@ -10,18 +10,24 @@ namespace LOK1game
         [SerializeField] private float _effectDuration = 0.2f;
         [SerializeField] private float _emissionIntensity = 5f;
 
-        private MeshRenderer[] _meshRenderers;
+        private Renderer[] _meshRenderers;
         private Material[] _originalMaterials;
+        private Material[] _damageMaterials;
         private bool _isEffectActive = false;
 
         private void Awake()
         {
-            _meshRenderers = GetComponentsInChildren<MeshRenderer>(true);
+            _meshRenderers = GetComponentsInChildren<Renderer>(true);
             _originalMaterials = new Material[_meshRenderers.Length];
+            _damageMaterials = new Material[_meshRenderers.Length];
 
             for (int i = 0; i < _meshRenderers.Length; i++)
             {
                 _originalMaterials[i] = _meshRenderers[i].material;
+                _damageMaterials[i] = new Material(_originalMaterials[i]);
+                _damageMaterials[i].EnableKeyword("_EMISSION");
+                _damageMaterials[i].SetColor("_EmissionColor", _damageColor * _emissionIntensity);
+                _damageMaterials[i].color = _damageColor;
             }
         }
 
@@ -32,12 +38,9 @@ namespace LOK1game
 
             _isEffectActive = true;
 
-            foreach (var renderer in _meshRenderers)
+            for (int i = 0; i < _meshRenderers.Length; i++)
             {
-                var material = renderer.material;
-                material.EnableKeyword("_EMISSION");
-                material.SetColor("_EmissionColor", _damageColor * _emissionIntensity);
-                material.color = _damageColor;
+                _meshRenderers[i].material = _damageMaterials[i];
             }
 
             Invoke(nameof(ResetEffect), _effectDuration);
@@ -47,10 +50,7 @@ namespace LOK1game
         {
             for (int i = 0; i < _meshRenderers.Length; i++)
             {
-                var material = _meshRenderers[i].material;
-                material.DisableKeyword("_EMISSION");
-                material.SetColor("_EmissionColor", Color.black);
-                material.color = _originalMaterials[i].color;
+                _meshRenderers[i].material = _originalMaterials[i];
             }
 
             _isEffectActive = false;
@@ -64,10 +64,7 @@ namespace LOK1game
                 {
                     if (_meshRenderers[i] != null)
                     {
-                        var material = _meshRenderers[i].material;
-                        material.DisableKeyword("_EMISSION");
-                        material.SetColor("_EmissionColor", Color.black);
-                        material.color = _originalMaterials[i].color;
+                        _meshRenderers[i].material = _originalMaterials[i];
                     }
                 }
             }
