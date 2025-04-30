@@ -7,7 +7,8 @@ namespace LOK1game.AI
         Chase,
         Idle,
         Death,
-        Atacking
+        Circle,
+        Attack
     }
 
     public interface IAiState

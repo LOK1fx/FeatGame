@@ -4,8 +4,9 @@ namespace LOK1game.AI
 {
     public class AiStateMachine
     {
+        public AiStateId CurrentState { get; private set; }
+
         private IAiState[] _states;
-        private AiStateId _currentState;
         private AiAgent _agent;
 
         public AiStateMachine(AiAgent agent)
@@ -19,7 +20,7 @@ namespace LOK1game.AI
 
         public void Update()
         {
-            GetState(_currentState)?.Update(_agent);
+            GetState(CurrentState)?.Update(_agent);
         }
 
         public void AddState(IAiState state)
@@ -31,9 +32,9 @@ namespace LOK1game.AI
 
         public void SetState(AiStateId newStateId)
         {
-            GetState(_currentState)?.Exit(_agent);
+            GetState(CurrentState)?.Exit(_agent);
 
-            _currentState = newStateId;
+            CurrentState = newStateId;
 
             GetState(newStateId)?.Enter(_agent);
         }

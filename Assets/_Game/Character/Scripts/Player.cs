@@ -213,7 +213,11 @@ namespace LOK1game.PlayerDomain
             if (IsDead || damage.Value <= 0)
                 return;
 
-            Death();
+            Health.ReduceHealth(damage.Value);
+            Camera.TriggerRecoil(new Vector3(-25f, 18f, 5f));
+
+            if (Health.Hp <= 0)
+                Death();
         }
 
 

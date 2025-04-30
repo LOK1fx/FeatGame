@@ -4,8 +4,9 @@ using UnityEngine.AI;
 namespace LOK1game.AI
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    public abstract class AiAgent : MonoBehaviour
+    public abstract class AiAgent : Actor
     {
+        private AiStateId _currentState; // for debug
         public AiStateMachine StateMachine { get; private set; }
         public Transform Target { get; private set; }
 
@@ -36,6 +37,8 @@ namespace LOK1game.AI
             StateMachine.Update();
 
             OnUpdate();
+
+            _currentState = StateMachine.CurrentState;
         }
 
         protected abstract void OnUpdate();
