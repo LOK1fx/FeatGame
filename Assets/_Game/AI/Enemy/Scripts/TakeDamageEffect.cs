@@ -6,88 +6,54 @@ namespace LOK1game
 {
     public class TakeDamageEffect : MonoBehaviour
     {
-        [SerializeField] private float _flashIntensity = 5f;
-        [SerializeField] private float _fadeSpeed = 2f;
+        [SerializeField] private Color _damageColor = Color.red;
+        [SerializeField] private float _effectDuration = 0.2f;
+        [SerializeField] private float _emissionIntensity = 5f;
 
         private MeshRenderer[] _meshRenderers;
-        private List<Material[]> _originalMaterials = new List<Material[]>();
-        private Coroutine _flashCoroutine;
+        private Material[] _originalMaterials;
+        private bool _isEffectActive = false;
 
-        private void Start()
+        private void Awake()
         {
-            _meshRenderers = GetComponentsInChildren<MeshRenderer>();
+            _meshRenderers = GetComponentsInChildren<MeshRenderer>(true);
+            _originalMaterials = new Material[_meshRenderers.Length];
 
-            foreach (var renderer in _meshRenderers)
+            for (int i = 0; i < _meshRenderers.Length; i++)
             {
-                _originalMaterials.Add(renderer.materials);
+                _originalMaterials[i] = _meshRenderers[i].material;
             }
         }
 
-        public void Flash()
+        public void PlayEffect()
         {
-            if (_flashCoroutine != null)
-            {
-                StopCoroutine(_flashCoroutine);
-                ReturnOriginals();
-            }  
+            if (_isEffectActive)
+                ResetEffect();
+
+            _isEffectActive = true;
 
             foreach (var renderer in _meshRenderers)
             {
-                var instancedMaterials = new Material[renderer.materials.Length];
-                for (int i = 0; i < renderer.materials.Length; i++)
-                {
-                    instancedMaterials[i] = new Material(renderer.materials[i]);
-                }
-                renderer.materials = instancedMaterials;
+                var material = renderer.material;
+                material.EnableKeyword("_EMISSION");
+                material.SetColor("_EmissionColor", _damageColor * _emissionIntensity);
+                material.color = _damageColor;
             }
 
-            _flashCoroutine = StartCoroutine(FlashEffect());
+            Invoke(nameof(ResetEffect), _effectDuration);
         }
 
-        private IEnumerator FlashEffect()
-        {
-            var currentIntensity = _flashIntensity;
-            var baseColors = new Color[_meshRenderers.Length * 4];
-
-            var index = 0;
-            foreach (var renderer in _meshRenderers)
-            {
-                foreach (var material in renderer.materials)
-                {
-                    baseColors[index++] = material.color;
-                    material.color = Color.white * _flashIntensity;
-                    material.EnableKeyword("_EMISSION");
-                    material.SetColor("_EmissionColor", Color.white * _flashIntensity);
-                }
-            }
-
-            while (currentIntensity > 0f)
-            {
-                currentIntensity = Mathf.Max(0f, currentIntensity - _fadeSpeed * Time.deltaTime);
-
-                index = 0;
-                foreach (var renderer in _meshRenderers)
-                {
-                    foreach (var material in renderer.materials)
-                    {
-                        var targetColor = baseColors[index] * Mathf.LinearToGammaSpace(currentIntensity + 1f);
-                        material.color = Color.Lerp(baseColors[index], targetColor, currentIntensity / _flashIntensity);
-                        material.SetColor("_EmissionColor", Color.white * currentIntensity);
-                        index++;
-                    }
-                }
-                yield return null;
-            }
-
-            ReturnOriginals();
-        }
-
-        private void ReturnOriginals()
+        private void ResetEffect()
         {
             for (int i = 0; i < _meshRenderers.Length; i++)
             {
-                _meshRenderers[i].materials = _originalMaterials[i];
+                var material = _meshRenderers[i].material;
+                material.DisableKeyword("_EMISSION");
+                material.SetColor("_EmissionColor", Color.black);
+                material.color = _originalMaterials[i].color;
             }
+
+            _isEffectActive = false;
         }
 
         private void OnDestroy()
@@ -98,7 +64,10 @@ namespace LOK1game
                 {
                     if (_meshRenderers[i] != null)
                     {
-                        _meshRenderers[i].materials = _originalMaterials[i];
+                        var material = _meshRenderers[i].material;
+                        material.DisableKeyword("_EMISSION");
+                        material.SetColor("_EmissionColor", Color.black);
+                        material.color = _originalMaterials[i].color;
                     }
                 }
             }

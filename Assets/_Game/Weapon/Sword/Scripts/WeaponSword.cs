@@ -1,5 +1,6 @@
 using LOK1game.PlayerDomain;
 using UnityEngine;
+using System.Collections;
 
 namespace LOK1game
 {
@@ -10,8 +11,8 @@ namespace LOK1game
         [SerializeField] private Vector3 _damageSpherePosition;
         [SerializeField] private float _damageSphereRadius;
 
-
         private uint _attackNum = 1;
+        private bool _isAttacking = false;
 
         public override void AltUse()
         {
@@ -20,6 +21,8 @@ namespace LOK1game
 
         public override void Use()
         {
+            if (_isAttacking) return;
+
             _attackNum++;
 
             if (_attackNum % 2 == 0)
@@ -31,6 +34,16 @@ namespace LOK1game
                 animator.SetTrigger("Attack02");
             }
 
+            StartCoroutine(DelayedDamage());
+
+            FireUsed();
+        }
+
+        private IEnumerator DelayedDamage()
+        {
+            _isAttacking = true;
+            yield return new WaitForSeconds(AttackRate);
+
             var damagableColliders = Physics.OverlapSphere(GetDamageSpherePosition(), _damageSphereRadius,
                 DamagableMask, QueryTriggerInteraction.Ignore);
 
@@ -39,7 +52,7 @@ namespace LOK1game
                 damagable.TakeDamage(new Damage(Damage, Player));
             }
 
-            FireUsed();
+            _isAttacking = false;
         }
 
         protected override void OnDequip()
@@ -58,7 +71,6 @@ namespace LOK1game
 
             return camera.position + camera.TransformDirection(_damageSpherePosition);
         }
-
 
         private void OnDrawGizmos()
         {

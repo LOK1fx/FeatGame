@@ -6,6 +6,9 @@ namespace LOK1game
     [RequireComponent(typeof(Health), typeof(TakeDamageEffect))]
     public abstract class EnemyBase : AiAgent, IDamagable
     {
+        public bool IsDead => isDead;
+        protected bool isDead;
+        
         public Health Health => _health;
         [SerializeField] private Health _health;
 
@@ -19,9 +22,16 @@ namespace LOK1game
 
         public void TakeDamage(Damage damage)
         {
-            _takeDamageEffect.Flash();
+            _takeDamageEffect.PlayEffect();
+
+            _health.ReduceHealth(damage.Value);
+
+            if (_health.Hp <= 0 && isDead == false)
+                OnDeath();
         }
 
         public abstract void OnTookDamage(Damage damage);
+
+        protected abstract void OnDeath();
     }
 }

@@ -22,12 +22,10 @@ namespace LOK1game
         public AttackState(int damage)
         {
             _attackDamage = damage;
-            Debug.Log("AttackState created with damage: " + damage);
         }
 
         public void Enter(AiAgent agent)
         {
-            Debug.Log("AttackState Enter");
             agent.GetNavMeshAgent(out _navAgent);
             if (_navAgent != null)
             {
@@ -47,7 +45,6 @@ namespace LOK1game
 
         public void Exit(AiAgent agent)
         {
-            Debug.Log("AttackState Exit");
             if (_navAgent != null)
             {
                 _navAgent.isStopped = true;
@@ -64,29 +61,21 @@ namespace LOK1game
         public void Update(AiAgent agent)
         {
             if (_navAgent == null)
-            {
-                Debug.LogError("NavAgent is null in Update!");
                 return;
-            }
 
             var colliders = Physics.OverlapSphere(agent.transform.position, _attackRange * 2, _playerLayer);
             
             if (colliders.Length == 0)
             {
-                Debug.Log("No players in range, switching to Idle");
                 agent.StateMachine.SetState(AiStateId.Idle);
                 return;
             }
 
             _currentTarget = colliders[0].GetComponent<Player>();
             if (_currentTarget == null)
-            {
-                Debug.LogError("Player component not found!");
                 return;
-            }
 
-            float distanceToTarget = Vector3.Distance(agent.transform.position, _currentTarget.transform.position);
-            Debug.Log($"Distance to target: {distanceToTarget}, Attack range: {_attackRange}");
+            var distanceToTarget = Vector3.Distance(agent.transform.position, _currentTarget.transform.position);
 
             if (!_isAttacking)
             {
@@ -117,11 +106,9 @@ namespace LOK1game
             else
             {
                 _currentAttackTime += Time.deltaTime;
-                Debug.Log($"Attack progress: {_currentAttackTime}/{_attackDuration}");
                 
                 if (_currentAttackTime >= _attackDuration)
                 {
-                    Debug.Log("Attack finished, switching to Circle");
                     _isAttacking = false;
                     _currentCooldown = _attackCooldown;
                     _navAgent.isStopped = false;

@@ -25,7 +25,7 @@ namespace LOK1game
         [SerializeField] private int _damage;
         public int Damage => _damage;
 
-        [SerializeField] private int _attackRate;
+        [SerializeField] private float _attackRate;
         public float AttackRate => _attackRate;
 
         [SerializeField] private LayerMask _damagableMask;
