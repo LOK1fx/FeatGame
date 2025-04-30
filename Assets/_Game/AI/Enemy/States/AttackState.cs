@@ -90,7 +90,6 @@ namespace LOK1game
                     }
                     else
                     {
-                        Debug.Log("Moving to target");
                         _navAgent.isStopped = false;
                         _navAgent.SetDestination(_currentTarget.transform.position);
                     }
@@ -132,7 +131,8 @@ namespace LOK1game
                 }
             }
 
-            agent.transform.LookAt(_currentTarget.transform.position);
+            if (_currentTarget != null)
+                agent.transform.LookAt(_currentTarget.transform.position);
         }
     }
 } 

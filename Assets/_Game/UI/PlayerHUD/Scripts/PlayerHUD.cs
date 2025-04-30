@@ -12,6 +12,8 @@ namespace LOK1game
         [SerializeField] private StaminaScreen _staminaScreen;
         [SerializeField] private CanvasGroupFade _interactionTextFader;
         [SerializeField] private CanvasGroupFade _staminaTextFader;
+        [SerializeField] private UIHpBar _hpBar;
+        [SerializeField] private CanvasGroupFade _damageOverlay;
 
         private int _staminaTextCount = 0;
 
@@ -25,6 +27,14 @@ namespace LOK1game
 
             _player.Interaction.OnInteractionFound += OnInteractionFound;
             _player.Interaction.OnInteractionLost += OnInteractionLost;
+
+            _player.Health.OnHealthChanged += OnHealthChanged;
+            _player.OnTakeDamage += OnPlayerTakeDamage;
+        }
+
+        private void OnPlayerTakeDamage()
+        {
+            _damageOverlay.Canvas.alpha = 1;
         }
 
         private void OnDestroy()
@@ -34,6 +44,9 @@ namespace LOK1game
 
             _player.Interaction.OnInteractionFound -= OnInteractionFound;
             _player.Interaction.OnInteractionLost -= OnInteractionLost;
+
+            _player.Health.OnHealthChanged -= OnHealthChanged;
+            _player.OnTakeDamage -= OnPlayerTakeDamage;
         }
 
         private void OnStaminaOut()
@@ -60,6 +73,11 @@ namespace LOK1game
         private void OnInteractionFound()
         {
             _interactionTextFader.Show();
+        }
+
+        private void OnHealthChanged(int newHealth)
+        {
+            _hpBar.SetHealth(newHealth);
         }
     }
 }

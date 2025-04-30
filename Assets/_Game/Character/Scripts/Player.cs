@@ -218,6 +218,8 @@ namespace LOK1game.PlayerDomain
 
             if (Health.Hp <= 0)
                 Death();
+
+            OnTakeDamage?.Invoke();
         }
 
 

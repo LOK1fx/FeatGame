@@ -313,7 +313,7 @@ MonoBehaviour:
     m_Bits: 64
   _animController: {fileID: 22100000, guid: 35579d8f6256d5743a0a7060ad3b710a, type: 2}
   _damageSpherePosition: {x: 0, y: 0, z: 0.75}
-  _damageSphereRadius: 0.63
+  _damageSphereRadius: 0.68
 --- !u!1001 &1804321173172335956
 PrefabInstance:
   m_ObjectHideFlags: 0

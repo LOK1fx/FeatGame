@@ -13,6 +13,7 @@ namespace LOK1game.UI
         [SerializeField] [Range(0f, 1f)] private float _startAlpha;
         [SerializeField] private float _fadeSpeed;
 
+        public CanvasGroup Canvas => _canvas;
         [SerializeField] private CanvasGroup _canvas;
 
         private void Awake()

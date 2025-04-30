@@ -13315,6 +13315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c368da72a3fc5fd41afd1c15490a5891, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _delay: 1
 --- !u!1 &1103041590
 GameObject:
   m_ObjectHideFlags: 0
@@ -14289,6 +14290,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1300109487}
     m_Modifications:
+    - target: {fileID: -4922620205160864272, guid: fd10cca3a306ccb429ec4872094d544b, type: 3}
+      propertyPath: field of view
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: -4922620205160864272, guid: fd10cca3a306ccb429ec4872094d544b, type: 3}
+      propertyPath: far clip plane
+      value: 5000
+      objectReference: {fileID: 0}
+    - target: {fileID: -4922620205160864272, guid: fd10cca3a306ccb429ec4872094d544b, type: 3}
+      propertyPath: near clip plane
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4922620205160864272, guid: fd10cca3a306ccb429ec4872094d544b, type: 3}
+      propertyPath: orthographic size
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 2998117770608552243, guid: fd10cca3a306ccb429ec4872094d544b, type: 3}
       propertyPath: field of view
       value: 70
@@ -15771,9 +15788,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7070505815069301596, guid: 12c8a2132e507f8429c2dc1e6debe790, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 8932142089046598974, guid: 160b21f52cf7dcd4c8eaae56de128e8f, type: 3}
+    - target: {fileID: -7070505815069301596, guid: 12c8a2132e507f8429c2dc1e6debe790, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7070505815069301596, guid: 12c8a2132e507f8429c2dc1e6debe790, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: c164286791f250b41bda400360ce1165, type: 2}
+      objectReference: {fileID: 2100000, guid: 4c193751076e90542bb160a09718b4ad, type: 2}
+    - target: {fileID: -7070505815069301596, guid: 12c8a2132e507f8429c2dc1e6debe790, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8492e60896d463e4da525c56f08f5855, type: 2}
     - target: {fileID: 919132149155446097, guid: 12c8a2132e507f8429c2dc1e6debe790, type: 3}
       propertyPath: m_Name
       value: primal_rig@wakeup
