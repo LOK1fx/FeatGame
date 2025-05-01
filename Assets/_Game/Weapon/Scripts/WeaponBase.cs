@@ -1,5 +1,7 @@
 using LOK1game.PlayerDomain;
+using LOK1game.Tools;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace LOK1game
@@ -36,6 +38,10 @@ namespace LOK1game
         [SerializeField] private AnimatorOverrideController _animController;
         public AnimatorOverrideController AnimController => _animController;
 
+        [Space]
+        [SerializeField] protected AudioSource _audioSource;
+        [SerializeField] protected List<AudioClip> _attackClips = new();
+
         protected Animator animator { get; private set; }
         
         public void Bind(Player owner)
@@ -66,5 +72,13 @@ namespace LOK1game
 
         protected void FireUsed() { OnUsed?.Invoke(); }
         protected void FireAltUsed() { OnAltUsed?.Invoke(); }
+
+        protected void PlayRandomAttackClip()
+        {
+            if (_audioSource == null)
+                return;
+
+            _audioSource.PlayRandomClipOnce(_attackClips);
+        }
     }
 }

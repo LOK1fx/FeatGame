@@ -15,12 +15,15 @@ namespace LOK1game.Game
 
             SpawnGameModeObject(CameraPrefab);
 
-            //So strange code
             var player = SpawnGameModeObject(PlayerPrefab.gameObject);
-            player.transform.position = GetRandomSpawnPointPosition();
+            var spawnPointPosition = GetRandomSpawnPointPosition();
+
+            Debug.Log(spawnPointPosition.ToString());
+
+            player.transform.position = spawnPointPosition;
+
 
             var controller = CreatePlayerController(player.GetComponent<Pawn>());
-
             var ui = SpawnGameModeObject(UiPrefab);
 
             if (ui.TryGetComponent<IPlayerUI>(out var playerUI))

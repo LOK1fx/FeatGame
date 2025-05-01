@@ -1,6 +1,6 @@
 using System.Linq;
 using UnityEngine;
-using Logger = LOK1game.Utils.Logger;
+using Logger = LOK1game.Utils.LOK1gameLogger;
 
 namespace LOK1game
 {
@@ -47,23 +47,6 @@ namespace LOK1game
             return spawnPoint.transform.position;
         }
 
-#region Loggers
 
-        public Logger GetPlayerLogger()
-        {
-            return GetLoggers().GetLogger(ELoggerGroup.Player);
-        }
-
-        public Logger GetEnemiesLogger()
-        {
-            return GetLoggers().GetLogger(ELoggerGroup.Enemies);
-        }
-
-        public Logger GetAILogger()
-        {
-            return GetLoggers().GetLogger(ELoggerGroup.AI);
-        }
-
-        #endregion
     }
 }

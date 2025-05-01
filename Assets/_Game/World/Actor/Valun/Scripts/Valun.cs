@@ -83,7 +83,7 @@ namespace LOK1game
 
                 _rigidbody.AddForce(direction * _physicalForce, ForceMode.VelocityChange);
 
-                sender.FirstPersonArms.Animator.SetTrigger("RollStone");
+                sender.FirstPersonArms.Animator.SetTrigger("Attack");
                 _audioSource.PlayOneShot(_impactClip);
 
                 return;
@@ -92,7 +92,7 @@ namespace LOK1game
             _targetPosition = targetPosition;
             Debug.DrawRay(transform.position, direction, Color.green, 1f);
 
-            sender.FirstPersonArms.Animator.SetTrigger("RollStone");
+            sender.FirstPersonArms.Animator.SetTrigger("Attack");
             _audioSource.PlayOneShot(_impactClip);
         }
     }

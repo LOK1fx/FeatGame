@@ -10,6 +10,7 @@ namespace LOK1game
 
         [SerializeField] private Vector3 _damageSpherePosition;
         [SerializeField] private float _damageSphereRadius;
+        [SerializeField] private TrailRenderer _trail;
 
         private uint _attackNum = 1;
         private bool _isAttacking = false;
@@ -21,48 +22,51 @@ namespace LOK1game
 
         public override void Use()
         {
-            if (_isAttacking) return;
+            if (_isAttacking)
+                return;
 
             _attackNum++;
 
             if (_attackNum % 2 == 0)
-            {
                 animator.SetTrigger("Attack");
-            }
             else
-            {
                 animator.SetTrigger("Attack02");
-            }
 
+            PlayRandomAttackClip();
             StartCoroutine(DelayedDamage());
-
-            FireUsed();
         }
 
         private IEnumerator DelayedDamage()
         {
             _isAttacking = true;
+            _trail.emitting = true;
+
             yield return new WaitForSeconds(AttackRate);
 
             var damagableColliders = Physics.OverlapSphere(GetDamageSpherePosition(), _damageSphereRadius,
-                DamagableMask, QueryTriggerInteraction.Ignore);
+                DamagableMask, QueryTriggerInteraction.Collide);
 
-            if (damagableColliders.Length > 0 && damagableColliders[0].gameObject.TryGetComponent<IDamagable>(out var damagable))
+            foreach (var collider in damagableColliders)
             {
-                damagable.TakeDamage(new Damage(Damage, Player));
+                if (collider.gameObject.TryGetComponent<IDamagable>(out var damagable))
+                    damagable.TakeDamage(new Damage(Damage, Player));
             }
 
             _isAttacking = false;
+            _trail.emitting = false;
+
+            FireUsed();
         }
 
         protected override void OnDequip()
         {
-            
+            _trail.emitting = false;
         }
 
         protected override void OnEquip()
         {
             Player.FirstPersonArms.OverrideAnimatior(AnimController);
+            _trail.emitting = false;
         }
 
         private Vector3 GetDamageSpherePosition()

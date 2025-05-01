@@ -4,6 +4,8 @@ namespace LOK1game.AI
 {
     public class AiStateMachine
     {
+        public event Action OnStateChanged;
+
         public AiStateId CurrentState { get; private set; }
 
         private IAiState[] _states;
@@ -37,6 +39,8 @@ namespace LOK1game.AI
             CurrentState = newStateId;
 
             GetState(newStateId)?.Enter(_agent);
+
+            OnStateChanged?.Invoke();
         }
 
         public IAiState GetState(AiStateId stateId)

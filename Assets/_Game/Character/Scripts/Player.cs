@@ -41,12 +41,15 @@ namespace LOK1game.PlayerDomain
 
         [Space]
         [SerializeField] private float _maxSprintTime = 1f;
+        public float MaxStamina => _maxSprintTime;
+
         [SerializeField] private float _staminaRecoveryTime = 1f;
 
-        private float _stamina;
-        private float _currentStaminaRecovery;
+        public float Stamina { get; private set; }
 
+        private float _currentStaminaRecovery;
         private bool _staminaIsOut;
+
 
         private void Awake()
         {
@@ -87,7 +90,7 @@ namespace LOK1game.PlayerDomain
         {
             playerType = EPlayerType.View;
 
-            _stamina = _maxSprintTime;
+            Stamina = _maxSprintTime;
 
             WeaponManager.Construct(this);
             WeaponManager.EquipSlot(0);
@@ -103,9 +106,9 @@ namespace LOK1game.PlayerDomain
 
             if (State.IsSprinting && _staminaIsOut == false)
             {
-                _stamina -= Time.deltaTime;
+                Stamina -= Time.deltaTime;
 
-                if (_stamina < 0f)
+                if (Stamina < 0f)
                 {
                     Movement.StopSprint();
 
@@ -121,7 +124,7 @@ namespace LOK1game.PlayerDomain
                 if (_currentStaminaRecovery >= _staminaRecoveryTime)
                 {
                     _currentStaminaRecovery = 0f;
-                    _stamina = _maxSprintTime;
+                    Stamina = _maxSprintTime;
 
                     _staminaIsOut = false;
                     OnStaminaRecovered?.Invoke();

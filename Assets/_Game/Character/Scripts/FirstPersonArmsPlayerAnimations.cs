@@ -7,9 +7,14 @@ namespace LOK1game
     public class FirstPersonArmsPlayerAnimations : MonoBehaviour
     {
         private const string TRIGGER_JUMP = "Jump";
+        private const string TRIGGER_DEATH = "Death";
+        private const string TRIGGER_RESPAWN = "Respawn";
         private const string TRIGGER_DOUBLEJUMP = "DoubleJump";
+
         private const string BOOL_SPRINT = "IsSprinting";
+
         private const string FLOAT_SPEED = "Speed";
+
 
         [SerializeField] private FirstPersonArms _arms;
 
@@ -24,6 +29,9 @@ namespace LOK1game
             _player.Movement.OnJump += OnJump;
             _player.Movement.OnStartSprint += OnSprintStarted;
             _player.Movement.OnStopSprint += OnSprintStopped;
+
+            _player.OnDeath += OnDeath;
+            _player.OnRespawned += OnRespawned;
         }
 
         private void OnDestroy()
@@ -31,6 +39,14 @@ namespace LOK1game
             _player.Movement.OnJump -= OnJump;
             _player.Movement.OnStartSprint -= OnSprintStarted;
             _player.Movement.OnStopSprint -= OnSprintStopped;
+
+            _player.OnDeath -= OnDeath;
+            _player.OnRespawned -= OnRespawned;
+        }
+
+        private void Update()
+        {
+            _animator.SetFloat(FLOAT_SPEED, _player.Movement.GetSpeed());
         }
 
         private void OnJump()
@@ -39,11 +55,6 @@ namespace LOK1game
                 _animator.SetTrigger(TRIGGER_JUMP);
             else
                 _animator.SetTrigger(TRIGGER_DOUBLEJUMP);
-        }
-
-        private void Update()
-        {
-            _animator.SetFloat(FLOAT_SPEED, _player.Movement.GetSpeed());
         }
 
 
@@ -55,6 +66,16 @@ namespace LOK1game
         private void OnSprintStarted()
         {
             _animator.SetBool(BOOL_SPRINT, true);
+        }
+
+        private void OnRespawned()
+        {
+            _animator.SetTrigger(TRIGGER_RESPAWN);
+        }
+
+        private void OnDeath()
+        {
+            _animator.SetTrigger(TRIGGER_DEATH);
         }
     }
 }

@@ -30,11 +30,11 @@ namespace LOK1game
             if (_navAgent != null)
             {
                 _navAgent.isStopped = false;
-                Debug.Log("NavAgent found and started");
+                agent.GetAILogger().Push("NavAgent found and started");
             }
             else
             {
-                Debug.LogError("NavAgent is null!");
+                agent.GetAILogger().PushError("NavAgent is null!");
             }
             _playerLayer = LayerMask.GetMask("Player");
             _currentCooldown = 0f;
@@ -83,7 +83,7 @@ namespace LOK1game
                 {
                     if (distanceToTarget <= _attackRange)
                     {
-                        Debug.Log("Starting attack");
+                        agent.GetAILogger().Push("Starting attack");
                         _isAttacking = true;
                         _currentAttackTime = 0f;
                         _navAgent.isStopped = true;
@@ -96,7 +96,7 @@ namespace LOK1game
                 }
                 else
                 {
-                    Debug.Log($"Cooldown: {_currentCooldown}");
+                    agent.GetAILogger().Push($"Cooldown: {_currentCooldown}");
                     _currentCooldown -= Time.deltaTime;
                     _navAgent.isStopped = false;
                     _navAgent.SetDestination(_currentTarget.transform.position);
@@ -117,14 +117,14 @@ namespace LOK1game
                 {
                     if (distanceToTarget <= _attackRange && !_hasDealtDamage)
                     {
-                        Debug.Log("Dealing damage");
+                        agent.GetAILogger().Push("Dealing damage");
                         _currentTarget.TakeDamage(new Damage(_attackDamage, agent));
                         _hasDealtDamage = true;
                         agent.StateMachine.SetState(AiStateId.Circle);
                     }
                     else if (distanceToTarget > _attackRange)
                     {
-                        Debug.Log("Target out of range, resuming chase");
+                        agent.GetAILogger().Push("Target out of range, resuming chase");
                         _isAttacking = false;
                         _navAgent.isStopped = false;
                     }

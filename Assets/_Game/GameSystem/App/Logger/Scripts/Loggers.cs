@@ -14,9 +14,9 @@ namespace LOK1game.Utils
     [System.Serializable]
     public class Loggers
     {
-        public Dictionary<ELoggerGroup, Logger> Value { get; private set; } = new Dictionary<ELoggerGroup, Logger>();
+        public Dictionary<ELoggerGroup, LOK1gameLogger> Value { get; private set; } = new Dictionary<ELoggerGroup, LOK1gameLogger>();
 
-        public Loggers(Dictionary<ELoggerGroup, Logger> loggers)
+        public Loggers(Dictionary<ELoggerGroup, LOK1gameLogger> loggers)
         {
             Value = loggers;
         }
@@ -32,16 +32,16 @@ namespace LOK1game.Utils
 
             foreach (var container in containers)
             {
-                Value.Add(container.Group, new Logger(container.Group, container.IsActivated, container.Color));
+                Value.Add(container.Group, new LOK1gameLogger(container.Group, container.IsActivated, container.Color));
             }
         }
 
-        public void SwapLoggers(Dictionary<ELoggerGroup, Logger> newloggers)
+        public void SwapLoggers(Dictionary<ELoggerGroup, LOK1gameLogger> newloggers)
         {
             Value = newloggers;
         }
 
-        public bool TryGetLogger(ELoggerGroup group, out Logger logger)
+        public bool TryGetLogger(ELoggerGroup group, out LOK1gameLogger logger)
         {
             if (Value.ContainsKey(group))
             {
@@ -55,7 +55,7 @@ namespace LOK1game.Utils
             return false;
         }
 
-        public Logger GetLogger(ELoggerGroup group)
+        public LOK1gameLogger GetLogger(ELoggerGroup group)
         {
             return Value[group];
         }

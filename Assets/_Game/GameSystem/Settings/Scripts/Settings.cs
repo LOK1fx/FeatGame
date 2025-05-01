@@ -8,25 +8,27 @@ namespace LOK1game
     public static class Settings
     {
         private const string PLAYER_SETTING_PREFIX = "PlayerSettings_";
-        private const string SENSIVITY = PLAYER_SETTING_PREFIX + "Sensivity";
+        private const string SENSITIVITY = PLAYER_SETTING_PREFIX + "Sensitivity";
 
-        public static float GetSensivity()
+        public static bool TryGetSensivity(out float sensitivity)
         {
-            var sens = PlayerPrefs.GetFloat(SENSIVITY);
+            var sens = PlayerPrefs.GetFloat(SENSITIVITY);
 
             if (sens == 0)
             {
-                return 5f; //default value
+                sensitivity = 5f; // default value
+                return false;
             }
             else
             {
-                return sens;
+                sensitivity = sens;
+                return true;
             }
         }
 
-        public static void SetSensivity(float value)
+        public static void SetSensitivity(float value)
         {
-            PlayerPrefs.SetFloat(SENSIVITY, value);
+            PlayerPrefs.SetFloat(SENSITIVITY, value);
         }
     }
 }

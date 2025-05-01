@@ -29,6 +29,25 @@ namespace LOK1game
             return App.ProjectContext;
         }
 
+        #region Loggers
+
+        public LOK1gameLogger GetPlayerLogger()
+        {
+            return GetLoggers().GetLogger(ELoggerGroup.Player);
+        }
+
+        public LOK1gameLogger GetEnemiesLogger()
+        {
+            return GetLoggers().GetLogger(ELoggerGroup.Enemies);
+        }
+
+        public LOK1gameLogger GetAILogger()
+        {
+            return GetLoggers().GetLogger(ELoggerGroup.AI);
+        }
+
+        #endregion
+
         protected Loggers GetLoggers()
         {
             return App.Loggers;

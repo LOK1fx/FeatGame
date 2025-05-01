@@ -12,7 +12,8 @@ namespace LOK1game
         [SerializeField] private StaminaScreen _staminaScreen;
         [SerializeField] private CanvasGroupFade _interactionTextFader;
         [SerializeField] private CanvasGroupFade _staminaTextFader;
-        [SerializeField] private UIHpBar _hpBar;
+        [SerializeField] private UIFillBar _hpBar;
+        [SerializeField] private UIFillBar _staminaBar;
         [SerializeField] private CanvasGroupFade _damageOverlay;
 
         private int _staminaTextCount = 0;
@@ -29,12 +30,8 @@ namespace LOK1game
             _player.Interaction.OnInteractionLost += OnInteractionLost;
 
             _player.Health.OnHealthChanged += OnHealthChanged;
-            _player.OnTakeDamage += OnPlayerTakeDamage;
-        }
 
-        private void OnPlayerTakeDamage()
-        {
-            _damageOverlay.Canvas.alpha = 1;
+            _player.OnTakeDamage += OnPlayerTakeDamage;
         }
 
         private void OnDestroy()
@@ -49,6 +46,19 @@ namespace LOK1game
             _player.OnTakeDamage -= OnPlayerTakeDamage;
         }
 
+        private void Update()
+        {
+            if (_player == null)
+                return;
+
+            _staminaBar.SetValue(_player.Stamina, 0, _player.MaxStamina);
+        }
+
+        private void OnPlayerTakeDamage()
+        {
+            _damageOverlay.Canvas.alpha = 1;
+        }
+
         private void OnStaminaOut()
         {
             _staminaScreen.StartDrop();
@@ -56,6 +66,8 @@ namespace LOK1game
             if (_staminaTextCount == 0 || _staminaTextCount % 3 == 0)
                 _staminaTextFader.Show();
             _staminaTextCount++;
+
+            _staminaBar.SetValue(0);
         }
 
         private void OnStaminaRecovered()
@@ -63,6 +75,8 @@ namespace LOK1game
             _staminaScreen.EndDrop();
 
             _staminaTextFader.Hide();
+
+            _staminaBar.SetValue(100);
         }
 
         private void OnInteractionLost()
@@ -77,7 +91,7 @@ namespace LOK1game
 
         private void OnHealthChanged(int newHealth)
         {
-            _hpBar.SetHealth(newHealth);
+            _hpBar.SetValue(newHealth);
         }
     }
 }

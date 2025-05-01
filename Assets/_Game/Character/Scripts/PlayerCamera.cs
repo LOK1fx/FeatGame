@@ -9,7 +9,7 @@ namespace LOK1game.PlayerDomain
         
         public float Tilt;
         
-        [SerializeField] private float _sensivity = 8f;
+        [SerializeField] private float _sensitivity = 16f;
         [SerializeField] private Transform _cameraTransform;
         [SerializeField] private CinemachineVirtualCamera _camera;
 
@@ -56,7 +56,8 @@ namespace LOK1game.PlayerDomain
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
-            _sensivity = Settings.GetSensivity();
+            if (Settings.TryGetSensivity(out var sensitivity))
+                _sensitivity = sensitivity;
 
             DesiredPosition = _cameraTransform.localPosition;
             _defaultFov = _camera.m_Lens.FieldOfView;
@@ -151,14 +152,12 @@ namespace LOK1game.PlayerDomain
 
         private float GetSensivityMultiplier()
         {
-            var multiplier = 20f;
+            var multiplier = 1f;
 
             if(Application.isMobilePlatform)
-            {
-                multiplier = 1f;
-            }
+                multiplier = 0.05f;
 
-            return (_sensivity * multiplier) * Time.deltaTime;
+            return _sensitivity * multiplier * Time.fixedDeltaTime;
         }
 
         private float ThreehoundredToZero(float value)

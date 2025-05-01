@@ -4,6 +4,8 @@ namespace LOK1game
 {
     public class SpiderEnemy : EnemyBase
     {
+        [SerializeField] private GameObject _particles;
+
         public override void OnTookDamage(Damage damage)
         {
             
@@ -24,6 +26,7 @@ namespace LOK1game
 
         protected override void OnDeath()
         {
+            Instantiate(_particles, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
 

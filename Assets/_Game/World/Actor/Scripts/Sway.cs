@@ -17,7 +17,8 @@ namespace LOK1game
         private void Start()
         {
             _startRotation = transform.localRotation;
-            _playerSensitivity = Settings.GetSensivity();
+
+            Settings.TryGetSensivity(out _playerSensitivity);
         }
 
         private void Update()
