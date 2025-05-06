@@ -1,6 +1,7 @@
 using LOK1game.PlayerDomain;
 using UnityEngine;
 using System.Collections;
+using LOK1game.Tools;
 
 namespace LOK1game
 {
@@ -49,7 +50,21 @@ namespace LOK1game
             foreach (var collider in damagableColliders)
             {
                 if (collider.gameObject.TryGetComponent<IDamagable>(out var damagable))
-                    damagable.TakeDamage(new Damage(Damage, Player));
+                {
+                    var playerCameraPosition = Player.Camera.GetCameraTransform().position;
+                    var damage = new Damage()
+                    {
+                        Value = Damage,
+                        Sender = Player,
+                        PhysicalForce = Damage * 5f,
+                        DamageType = EDamageType.Normal,
+
+                        HitPoint = collider.ClosestPoint(playerCameraPosition),
+                        HitNormal = collider.transform.position.GetDirectionTo(playerCameraPosition)
+                    };
+
+                    damagable.TakeDamage(damage);
+                }
             }
 
             _isAttacking = false;

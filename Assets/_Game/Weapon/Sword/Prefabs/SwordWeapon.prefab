@@ -459,7 +459,7 @@ MonoBehaviour:
   _attackRate: 0.3
   _damagableMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 65
   _animController: {fileID: 22100000, guid: 35579d8f6256d5743a0a7060ad3b710a, type: 2}
   _audioSource: {fileID: 3031967208112669676}
   _attackClips:

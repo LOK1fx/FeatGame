@@ -96,8 +96,11 @@ namespace LOK1game.PlayerDomain
             WeaponManager.EquipSlot(0);
         }
 
-        private void Update()
+        public override void ApplicationUpdate()
         {
+            if (IsLocal == false)
+                return;
+
             var cameraRotation = Camera.GetCameraTransform().eulerAngles;
 
             Movement.DirectionTransform.rotation = Quaternion.Euler(0f, cameraRotation.y, 0f);
@@ -134,7 +137,7 @@ namespace LOK1game.PlayerDomain
 
         public override void OnInput(object sender)
         {
-            if (IsDead)
+            if (IsDead || IsLocal == false)
                 return;
 
             var inputAxis = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));

@@ -12,13 +12,40 @@ namespace LOK1game
         Drill,
     }
 
+    /// <summary>
+    /// Represents damage information in the game, including source, type, value, and impact details.
+    /// </summary>
     public struct Damage
     {
+        /// <summary>
+        /// The actor that caused the damage.
+        /// </summary>
         public Actor Sender { get; set; }
+
+        /// <summary>
+        /// The type of damage being dealt (e.g., Normal, Lazer, Void, etc.).
+        /// </summary>
         public EDamageType DamageType { get; set; }
+
+        /// <summary>
+        /// The amount of damage to be dealt.
+        /// </summary>
         public int Value { get; set; }
 
+        /// <summary>
+        /// The physical force applied to objects when they receive damage.
+        /// This affects how physical objects react to the damage.
+        /// </summary>
+        public float PhysicalForce { get; set; }
+
+        /// <summary>
+        /// The world position where the damage was dealt (e.g., bullet impact point).
+        /// </summary>
         public Vector3 HitPoint { get; set; }
+
+        /// <summary>
+        /// The surface normal at the point of impact.
+        /// </summary>
         public Vector3 HitNormal { get; set; }
 
         public Damage(int value)
@@ -26,6 +53,7 @@ namespace LOK1game
             Sender = null;
             Value = value;
             DamageType = EDamageType.Normal;
+            PhysicalForce = value;
 
             HitPoint = Vector3.zero;
             HitNormal = Vector3.zero;
@@ -36,6 +64,7 @@ namespace LOK1game
             Sender = null;
             Value = value;
             DamageType = type;
+            PhysicalForce = value;
 
             HitPoint = Vector3.zero;
             HitNormal = Vector3.zero;
@@ -46,6 +75,7 @@ namespace LOK1game
             Sender = sender;
             Value = value;
             DamageType = type;
+            PhysicalForce = value;
 
             HitPoint = Vector3.zero;
             HitNormal = Vector3.zero;
@@ -56,9 +86,21 @@ namespace LOK1game
             Sender = sender;
             Value = value;
             DamageType = EDamageType.Normal;
+            PhysicalForce = value;
 
             HitPoint = Vector3.zero;
             HitNormal = Vector3.zero;
+        }
+
+        public Damage(int value, Actor sender, Vector3 hitPoint, Vector3 hitNormal, float physicalForce)
+        {
+            Sender = sender;
+            Value = value;
+            DamageType = EDamageType.Normal;
+            PhysicalForce = physicalForce;
+
+            HitPoint = hitPoint;
+            HitNormal = hitNormal;
         }
 
         public Vector3 GetHitDirection(bool drawDebugLines = false)

@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEditor;
 using Unity.VisualScripting;
+using UnityEditor.SceneManagement;
+using System.IO;
 
 namespace LOK1game.Editor
 {
@@ -21,40 +23,43 @@ namespace LOK1game.Editor
             EditorGUILayout.Space();
 
             if (GUILayout.Button("Create Visual Script"))
-            {
                 CreateVisualScript();
-            }
         }
 
         private void CreateVisualScript()
         {
-            // Создаем путь для сохранения ассета
+            var currentScene = EditorSceneManager.GetActiveScene();
+            var sceneName = currentScene.name;
+            var initialPath = $"Assets/_Game/Levels/{sceneName}";
+            
+            if (!Directory.Exists(initialPath))
+            {
+                Directory.CreateDirectory(initialPath);
+                AssetDatabase.Refresh();
+            }
+            
             var path = EditorUtility.SaveFilePanelInProject(
                 "Save Visual Script",
                 "TriggerScript",
                 "asset",
-                "Please enter a file name to save the visual script to");
+                "Please enter a file name to save the visual script to",
+                initialPath);
 
             if (string.IsNullOrEmpty(path))
                 return;
 
-            // Создаем новый граф
             var graph = new FlowGraph();
-            
-            // Создаем ScriptGraphAsset
             var scriptGraphAsset = ScriptableObject.CreateInstance<ScriptGraphAsset>();
+
             scriptGraphAsset.graph = graph;
 
-            // Сохраняем ассет
             AssetDatabase.CreateAsset(scriptGraphAsset, path);
             AssetDatabase.SaveAssets();
 
-            // Добавляем Script Machine на объект
             var scriptMachine = _trigger.gameObject.AddComponent<ScriptMachine>();
             scriptMachine.nest.source = GraphSource.Macro;
             scriptMachine.nest.macro = scriptGraphAsset;
 
-            // Обновляем инспектор
             EditorUtility.SetDirty(_trigger);
             EditorUtility.SetDirty(scriptMachine);
             AssetDatabase.Refresh();

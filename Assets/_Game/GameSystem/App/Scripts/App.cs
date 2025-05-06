@@ -6,9 +6,21 @@ using UnityEngine;
 
 namespace LOK1game
 {
+    /// <summary>
+    /// Main entry point of the application. Handles initialization of all game systems and provides global access to core services.
+    /// This class is responsible for bootstrapping the application and managing its lifecycle.
+    /// </summary>
+    [RequireComponent(typeof(ApplicationUpdateManager))]
     public sealed class App : MonoBehaviour
     {
+        /// <summary>
+        /// Global access to the project context, containing game-specific settings and managers.
+        /// </summary>
         public static ProjectContext ProjectContext { get; private set; }
+
+        /// <summary>
+        /// Global access to the logging system.
+        /// </summary>
         public static Loggers Loggers { get; private set; }
 
         [SerializeField] private ProjectContext _projectContext = new ProjectContext();
@@ -18,6 +30,10 @@ namespace LOK1game
 
         #region Boot
 
+        /// <summary>
+        /// Initializes the application before the first scene is loaded.
+        /// Creates and initializes the persistent App object.
+        /// </summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Bootstrap()
         {
@@ -42,6 +58,10 @@ namespace LOK1game
 
         #endregion
 
+        /// <summary>
+        /// Gracefully shuts down the application, clearing all systems and events.
+        /// </summary>
+        /// <param name="exitCode">The exit code to return when the application closes</param>
         public static void Quit(int exitCode = 0)
         {
             Debug.Log($"Application started quit proccess with exitcode {exitCode}.");
@@ -59,6 +79,10 @@ namespace LOK1game
 #endif
         }
 
+        /// <summary>
+        /// Initializes all core components of the application.
+        /// Sets up loggers, and project context.
+        /// </summary>
         private void InitializeComponents()
         {
             Debug.Log("Initializing components..");
@@ -77,6 +101,9 @@ namespace LOK1game
             PushLogInfo("Application components initialized!");
         }
 
+        /// <summary>
+        /// Initializes the logging system with the configured logger containers.
+        /// </summary>
         private void InitializeLoggers()
         {
             Loggers = new Loggers(_loggerContainers.ToArray());
@@ -84,12 +111,22 @@ namespace LOK1game
             PushLogInfo("LOK1gameLogger initialized!");
         }
 
+        /// <summary>
+        /// Swaps the current logger configuration with a new one.
+        /// Available in the Unity Editor context menu.
+        /// </summary>
         [ContextMenu("Swap loggers")]
         private void SwapLoggers()
         {
             Loggers?.SwapLoggers(_loggerContainers.ToArray());
         }
 
+        /// <summary>
+        /// Pushes a log message to the application logger.
+        /// </summary>
+        /// <param name="message">The message to log</param>
+        /// <param name="sender">The object that generated the log message</param>
+        /// <exception cref="ApplicationException">Thrown when no Application logger is found</exception>
         public static void PushLogInfo(object message, UnityEngine.Object sender = null)
         {
             if (Loggers.TryGetLogger(ELoggerGroup.Application, out var logger))

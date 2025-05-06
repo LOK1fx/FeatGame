@@ -5,15 +5,25 @@ using UnityEngine;
 
 namespace LOK1game
 {
-    public abstract class Controller : MonoBehaviour
+    public abstract class Controller : MonoBehaviour, IApplicationUpdatable
     {
         public event Action<IPawn> OnControlledPawnChanged;
         public IPawn ControlledPawn { get; private set; }
 
         private static List<Controller> _controllers = new List<Controller>();
 
+        protected virtual void OnEnable()
+        {
+            ApplicationUpdateManager.Register(this);
+        }
+
+        protected virtual void OnDisable()
+        {
+            ApplicationUpdateManager.Unregister(this);
+        }
+
         protected abstract void Awake();
-        protected abstract void Update();
+        public abstract void ApplicationUpdate();
         
         public static T Create<T>(IPawn pawn = null) where T : Controller
         {
