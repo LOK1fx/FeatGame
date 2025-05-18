@@ -1,6 +1,10 @@
+#if UNITY_EDITOR
+
 using UnityEditor;
+
+#endif
+
 using UnityEngine;
-using UnityEditor.SceneManagement;
 
 namespace LOK1game
 {

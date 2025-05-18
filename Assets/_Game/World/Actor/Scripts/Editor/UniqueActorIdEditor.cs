@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 
@@ -102,4 +103,5 @@ namespace LOK1game.Editor
             }
         }
     }
-} 
+}
+#endif 
