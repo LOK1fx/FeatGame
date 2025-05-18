@@ -1,3 +1,4 @@
+using LOK1game;
 using UnityEngine.SceneManagement;
 
 public static class SilentlyLoadLevel

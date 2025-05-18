@@ -14,6 +14,7 @@ namespace LOK1game
         /// The world instance this actor belongs to.
         /// </summary>
         public GameWorld CurrentWorld { get; private set; }
+        public UniqueActorId UniqueId { get; private set; }
 
         protected virtual void OnEnable()
         {
@@ -33,6 +34,25 @@ namespace LOK1game
         public void PassWorld<T>(T world) where T : GameWorld
         {
             CurrentWorld = world;
+        }
+
+        public bool TryGetUniqueId(out UniqueActorId actorId)
+        {
+            if (UniqueId != null)
+            {
+                actorId = UniqueId;
+                return true;
+            }    
+
+            if (TryGetComponent<UniqueActorId>(out var id))
+            {
+                UniqueId = id;
+                actorId = id;
+                return true;
+            }
+            
+            actorId = null;
+            return false;
         }
 
         /// <summary>

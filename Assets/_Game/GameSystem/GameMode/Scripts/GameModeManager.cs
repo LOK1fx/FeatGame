@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using LOK1game.Tools;
+using System.Linq;
 
 namespace LOK1game.Game
 {
@@ -63,15 +64,7 @@ namespace LOK1game.Game
 
         private IGameMode GetGameMode(EGameModeId id)
         {
-            foreach (var gamemode in _gameModes)
-            {
-                if (gamemode.Id == id)
-                {
-                    return gamemode.GameMode;
-                }
-            }
-
-            throw new System.ArgumentException();
+            return _gameModes.Where(gamemode => gamemode.Id == id).FirstOrDefault().GameMode;
         }
     }
 }

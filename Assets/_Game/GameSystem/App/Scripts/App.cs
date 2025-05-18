@@ -24,6 +24,14 @@ namespace LOK1game
         public static Loggers Loggers { get; private set; }
 
         [SerializeField] private ProjectContext _projectContext = new ProjectContext();
+
+        [Space]
+        [Header("Networking")]
+        [SerializeField]
+        [Tooltip("If built as server, which scene should be opened first?")] 
+        private string _serverStartSceneName = "ServerBoot";
+
+        [Space]
         [SerializeField] private List<LoggerContainer> _loggerContainers = new List<LoggerContainer>();
 
         private const string APP_GAME_OBJECT_NAME = "[App]";
@@ -54,6 +62,12 @@ namespace LOK1game
             // LOK1game logger initialized only in components
             // So we can use LOK1game logger only after bootstrap
             PushLogInfo("Application bootstrap is done successfuly!");
+
+#if SERVER
+
+            UnityEngine.SceneManagement.SceneManager.LoadScene(app._serverStartSceneName);
+
+#endif
         }
 
         #endregion
@@ -88,7 +102,7 @@ namespace LOK1game
             Debug.Log("Initializing components..");
 
             if (Application.isMobilePlatform)
-                Application.targetFrameRate = Screen.currentResolution.refreshRate;
+                Application.targetFrameRate = (int)Screen.currentResolution.refreshRateRatio.value;
 
             InitializeLoggers();
 

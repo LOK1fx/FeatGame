@@ -1,5 +1,6 @@
 using LOK1game.AI;
 using LOK1game.Tools;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ namespace LOK1game
     [RequireComponent(typeof(Health), typeof(TakeDamageEffect))]
     public abstract class EnemyBase : AiAgent, IDamagable
     {
+        public event Action<string> OnDied;
+
         public bool IsDead => isDead;
         protected bool isDead;
         
@@ -36,8 +39,12 @@ namespace LOK1game
 
             if (_health.Hp <= 0 && isDead == false)
             {
+                TryGetUniqueId(out var id);
+
                 audioSource?.transform.SetParent(null, true);
                 audioSource?.PlayRandomClipOnce(_deathClips);
+                OnDied?.Invoke(id.ToString());
+
                 OnDeath();
             }   
         }

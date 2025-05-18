@@ -13,6 +13,9 @@ namespace LOK1game
     [Serializable]
     public sealed class ProjectContext : Context
     {
+        public LevelManager LevelManager => _levelManager;
+        [SerializeField] private LevelManager _levelManager = new();
+
         /// <summary>
         /// Manager responsible for handling different game modes and their transitions.
         /// </summary>
@@ -48,6 +51,8 @@ namespace LOK1game
         /// </summary>
         public override void Initialize()
         {
+            LevelManager.Initialize();
+
             GameStateManager = new GameStateManager();
             _gameModeManager = new GameModeManager();
 

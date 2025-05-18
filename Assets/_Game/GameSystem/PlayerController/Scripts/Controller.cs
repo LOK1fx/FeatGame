@@ -8,6 +8,8 @@ namespace LOK1game
     public abstract class Controller : MonoBehaviour, IApplicationUpdatable
     {
         public event Action<IPawn> OnControlledPawnChanged;
+        
+        public bool IsInputProcessing = true;
         public IPawn ControlledPawn { get; private set; }
 
         private static List<Controller> _controllers = new List<Controller>();
@@ -23,7 +25,11 @@ namespace LOK1game
         }
 
         protected abstract void Awake();
-        public abstract void ApplicationUpdate();
+        public virtual void ApplicationUpdate()
+        {
+            if (IsInputProcessing == false)
+                return;
+        }
         
         public static T Create<T>(IPawn pawn = null) where T : Controller
         {

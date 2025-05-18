@@ -26,7 +26,7 @@ namespace LOK1game
 
         protected override void OnDeath()
         {
-            Instantiate(_particles, transform.position, Quaternion.identity);
+            Destroy(Instantiate(_particles, transform.position, Quaternion.identity), 1f);
             Destroy(gameObject);
         }
 

@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Friction: 8
   WalkGroundAccelerate: 55
-  WalkGroundMaxVelocity: 6
+  WalkGroundMaxVelocity: 5
   CrouchGroundAccelerate: 40
   CrouchGroundMaxVelocity: 4
   SprintGoundAccelerate: 100
-  SprintGoundMaxVelocity: 9
+  SprintGoundMaxVelocity: 8
   AirAccelerate: 3
-  AirMaxVelocity: 9
+  AirMaxVelocity: 7
   JumpForce: 340

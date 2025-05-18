@@ -24,7 +24,7 @@ namespace LOK1game
 
         public static class Gameplay
         {
-            public const int MAXIMUM_DAMAGE = 99999999;
+            public const int MAXIMUM_DAMAGE = int.MaxValue / 4;
             public const float PLAYER_HEIGHT = 2f;
             public const int MAX_CAMERA_TIMER = 999;
         }

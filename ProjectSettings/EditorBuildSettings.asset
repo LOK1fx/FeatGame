@@ -14,6 +14,27 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Game/Scenes/GreenLevel.unity
     guid: 043e7010ea76bf9448127db35f15b54b
+  - enabled: 1
+    path: Assets/_Game/Scenes/Level1.unity
+    guid: a4aa243c4dfdffb4fbebf8fb020793be
+  - enabled: 1
+    path: Assets/_Game/Scenes/Level2.unity
+    guid: cae446c078fa5d544bf9e9ca60d9fb98
+  - enabled: 1
+    path: Assets/_Game/Scenes/_Tests/WorldComposer.unity
+    guid: bff5bfdf83562ce4995a725f11f180a3
+  - enabled: 1
+    path: Assets/_Game/Scenes/_Tests/WorldComposer_01.unity
+    guid: e68555bb41365414da4d499becdb65e9
+  - enabled: 1
+    path: Assets/_Game/Scenes/_Tests/WorldComposer_02.unity
+    guid: 09a3dbc23cc015940ab1aadeac3ea244
+  - enabled: 1
+    path: Assets/_Game/Scenes/_Tests/WorldComposer_03.unity
+    guid: d5343ed23de82fe49825974fee388edc
+  - enabled: 1
+    path: Assets/_Game/Scenes/GreenLevel 1.unity
+    guid: 5a17b0972dea9cd4fb28b4bad9333de6
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

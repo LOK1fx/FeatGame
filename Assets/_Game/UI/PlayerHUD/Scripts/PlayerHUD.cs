@@ -15,6 +15,7 @@ namespace LOK1game
         [SerializeField] private UIFillBar _hpBar;
         [SerializeField] private UIFillBar _staminaBar;
         [SerializeField] private CanvasGroupFade _damageOverlay;
+        [SerializeField] private UIPauseMenu _pauseMenu;
 
         private int _staminaTextCount = 0;
 
@@ -30,8 +31,11 @@ namespace LOK1game
             _player.Interaction.OnInteractionLost += OnInteractionLost;
 
             _player.Health.OnHealthChanged += OnHealthChanged;
-
             _player.OnTakeDamage += OnPlayerTakeDamage;
+
+            _pauseMenu.Construct(controller);
+            _controller.OnPauseKeyPressed += OnPlayerControllerPausePressed;
+            _controller.OnResumeKeyPressed += OnPlayerControllerResumePressed;
         }
 
         private void OnDestroy()
@@ -44,6 +48,9 @@ namespace LOK1game
 
             _player.Health.OnHealthChanged -= OnHealthChanged;
             _player.OnTakeDamage -= OnPlayerTakeDamage;
+
+            _controller.OnPauseKeyPressed -= OnPlayerControllerPausePressed;
+            _controller.OnResumeKeyPressed -= OnPlayerControllerResumePressed;
         }
 
         private void Update()
@@ -92,6 +99,16 @@ namespace LOK1game
         private void OnHealthChanged(int newHealth)
         {
             _hpBar.SetValue(newHealth);
+        }
+
+        private void OnPlayerControllerPausePressed()
+        {
+            _pauseMenu.Show();
+        }
+
+        private void OnPlayerControllerResumePressed()
+        {
+            _pauseMenu.Resume();
         }
     }
 }

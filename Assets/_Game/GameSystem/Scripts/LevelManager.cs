@@ -1,4 +1,7 @@
+using LOK1game;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,20 +15,22 @@ public class LevelManager
     public void Initialize()
     {
         LevelsData = _levelsData;
-
-#if UNITY_EDITOR
-        foreach (var data in LevelsData)
-        {
-            data.IsCompleted = false;
-        }
-#endif
     }
 
     public static void LoadLevel(LevelData data)
     {
-        SceneManager.LoadSceneAsync(data.BuildIndex, LoadSceneMode.Single);
+        if (LevelsData.Contains(data) == false)
+            throw new KeyNotFoundException("There is no that level data in level manager! Add it.");
+
+        SceneManager.LoadSceneAsync(data.MainSceneName, LoadSceneMode.Single);
+
+        foreach(var addativeScene in data.AdditiveScenes)
+        {
+            SceneManager.LoadSceneAsync(addativeScene, LoadSceneMode.Additive);
+        }
     }
 
+    [Obsolete]
     public static void LoadNextLevel()
     {
         var currentScene = SceneManager.GetActiveScene().buildIndex;
@@ -33,65 +38,34 @@ public class LevelManager
         SceneManager.LoadSceneAsync(currentScene + 1);
     }
 
-    public static void SetLevelCompleted(string name)
+    public static void RestartLevel()
     {
-        foreach (var data in LevelsData)
-        {
-            if (data.Name == name)
-            {
-                data.IsCompleted = true;
-            }
-        }
+        var currentLevel = GetCurrentLevelData();
+
+        LoadLevel(currentLevel);
     }
 
     public static LevelData GetCurrentLevelData()
     {
-        var currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        var currentSceneName = SceneManager.GetActiveScene().name;
 
         foreach (var level in LevelsData)
         {
-            if(level.BuildIndex == currentSceneIndex)
+            if(level.MainSceneName == currentSceneName)
             {
                 return level;
             }
         }
 
-        Debug.LogError($"LevelManager can't find a level with the build index {currentSceneIndex}.");
+        Debug.LogError($"LevelManager can't find a level with the SceneName {currentSceneName}.");
 
         return null;
     }
 
-    public static LevelData GetLevelData(int buildIndex)
+    public static LevelData GetLevelData(string mainSceneName)
     {
-        foreach (var data in LevelsData)
-        {
-            if(data.BuildIndex == buildIndex)
-            {
-                var dataInstance = ScriptableObject.CreateInstance<LevelData>();
+        var levelData = LevelsData.Where(level => level.MainSceneName == mainSceneName).FirstOrDefault();
 
-                dataInstance = data;
-
-                return dataInstance;
-            }
-        }
-
-        return null;
-    }
-
-    public static LevelData GetLevelData(string name)
-    {
-        foreach (var data in LevelsData)
-        {
-            if (data.Name == name)
-            {
-                var dataInstance = ScriptableObject.CreateInstance<LevelData>();
-
-                dataInstance = data;
-
-                return dataInstance;
-            }
-        }
-
-        return null;
+        return levelData;
     }
 }

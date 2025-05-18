@@ -1,5 +1,6 @@
 using UnityEngine;
 using LOK1game.Tools;
+using UnityEditorInternal.VersionControl;
 
 namespace LOK1game
 {
@@ -51,8 +52,8 @@ namespace LOK1game
         public Damage(int value)
         {
             Sender = null;
-            Value = value;
-            DamageType = EDamageType.Normal;
+            Value = Mathf.Clamp(value, 0, Constants.Gameplay.MAXIMUM_DAMAGE);
+            DamageType = EDamageType.Void;
             PhysicalForce = value;
 
             HitPoint = Vector3.zero;
@@ -62,7 +63,7 @@ namespace LOK1game
         public Damage(int value, EDamageType type)
         {
             Sender = null;
-            Value = value;
+            Value = Mathf.Clamp(value, 0, Constants.Gameplay.MAXIMUM_DAMAGE);
             DamageType = type;
             PhysicalForce = value;
 
@@ -73,7 +74,7 @@ namespace LOK1game
         public Damage(int value, EDamageType type, Actor sender)
         {
             Sender = sender;
-            Value = value;
+            Value = Mathf.Clamp(value, 0, Constants.Gameplay.MAXIMUM_DAMAGE);
             DamageType = type;
             PhysicalForce = value;
 
@@ -84,7 +85,7 @@ namespace LOK1game
         public Damage(int value, Actor sender)
         {
             Sender = sender;
-            Value = value;
+            Value = Mathf.Clamp(value, 0, Constants.Gameplay.MAXIMUM_DAMAGE);
             DamageType = EDamageType.Normal;
             PhysicalForce = value;
 
@@ -95,13 +96,37 @@ namespace LOK1game
         public Damage(int value, Actor sender, Vector3 hitPoint, Vector3 hitNormal, float physicalForce)
         {
             Sender = sender;
-            Value = value;
+            Value = Mathf.Clamp(value, 0, Constants.Gameplay.MAXIMUM_DAMAGE);
             DamageType = EDamageType.Normal;
             PhysicalForce = physicalForce;
 
             HitPoint = hitPoint;
             HitNormal = hitNormal;
         }
+
+        public Damage(DamageData data, Actor sender)
+        {
+            Sender = sender;
+            Value = data.Damage;
+            DamageType = data.Type;
+            PhysicalForce = data.PhysicalForce;
+
+            HitPoint = Vector3.zero;
+            HitNormal = Vector3.zero;
+        }
+
+        public Damage(DamageData data, Actor sender, Vector3 hitPoint, Vector3 hitNormal)
+        {
+            Sender = sender;
+            Value = data.Damage;
+            DamageType = data.Type;
+            PhysicalForce = data.PhysicalForce;
+
+            HitPoint = hitPoint;
+            HitNormal = hitNormal;
+        }
+
+
 
         public Vector3 GetHitDirection(bool drawDebugLines = false)
         {
