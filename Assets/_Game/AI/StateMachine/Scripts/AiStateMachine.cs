@@ -6,7 +6,7 @@ namespace LOK1game.AI
     {
         public event Action OnStateChanged;
 
-        public AiStateId CurrentState { get; private set; }
+        public EAiStateId CurrentStateId { get; private set; }
 
         private IAiState[] _states;
         private AiAgent _agent;
@@ -15,14 +15,14 @@ namespace LOK1game.AI
         {
             _agent = agent;
 
-            var length = Enum.GetNames(typeof(AiStateId)).Length;
+            var length = Enum.GetNames(typeof(EAiStateId)).Length;
 
             _states = new IAiState[length];
         }
 
         public void Update()
         {
-            GetState(CurrentState)?.Update(_agent);
+            GetState(CurrentStateId)?.Update(_agent);
         }
 
         public void AddState(IAiState state)
@@ -32,22 +32,27 @@ namespace LOK1game.AI
             _states[index] = state;
         }
 
-        public void SetState(AiStateId newStateId)
+        public void SetState(EAiStateId newStateId)
         {
-            GetState(CurrentState)?.Exit(_agent);
+            GetState(CurrentStateId)?.Exit(_agent);
 
-            CurrentState = newStateId;
+            CurrentStateId = newStateId;
 
             GetState(newStateId)?.Enter(_agent);
 
             OnStateChanged?.Invoke();
         }
 
-        public IAiState GetState(AiStateId stateId)
+        public IAiState GetState(EAiStateId stateId)
         {
             var index = (int)stateId;
 
             return _states[index];
+        }
+
+        public IAiState GetCurrentState()
+        {
+            return GetState(CurrentStateId);
         }
     }
 }

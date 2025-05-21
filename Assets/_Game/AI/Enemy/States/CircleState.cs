@@ -10,7 +10,7 @@ namespace LOK1game
         private float _circleRadius = 3f;
         private float _circleSpeed = 2f;
         private float _angle = 0f;
-        private float _circleTime = 5f;
+        private float _circleTime = 2f;
         private float _currentCircleTime = 0f;
         private NavMeshAgent _navAgent;
         private LayerMask _playerLayer;
@@ -36,9 +36,15 @@ namespace LOK1game
             _currentTarget = null;
         }
 
-        public AiStateId GetStateId()
+        public EAiStateId GetStateId()
         {
-            return AiStateId.Circle;
+            return EAiStateId.Circle;
+        }
+
+        public void OnGizmosLayer()
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(_navAgent.transform.position, _circleRadius);
         }
 
         public void Update(AiAgent agent)
@@ -49,7 +55,7 @@ namespace LOK1game
             
             if (colliders.Length == 0)
             {
-                agent.StateMachine.SetState(AiStateId.Idle);
+                agent.StateMachine.SetState(EAiStateId.Idle);
                 return;
             }
 
@@ -66,7 +72,7 @@ namespace LOK1game
             _currentCircleTime += Time.deltaTime;
             if (_currentCircleTime >= _circleTime)
             {
-                agent.StateMachine.SetState(AiStateId.Attack);
+                agent.StateMachine.SetState(EAiStateId.Attack);
             }
         }
     }

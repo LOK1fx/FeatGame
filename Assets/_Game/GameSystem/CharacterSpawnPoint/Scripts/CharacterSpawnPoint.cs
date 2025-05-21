@@ -36,10 +36,14 @@ namespace LOK1game
         {
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(transform.position, 0.1f);
-            
+
 #if UNITY_EDITOR
-            
-            Handles.Label(transform.position + Vector3.up * 0.5f, $"S:{name}");
+
+            var style = new GUIStyle();
+            style.normal.textColor = Color.white;
+            style.alignment = TextAnchor.MiddleCenter;
+
+            Handles.Label(transform.position + Vector3.up * 0.5f, $"S:{name}", style);
             
 #endif
         }

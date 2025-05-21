@@ -1,3 +1,4 @@
+using LOK1game.Game.Events;
 using LOK1game.World;
 using System;
 using UnityEngine;
@@ -78,6 +79,8 @@ namespace LOK1game.PlayerDomain
                 if (world.DoubleJumpAllowrd)
                     AllowDoubleJump();
             }
+
+            EventManager.AddListener<OnGameStateChangedEvent>(OnGameStateChanged);
         }
 
         private void Update()
@@ -122,6 +125,16 @@ namespace LOK1game.PlayerDomain
 
             if (CharacterMath.IsFloor(normal))
                 Land(_previousVelocity.y);
+        }
+
+        private void OnGameStateChanged(OnGameStateChangedEvent evt)
+        {
+            switch (evt.NewState)
+            {
+                case Game.EGameState.Paused:
+                    SetAxisInput(Vector2.zero);
+                    break;
+            }
         }
 
         public void AllowDoubleJump()

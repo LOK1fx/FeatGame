@@ -4,20 +4,23 @@ using LOK1game.Utils;
 
 namespace LOK1game.AI
 {
-    public enum AiStateId
+    public enum EAiStateId
     {
         Chase,
         Idle,
         Death,
         Circle,
-        Attack
+        Attack,
+        Nothing
     }
 
     public interface IAiState
     {
-        AiStateId GetStateId();
+        EAiStateId GetStateId();
         void Enter(AiAgent agent);
         void Update(AiAgent agent);
         void Exit(AiAgent agent);
+
+        void OnGizmosLayer();
     }
 }

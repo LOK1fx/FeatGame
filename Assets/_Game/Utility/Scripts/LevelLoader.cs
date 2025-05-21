@@ -5,20 +5,37 @@ namespace LOK1game
 {
     public class LevelLoader : MonoBehaviour
     {
+        [SerializeField] private LevelData _levelData;
         [SerializeField] private float _delay = 1.0f;
 
-        private string _levelName = string.Empty;
+        private string _sceneName = string.Empty;
 
-        public void LoadLevel(string levelName)
+        public void LoadScene(string sceneName)
         {
-            _levelName = levelName;
+            _sceneName = sceneName;
 
-            Invoke(nameof(Load), _delay);
+            if (_delay > 0)
+                Invoke(nameof(LoadSceneDelayed), Mathf.Abs(_delay));
+            else
+                LoadSceneDelayed();
         }
 
-        private void Load()
+        public void LoadLevel()
         {
-            SceneManager.LoadSceneAsync(_levelName, LoadSceneMode.Single);
+            if (_delay > 0)
+                Invoke(nameof(LoadLevelDelayed), Mathf.Abs(_delay));
+            else
+                LoadLevelDelayed();
+        }
+
+        private void LoadSceneDelayed()
+        {
+            SceneManager.LoadSceneAsync(_sceneName, LoadSceneMode.Single); 
+        }
+
+        private void LoadLevelDelayed()
+        {
+            LevelManager.LoadLevel(_levelData);
         }
     }
 }

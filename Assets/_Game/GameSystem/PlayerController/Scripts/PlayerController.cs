@@ -5,9 +5,6 @@ namespace LOK1game
 {
     public class PlayerController : Controller
     {
-        public event Action OnPauseKeyPressed;
-        public event Action OnResumeKeyPressed;
-
         private bool _isEscapedPressed;
 
         protected override void Awake()
@@ -31,9 +28,9 @@ namespace LOK1game
                 Cursor.visible = _isEscapedPressed;
 
                 if (isPause)
-                    OnPauseKeyPressed?.Invoke();
+                    App.ProjectContext.GameStateManager.SetState(Game.EGameState.Paused);
                 else
-                    OnResumeKeyPressed?.Invoke();
+                    App.ProjectContext.GameStateManager.SetState(Game.EGameState.Gameplay);
             }
         }
 

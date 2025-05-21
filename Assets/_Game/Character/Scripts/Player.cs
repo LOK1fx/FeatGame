@@ -134,7 +134,6 @@ namespace LOK1game.PlayerDomain
                 }
             }
         }
-
         public override void OnInput(object sender)
         {
             if (IsDead || IsLocal == false)
@@ -169,6 +168,18 @@ namespace LOK1game.PlayerDomain
 
             Interaction.OnInput(this);
             WeaponManager.OnInput();
+        }
+
+        public bool TryGetPlayerController(out PlayerController controller)
+        {
+            if (Controller == null || Controller is PlayerController == false)
+            {
+                controller = null;
+                return false;
+            }
+
+            controller = Controller as PlayerController;
+            return true;
         }
 
         private void OnLand(float yVelocity)
@@ -242,20 +253,20 @@ namespace LOK1game.PlayerDomain
 
             OnDeath?.Invoke();
 
-            StartCoroutine(RespawnRoutine(BaseGameMode.GetRandomSpawnPointPosition(true)));
-        }
+            var newSpawnPosition = BaseGameMode.GetRandomSpawnPointPosition(true);
 
+            GetPlayerLogger().Push($"Player will respawn at {newSpawnPosition}.");
 
-        private void Respawn(Vector3 respawnPosition)
-        {
-            Debug.DrawRay(respawnPosition, Vector3.up * 2f, Color.yellow, _respawnTime + 1f, false);
-
-            StartCoroutine(RespawnRoutine(respawnPosition));
+            StartCoroutine(RespawnRoutine(newSpawnPosition));
         }
 
         private IEnumerator RespawnRoutine(Vector3 respawnPosition)
         {
+            Debug.DrawRay(respawnPosition, Vector3.up * 2f, Color.yellow, _respawnTime + 1f, false);
+
             yield return new WaitForSeconds(_respawnTime);
+
+            transform.position = respawnPosition;
 
             IsDead = false;
 
@@ -268,8 +279,6 @@ namespace LOK1game.PlayerDomain
                 Movement.StopCrouch();
 
             Health.ResetHealth();
-
-            transform.position = respawnPosition;
 
             OnRespawned?.Invoke();
         }

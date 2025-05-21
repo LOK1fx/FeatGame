@@ -17,17 +17,20 @@ namespace LOK1game.Game
 
             var player = SpawnGameModeObject(PlayerPrefab.gameObject);
             var spawnPointPosition = GetRandomSpawnPointPosition();
-
-            Debug.Log(spawnPointPosition.ToString());
-
-            player.transform.position = spawnPointPosition;
-
-
             var controller = CreatePlayerController(player.GetComponent<Pawn>());
             var ui = SpawnGameModeObject(UiPrefab);
 
             if (ui.TryGetComponent<IPlayerUI>(out var playerUI))
                 playerUI.Bind(controller, player.GetComponent<Player>());
+
+            var playerRigidbody = player.GetComponent<Rigidbody>();
+            playerRigidbody.isKinematic = true;
+            playerRigidbody.Sleep();
+
+            player.transform.position = spawnPointPosition;
+
+            playerRigidbody.isKinematic = false;
+            playerRigidbody.WakeUp();
 
             State = EGameModeState.Started;
 

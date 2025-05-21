@@ -17,6 +17,7 @@ namespace LOK1game
             StateMachine.AddState(new ChaseState());
             StateMachine.AddState(new CircleState());
             StateMachine.AddState(new AttackState(15));
+            StateMachine.AddState(new NothingState());
         }
 
         protected override void OnAwake()

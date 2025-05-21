@@ -32,9 +32,18 @@ namespace LOK1game
             _currentTarget = null;
         }
 
-        public AiStateId GetStateId()
+        public EAiStateId GetStateId()
         {
-            return AiStateId.Chase;
+            return EAiStateId.Chase;
+        }
+
+        public void OnGizmosLayer()
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(_navAgent.transform.position, _chaseRange);
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(_navAgent.transform.position, _circleRange);
         }
 
         public void Update(AiAgent agent)
@@ -45,7 +54,7 @@ namespace LOK1game
             
             if (colliders.Length == 0)
             {
-                agent.StateMachine.SetState(AiStateId.Idle);
+                agent.StateMachine.SetState(EAiStateId.Idle);
                 return;
             }
 
@@ -56,7 +65,7 @@ namespace LOK1game
 
             if (distanceToPlayer <= _circleRange)
             {
-                agent.StateMachine.SetState(AiStateId.Circle);
+                agent.StateMachine.SetState(EAiStateId.Circle);
                 return;
             }
 

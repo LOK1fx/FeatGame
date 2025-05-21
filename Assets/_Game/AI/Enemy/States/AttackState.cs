@@ -53,9 +53,15 @@ namespace LOK1game
             _hasDealtDamage = false;
         }
 
-        public AiStateId GetStateId()
+        public EAiStateId GetStateId()
         {
-            return AiStateId.Attack;
+            return EAiStateId.Attack;
+        }
+
+        public void OnGizmosLayer()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(_navAgent.transform.position, _attackRange);
         }
 
         public void Update(AiAgent agent)
@@ -67,7 +73,7 @@ namespace LOK1game
             
             if (colliders.Length == 0)
             {
-                agent.StateMachine.SetState(AiStateId.Idle);
+                agent.StateMachine.SetState(EAiStateId.Idle);
                 return;
             }
 
@@ -111,7 +117,7 @@ namespace LOK1game
                     _isAttacking = false;
                     _currentCooldown = _attackCooldown;
                     _navAgent.isStopped = false;
-                    agent.StateMachine.SetState(AiStateId.Circle);
+                    agent.StateMachine.SetState(EAiStateId.Circle);
                 }
                 else
                 {
@@ -120,7 +126,7 @@ namespace LOK1game
                         agent.GetAILogger().Push("Dealing damage");
                         _currentTarget.TakeDamage(new Damage(_attackDamage, agent));
                         _hasDealtDamage = true;
-                        agent.StateMachine.SetState(AiStateId.Circle);
+                        agent.StateMachine.SetState(EAiStateId.Circle);
                     }
                     else if (distanceToTarget > _attackRange)
                     {

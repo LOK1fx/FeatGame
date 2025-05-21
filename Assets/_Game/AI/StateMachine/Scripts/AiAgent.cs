@@ -6,14 +6,13 @@ namespace LOK1game.AI
     [RequireComponent(typeof(NavMeshAgent))]
     public abstract class AiAgent : Actor
     {
-        private AiStateId _currentState; // for debug
         public AiStateMachine StateMachine { get; private set; }
         public Transform Target { get; private set; }
 
         public float DefaultSpeed => _defaultSpeed;
         [SerializeField] private float _defaultSpeed;
 
-        [SerializeField] private AiStateId _startState;
+        [SerializeField] private EAiStateId _startState;
 
         public NavMeshAgent NavAgent { get; private set; }
 
@@ -37,8 +36,6 @@ namespace LOK1game.AI
             StateMachine.Update();
 
             OnUpdate();
-
-            _currentState = StateMachine.CurrentState;
         }
 
         protected abstract void OnUpdate();
@@ -47,7 +44,7 @@ namespace LOK1game.AI
 
         public virtual void Death()
         {
-            StateMachine.SetState(AiStateId.Death);
+            StateMachine.SetState(EAiStateId.Death);
         }
 
         public void StopMovement()
@@ -63,6 +60,29 @@ namespace LOK1game.AI
         public void GetNavMeshAgent(out NavMeshAgent navAgent)
         {
             navAgent = NavAgent;
+        }
+
+        protected virtual void OnDrawGizmosSelected()
+        {
+            if (Application.isPlaying == true)
+                StateMachine.GetCurrentState().OnGizmosLayer();
+
+#if UNITY_EDITOR
+
+            var stateText = StateMachine != null ? StateMachine.GetCurrentState().ToString() : "NoStateMachine";
+            var style = new GUIStyle()
+            {
+                fontSize = 20,
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.LowerCenter,
+            };
+
+            style.normal.textColor = Color.red;
+
+            UnityEditor.Handles.Label(transform.position + Vector3.up * 1.5f,
+                $"{gameObject.name}\n{stateText}", style);
+
+#endif
         }
     }
 }

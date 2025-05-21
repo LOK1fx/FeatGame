@@ -1,3 +1,4 @@
+using LOK1game.Game.Events;
 using LOK1game.PlayerDomain;
 using LOK1game.UI;
 using UnityEngine;
@@ -34,8 +35,7 @@ namespace LOK1game
             _player.OnTakeDamage += OnPlayerTakeDamage;
 
             _pauseMenu.Construct(controller);
-            _controller.OnPauseKeyPressed += OnPlayerControllerPausePressed;
-            _controller.OnResumeKeyPressed += OnPlayerControllerResumePressed;
+            EventManager.AddListener<OnGameStateChangedEvent>(OnGameStateChanged);
         }
 
         private void OnDestroy()
@@ -49,8 +49,7 @@ namespace LOK1game
             _player.Health.OnHealthChanged -= OnHealthChanged;
             _player.OnTakeDamage -= OnPlayerTakeDamage;
 
-            _controller.OnPauseKeyPressed -= OnPlayerControllerPausePressed;
-            _controller.OnResumeKeyPressed -= OnPlayerControllerResumePressed;
+            EventManager.RemoveListener<OnGameStateChangedEvent>(OnGameStateChanged);
         }
 
         private void Update()
@@ -101,14 +100,19 @@ namespace LOK1game
             _hpBar.SetValue(newHealth);
         }
 
-        private void OnPlayerControllerPausePressed()
+        private void OnGameStateChanged(OnGameStateChangedEvent evt)
         {
-            _pauseMenu.Show();
-        }
-
-        private void OnPlayerControllerResumePressed()
-        {
-            _pauseMenu.Resume();
+            switch (evt.NewState)
+            {
+                case Game.EGameState.Gameplay:
+                    _pauseMenu.Resume();
+                    break;
+                case Game.EGameState.Paused:
+                    _pauseMenu.Show();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

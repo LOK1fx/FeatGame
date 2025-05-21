@@ -27,7 +27,7 @@ namespace LOK1game.AI
 
         private void OnStateChanged()
         {
-            var state = _stateMachine.CurrentState.ToString();
+            var state = _stateMachine.CurrentStateId.ToString();
             var actorName = _agent.name;
 
             _text.text = $"{actorName} \n{state}";

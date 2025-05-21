@@ -1,4 +1,5 @@
 using LOK1game.AI;
+using LOK1game.Game.Events;
 using LOK1game.Tools;
 using System;
 using System.Collections.Generic;
@@ -24,11 +25,19 @@ namespace LOK1game
         [SerializeField] private List<AudioClip> _gettingHurtClips;
         [SerializeField] private List<AudioClip> _deathClips;
 
+        private EAiStateId _previousStateId;
+
         protected override void OnAwake()
         {
             _takeDamageEffect = GetComponent<TakeDamageEffect>();
+
+            EventManager.AddListener<OnGameStateChangedEvent>(OnGameStateChanged);
         }
 
+        private void OnDestroy()
+        {
+            EventManager.RemoveListener<OnGameStateChangedEvent>(OnGameStateChanged);
+        }
 
         public void TakeDamage(Damage damage)
         {
@@ -47,6 +56,22 @@ namespace LOK1game
 
                 OnDeath();
             }   
+        }
+
+        protected virtual void OnGameStateChanged(OnGameStateChangedEvent evt)
+        {
+            switch (evt.NewState)
+            {
+                case Game.EGameState.Gameplay:
+                    StateMachine.SetState(_previousStateId);
+                    break;
+                case Game.EGameState.Paused:
+                    _previousStateId = StateMachine.CurrentStateId;
+                    StateMachine.SetState(EAiStateId.Nothing);
+                    break;
+                default:
+                    break;
+            }
         }
 
         public abstract void OnTookDamage(Damage damage);

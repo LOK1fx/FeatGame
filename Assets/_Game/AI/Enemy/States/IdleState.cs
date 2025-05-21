@@ -29,21 +29,25 @@ namespace LOK1game
             }
         }
 
-        public AiStateId GetStateId()
+        public EAiStateId GetStateId()
         {
-            return AiStateId.Idle;
+            return EAiStateId.Idle;
+        }
+
+        public void OnGizmosLayer()
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(_navAgent.transform.position, _detectionRange);
         }
 
         public void Update(AiAgent agent)
         {
             if (_navAgent == null) return;
 
-            Collider[] colliders = Physics.OverlapSphere(agent.transform.position, _detectionRange, _playerLayer);
+            var colliders = Physics.OverlapSphere(agent.transform.position, _detectionRange, _playerLayer);
             
             if (colliders.Length > 0)
-            {
-                agent.StateMachine.SetState(AiStateId.Chase);
-            }
+                agent.StateMachine.SetState(EAiStateId.Chase);
         }
     }
 } 
