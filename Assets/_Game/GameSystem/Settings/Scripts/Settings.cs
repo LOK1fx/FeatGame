@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using LOK1game.Tools;
+using System;
 
 namespace LOK1game
 {
     public static class Settings
     {
+        public static event Action<float> OnSensivityChanged;
+
         private const string PLAYER_SETTING_PREFIX = "PlayerSettings_";
         private const string SENSITIVITY = PLAYER_SETTING_PREFIX + "Sensitivity";
 
@@ -16,7 +18,7 @@ namespace LOK1game
 
             if (sens == 0)
             {
-                sensitivity = 5f; // default value
+                sensitivity = 15f; // default value
                 return false;
             }
             else
@@ -29,6 +31,7 @@ namespace LOK1game
         public static void SetSensitivity(float value)
         {
             PlayerPrefs.SetFloat(SENSITIVITY, value);
+            OnSensivityChanged?.Invoke(value);
         }
     }
 }

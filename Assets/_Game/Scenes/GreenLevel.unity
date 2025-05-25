@@ -1267,7 +1267,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -25
   m_TargetDisplay: 0
 --- !u!224 &332135702
 RectTransform:
@@ -2214,6 +2214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c368da72a3fc5fd41afd1c15490a5891, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _levelData: {fileID: 0}
   _delay: 5
 --- !u!1 &608423062
 GameObject:
@@ -5359,10 +5360,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 9151898620675341731, guid: e24b53b29c623cf4883c59984a5739f3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e24b53b29c623cf4883c59984a5739f3, type: 3}
 --- !u!1001 &1417126635
 PrefabInstance:

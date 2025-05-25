@@ -4,7 +4,7 @@ using UnityEngine.AI;
 namespace LOK1game.AI
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    public abstract class AiAgent : Actor
+    public abstract class AiAgent : Pawn
     {
         public AiStateMachine StateMachine { get; private set; }
         public Transform Target { get; private set; }

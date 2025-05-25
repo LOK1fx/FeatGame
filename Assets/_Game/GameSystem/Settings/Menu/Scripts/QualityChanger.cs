@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Linq;
 
 namespace LOK1game
 {
@@ -11,6 +12,10 @@ namespace LOK1game
         private void Start()
         {
             _dropdown = GetComponent<TMP_Dropdown>();
+            _dropdown.ClearOptions();
+            _dropdown.AddOptions(QualitySettings.names.ToList());
+
+            _dropdown.value = QualitySettings.GetQualityLevel();
         }
 
         public void SetQuality(int index)

@@ -53,16 +53,27 @@ namespace LOK1game.PlayerDomain
 
         private void Start()
         {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
+            if (_player.IsLocal)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
 
             if (Settings.TryGetSensivity(out var sensitivity))
                 _sensitivity = sensitivity;
+
+            Settings.OnSensivityChanged += OnSensivityChanged;
 
             DesiredPosition = _cameraTransform.localPosition;
             _defaultFov = _camera.m_Lens.FieldOfView;
             _targetFov = _defaultFov;
         }
+
+        private void OnDestroy()
+        {
+            Settings.OnSensivityChanged -= OnSensivityChanged;
+        }
+
 
         private void Update()
         {
@@ -98,17 +109,6 @@ namespace LOK1game.PlayerDomain
 
         public void OnInput(object sender)
         {
-            if(Input.GetKeyDown(KeyCode.Escape) && Cursor.lockState == CursorLockMode.Locked)
-            {
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-            }
-            else if(Input.GetKeyDown(KeyCode.Escape) && Cursor.lockState == CursorLockMode.None)
-            {
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-
             var x = 0f;
             var y = 0f;
 
@@ -200,6 +200,11 @@ namespace LOK1game.PlayerDomain
         public void OnUnpocces()
         {
             Controller = null;
+        }
+
+        private void OnSensivityChanged(float newSens)
+        {
+            _sensitivity = newSens;
         }
     }
 }

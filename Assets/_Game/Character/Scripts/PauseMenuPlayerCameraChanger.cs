@@ -1,6 +1,7 @@
 using Cinemachine;
+using UnityEngine.Events;
 using LOK1game.Game.Events;
-using LOK1game.PlayerDomain;
+using LOK1game.Tools;
 using UnityEngine;
 
 namespace LOK1game
@@ -11,6 +12,9 @@ namespace LOK1game
         [Space]
         [SerializeField] private CinemachineVirtualCamera _mainCamera;
         private int _mainCameraDefaultPriority;
+
+        [SerializeField] private PlayerFirstPersonArmsOverObjectsHandler _arms;
+
         [SerializeField] private Light _additionalLight;
 
         private CinemachineVirtualCamera _thisCamera;
@@ -18,6 +22,10 @@ namespace LOK1game
         private void Awake()
         {
             _thisCamera = GetComponent<CinemachineVirtualCamera>();
+
+            DebugUtility.AssertNotNull(_mainCamera);
+            DebugUtility.AssertNotNull(_arms);
+            DebugUtility.AssertNotNull(_additionalLight);
 
             _mainCameraDefaultPriority = _mainCamera.m_Priority;
             _additionalLight.gameObject.SetActive(false);
@@ -52,6 +60,7 @@ namespace LOK1game
             _thisCamera.Priority = 0;
 
             _additionalLight.gameObject.SetActive(false);
+            _arms.EnterFirstPerson();
         }
 
         private void OnPause()
@@ -60,6 +69,7 @@ namespace LOK1game
             _mainCamera.Priority = 0;
 
             _additionalLight.gameObject.SetActive(true);
+            _arms.ExitFirstPerson();
         }
     }
 }

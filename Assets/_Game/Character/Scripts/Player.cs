@@ -266,12 +266,7 @@ namespace LOK1game.PlayerDomain
 
             yield return new WaitForSeconds(_respawnTime);
 
-            transform.position = respawnPosition;
-
             IsDead = false;
-
-            Movement.Rigidbody.isKinematic = false;
-
             Movement.PlayerCollider.enabled = true;
             Movement.Rigidbody.linearVelocity = Vector3.zero;
 
@@ -279,6 +274,10 @@ namespace LOK1game.PlayerDomain
                 Movement.StopCrouch();
 
             Health.ResetHealth();
+
+            transform.position = respawnPosition;
+            
+            Movement.Rigidbody.isKinematic = false;
 
             OnRespawned?.Invoke();
         }

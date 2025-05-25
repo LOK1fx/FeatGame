@@ -19,21 +19,26 @@ namespace LOK1game.DebugTools
 
         private void OnDrawGizmos()
         {
-            var center = transform.position + _collider.center;
+            var center = transform.position + transform.rotation * _collider.center;
             var scale = transform.localScale;
             var size = new Vector3(scale.x * _collider.size.x,
                 scale.y * _collider.size.y, scale.z * _collider.size.z);
 
             Gizmos.color = _gizmosColor;
+            
+            Matrix4x4 rotationMatrix = Matrix4x4.TRS(center, transform.rotation, Vector3.one);
+            Gizmos.matrix = rotationMatrix;
 
             if(_wire)
             {
-                Gizmos.DrawWireCube(center, size);
+                Gizmos.DrawWireCube(Vector3.zero, size);
             }
             else
             {
-                Gizmos.DrawCube(center, size);
+                Gizmos.DrawCube(Vector3.zero, size);
             }
+            
+            Gizmos.matrix = Matrix4x4.identity;
         }
     }
 }

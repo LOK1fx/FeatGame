@@ -8,7 +8,7 @@ using UnityEngine;
 namespace LOK1game
 {
     [RequireComponent(typeof(Health), typeof(TakeDamageEffect))]
-    public abstract class EnemyBase : AiAgent, IDamagable
+    public abstract class EnemyBase : AiAgent, IDamagable, IPawn
     {
         public event Action<string> OnDied;
 
@@ -16,8 +16,9 @@ namespace LOK1game
         protected bool isDead;
         
         public Health Health => _health;
-        [SerializeField] private Health _health;
 
+
+        [SerializeField] private Health _health;
         private TakeDamageEffect _takeDamageEffect;
 
         [Space]

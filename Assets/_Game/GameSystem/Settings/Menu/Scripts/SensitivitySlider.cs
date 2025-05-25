@@ -13,6 +13,8 @@ namespace LOK1game
             _slider = GetComponent<Slider>();
 
             Settings.TryGetSensivity(out var sensitivity);
+            _slider.maxValue = 256f;
+            _slider.minValue = 4f;
             _slider.value = sensitivity;
 
             _slider.onValueChanged.AddListener(OnValueChanged);
@@ -23,7 +25,7 @@ namespace LOK1game
             _slider.onValueChanged.RemoveListener(OnValueChanged);
         }
 
-        public void OnValueChanged(float value)
+        private void OnValueChanged(float value)
         {
             Settings.SetSensitivity(value);
         }
