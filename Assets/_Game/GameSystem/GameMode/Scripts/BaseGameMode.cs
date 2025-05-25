@@ -84,25 +84,29 @@ namespace LOK1game.Game
             return playerController;
         }
 
-        protected Vector3 GetRandomSpawnPointPosition(int actorId = -1)
+        public static CharacterSpawnPoint GetRandomSpawnPoint(bool playerFlag)
+        {
+            var spawnPoints = FindObjectsByType<CharacterSpawnPoint>(FindObjectsSortMode.None).ToList();
+
+            if (spawnPoints.Count == 0)
+                return null;
+
+            if (playerFlag)
+                spawnPoints.RemoveAll(point => point.AllowPlayer == false);
+
+            var spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
+
+            return spawnPoint;
+        }
+
+        public static Vector3 GetRandomSpawnPointPosition(int actorId = -1)
         {
             return GetRandomSpawnPointPosition(true, actorId);
         }
         
         public static Vector3 GetRandomSpawnPointPosition(bool playerFlag, int actorId = -1) 
         {
-            var spawnPoints = FindObjectsByType<CharacterSpawnPoint>(FindObjectsSortMode.None).ToList();
-
-            if (spawnPoints.Count == 0)
-                return Vector3.zero;
-
-            if (playerFlag)
-                spawnPoints.RemoveAll(point => point.AllowPlayer == false);
-            
-            if (spawnPoints.Count < 1)
-                return Vector3.zero;
-            
-            var spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
+            var spawnPoint = GetRandomSpawnPoint(playerFlag);
 
             return spawnPoint.transform.position;
         }

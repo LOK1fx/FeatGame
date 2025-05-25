@@ -172,6 +172,13 @@ namespace LOK1game.PlayerDomain
             }
         }
 
+        public override void ApplyYaw(float angle)
+        {
+            base.ApplyYaw(angle);
+
+            _xRotation = angle;
+        }
+
         public void AddCameraOffset(Vector3 offset)
         {
             _cameraLerpOffset += offset;

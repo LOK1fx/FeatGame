@@ -15,19 +15,20 @@ namespace LOK1game.Game
 
             SpawnGameModeObject(CameraPrefab);
 
-            var player = SpawnGameModeObject(PlayerPrefab.gameObject);
-            var spawnPointPosition = GetRandomSpawnPointPosition();
+            var player = SpawnGameModeObject(PlayerPrefab.gameObject).GetComponent<Player>();
+            var spawnPoint = GetRandomSpawnPoint(true);
 
-            var playerRigidbody = player.GetComponent<Rigidbody>();
+            var playerRigidbody = player.Movement.Rigidbody;
             playerRigidbody.isKinematic = true;
 
-            player.transform.position = spawnPointPosition;
+            player.transform.position = spawnPoint.Position;
+            player.ApplyYaw(spawnPoint.Yaw);
 
             var controller = CreatePlayerController(player.GetComponent<Pawn>());
             var ui = SpawnGameModeObject(UiPrefab);
 
             if (ui.TryGetComponent<IPlayerUI>(out var playerUI))
-                playerUI.Bind(controller, player.GetComponent<Player>());
+                playerUI.Bind(controller, player);
 
             yield return null;
 

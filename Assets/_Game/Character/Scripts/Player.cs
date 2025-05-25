@@ -101,9 +101,7 @@ namespace LOK1game.PlayerDomain
             if (IsLocal == false)
                 return;
 
-            var cameraRotation = Camera.GetCameraTransform().eulerAngles;
-
-            Movement.DirectionTransform.rotation = Quaternion.Euler(0f, cameraRotation.y, 0f);
+            UpdateDirectionTransform();
 
             Camera.Tilt = Mathf.Lerp(Camera.Tilt, _targetTilt, Time.deltaTime * 8f);
 
@@ -134,6 +132,13 @@ namespace LOK1game.PlayerDomain
                 }
             }
         }
+
+        private void UpdateDirectionTransform()
+        {
+            var cameraRotation = Camera.GetCameraTransform().eulerAngles;
+            Movement.DirectionTransform.rotation = Quaternion.Euler(0f, cameraRotation.y, 0f);
+        }
+
         public override void OnInput(object sender)
         {
             if (IsDead || IsLocal == false)
@@ -180,6 +185,14 @@ namespace LOK1game.PlayerDomain
 
             controller = Controller as PlayerController;
             return true;
+        }
+
+        public override void ApplyPitch(float angle) => Debug.LogWarning("Player cant apply pitch.");
+        public override void ApplyRoll(float angle) => Debug.LogWarning("Player cant apply roll.");
+        public override void ApplyYaw(float angle)
+        {
+            Camera.ApplyYaw(angle);
+            UpdateDirectionTransform();
         }
 
         private void OnLand(float yVelocity)
@@ -239,7 +252,6 @@ namespace LOK1game.PlayerDomain
             OnTakeDamage?.Invoke();
         }
 
-
         private void Death()
         {
             if (IsDead)
@@ -253,16 +265,16 @@ namespace LOK1game.PlayerDomain
 
             OnDeath?.Invoke();
 
-            var newSpawnPosition = BaseGameMode.GetRandomSpawnPointPosition(true);
+            var spawnPoint = BaseGameMode.GetRandomSpawnPoint(true);
 
-            GetPlayerLogger().Push($"Player will respawn at {newSpawnPosition}.");
+            GetPlayerLogger().Push($"Player will respawn at {spawnPoint.Position}.");
 
-            StartCoroutine(RespawnRoutine(newSpawnPosition));
+            StartCoroutine(RespawnRoutine(spawnPoint));
         }
 
-        private IEnumerator RespawnRoutine(Vector3 respawnPosition)
+        private IEnumerator RespawnRoutine(CharacterSpawnPoint spawnPoint)
         {
-            Debug.DrawRay(respawnPosition, Vector3.up * 2f, Color.yellow, _respawnTime + 1f, false);
+            Debug.DrawRay(spawnPoint.Position, Vector3.up * 2f, Color.yellow, _respawnTime + 1f, false);
 
             yield return new WaitForSeconds(_respawnTime);
 
@@ -275,7 +287,8 @@ namespace LOK1game.PlayerDomain
 
             Health.ResetHealth();
 
-            transform.position = respawnPosition;
+            transform.position = spawnPoint.Position;
+            ApplyYaw(spawnPoint.Yaw);
             
             Movement.Rigidbody.isKinematic = false;
 

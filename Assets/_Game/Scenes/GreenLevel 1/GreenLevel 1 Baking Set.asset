@@ -55,11 +55,11 @@ MonoBehaviour:
         hasOnlyBiggerBricks: 0
     - position: {x: -1, y: -1, z: 0}
       index: 9
-      probeCount: 28288
+      probeCount: 28416
       minSubdiv: 0
       indexChunkCount: 91
       shChunkCount: 4
-      bricksCount: 442
+      bricksCount: 444
       indirectionEntryInfo:
       - positionInBricks: {x: -27, y: -27, z: 0}
         minSubdiv: 0
@@ -83,11 +83,11 @@ MonoBehaviour:
         hasOnlyBiggerBricks: 0
     - position: {x: -1, y: 0, z: 0}
       index: 12
-      probeCount: 72960
+      probeCount: 73792
       minSubdiv: 0
       indexChunkCount: 91
-      shChunkCount: 9
-      bricksCount: 1140
+      shChunkCount: 10
+      bricksCount: 1153
       indirectionEntryInfo:
       - positionInBricks: {x: -27, y: 0, z: 0}
         minSubdiv: 0
@@ -168,21 +168,21 @@ MonoBehaviour:
       - offset: 49152
         elementCount: 6
       - offset: 98304
-        elementCount: 9
-      - offset: 172032
+        elementCount: 10
+      - offset: 180224
         elementCount: 3
-      - offset: 196608
+      - offset: 204800
         elementCount: 5
-      - offset: 237568
+      - offset: 245760
         elementCount: 9
-      - offset: 311296
+      - offset: 319488
         elementCount: 8
     m_Asset: {fileID: 0}
   scenarios:
     m_Keys:
     - Default
     m_Values:
-    - sceneHash: -1515687059
+    - sceneHash: -783563119
       cellDataAsset:
         m_AssetGUID: 4e410f04f0513ef4d94929f2329f3573
         m_StreamableAssetPath: APVStreamingAssets\d5e3ec0a740182347b9002a80a0af3ed\4e410f04f0513ef4d94929f2329f3573.bytes
@@ -197,14 +197,14 @@ MonoBehaviour:
           - offset: 786432
             elementCount: 6
           - offset: 1572864
-            elementCount: 9
-          - offset: 2752512
+            elementCount: 10
+          - offset: 2883584
             elementCount: 3
-          - offset: 3145728
+          - offset: 3276800
             elementCount: 5
-          - offset: 3801088
+          - offset: 3932160
             elementCount: 9
-          - offset: 4980736
+          - offset: 5111808
             elementCount: 8
         m_Asset: {fileID: 0}
       cellOptionalDataAsset:
@@ -221,14 +221,14 @@ MonoBehaviour:
           - offset: 786432
             elementCount: 6
           - offset: 1572864
-            elementCount: 9
-          - offset: 2752512
+            elementCount: 10
+          - offset: 2883584
             elementCount: 3
-          - offset: 3145728
+          - offset: 3276800
             elementCount: 5
-          - offset: 3801088
+          - offset: 3932160
             elementCount: 9
-          - offset: 4980736
+          - offset: 5111808
             elementCount: 8
         m_Asset: {fileID: 0}
       cellProbeOcclusionDataAsset:
@@ -245,14 +245,14 @@ MonoBehaviour:
           - offset: 196608
             elementCount: 6
           - offset: 393216
-            elementCount: 9
-          - offset: 688128
+            elementCount: 10
+          - offset: 720896
             elementCount: 3
-          - offset: 786432
+          - offset: 819200
             elementCount: 5
-          - offset: 950272
+          - offset: 983040
             elementCount: 9
-          - offset: 1245184
+          - offset: 1277952
             elementCount: 8
         m_Asset: {fileID: 0}
   cellBricksDataAsset:
@@ -265,18 +265,18 @@ MonoBehaviour:
       - offset: 0
         elementCount: 228
       - offset: 3648
-        elementCount: 442
-      - offset: 10720
+        elementCount: 444
+      - offset: 10752
         elementCount: 698
-      - offset: 21888
-        elementCount: 1140
-      - offset: 40128
+      - offset: 21920
+        elementCount: 1153
+      - offset: 40368
         elementCount: 378
-      - offset: 46176
+      - offset: 46416
         elementCount: 522
-      - offset: 54528
+      - offset: 54768
         elementCount: 1069
-      - offset: 71632
+      - offset: 71872
         elementCount: 989
     m_Asset: {fileID: 0}
   cellSupportDataAsset:
@@ -293,14 +293,14 @@ MonoBehaviour:
       - offset: 1572864
         elementCount: 6
       - offset: 3145728
-        elementCount: 9
-      - offset: 5505024
+        elementCount: 10
+      - offset: 5767168
         elementCount: 3
-      - offset: 6291456
+      - offset: 6553600
         elementCount: 5
-      - offset: 7602176
+      - offset: 7864320
         elementCount: 9
-      - offset: 9961472
+      - offset: 10223616
         elementCount: 8
     m_Asset: {fileID: 0}
   chunkSizeInBricks: 128
@@ -321,7 +321,7 @@ MonoBehaviour:
     y: 0
     z: 0
     w: 0
-  maxSHChunkCount: 9
+  maxSHChunkCount: 10
   L0ChunkSize: 65536
   L1ChunkSize: 32768
   L2TextureChunkSize: 32768

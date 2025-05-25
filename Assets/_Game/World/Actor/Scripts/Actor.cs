@@ -26,6 +26,31 @@ namespace LOK1game
             ApplicationUpdateManager.Unregister(this);
         }
 
+        public virtual void ApplyPitch(float angle)
+        {
+            var initalRot = transform.rotation.eulerAngles;
+            transform.rotation.eulerAngles.Set(angle, initalRot.y, initalRot.z);
+        }
+
+        public virtual void ApplyYaw(float angle)
+        {
+            var initalRot = transform.rotation.eulerAngles;
+            transform.rotation.eulerAngles.Set(initalRot.x, angle, initalRot.z);
+        }
+
+        public virtual void ApplyRoll(float angle)
+        {
+            var initalRot = transform.rotation.eulerAngles;
+            transform.rotation.eulerAngles.Set(initalRot.x, initalRot.y, angle);
+        }
+
+        public virtual void ApplyRotation(Vector3 eulerAngles)
+        {
+            ApplyPitch(eulerAngles.x);
+            ApplyYaw(eulerAngles.y);
+            ApplyRoll(eulerAngles.z);
+        }
+
         /// <summary>
         /// Assigns a world instance to this actor.
         /// </summary>

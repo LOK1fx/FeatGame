@@ -8,6 +8,9 @@ namespace LOK1game
     public class CharacterSpawnPoint : MonoBehaviour
     {
         public Vector3 Position => transform.position;
+        public Vector3 EulerAngles => transform.eulerAngles;
+        public float Yaw => transform.eulerAngles.y;
+
         public bool AllowNeutral => _allowNeutral;
         public bool AllowPlayer => _allowPlayer;
         public bool AllowEnemy => _allowEnemy;
