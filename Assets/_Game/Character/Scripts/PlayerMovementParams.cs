@@ -19,6 +19,10 @@ namespace LOK1game.PlayerDomain
         public float AirAccelerate;
         public float AirMaxVelocity;
         
-        public float JumpForce;
+        public float JumpHeight;
+
+        [Header("Slope Settings")]
+        public float MaxSlopeAngle = 45f;
+        public float MinSlopeAngle = 5f;
     }
 }

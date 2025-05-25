@@ -21,4 +21,6 @@ MonoBehaviour:
   SprintGoundMaxVelocity: 8
   AirAccelerate: 3
   AirMaxVelocity: 7
-  JumpForce: 340
+  JumpHeight: 1
+  MaxSlopeAngle: 30
+  MinSlopeAngle: 5

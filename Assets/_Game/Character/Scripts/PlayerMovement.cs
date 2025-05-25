@@ -188,7 +188,9 @@ namespace LOK1game.PlayerDomain
                 var velocity = new Vector3(Rigidbody.linearVelocity.x, 0f, Rigidbody.linearVelocity.z);
 
                 Rigidbody.linearVelocity = velocity;
-                Rigidbody.AddForce(transform.up * _movementData.JumpForce, ForceMode.Impulse);
+                //Rigidbody.AddForce(transform.up * _movementData.JumpForce, ForceMode.Impulse);
+                var jumpForce = Mathf.Sqrt(-2f * Physics.gravity.y * _movementData.JumpHeight * PlayerCollider.height);
+                Rigidbody.AddForce(transform.up * jumpForce, ForceMode.VelocityChange);
 
                 ResetJumpCooldown();
 
