@@ -64,9 +64,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _capsuleColor: {r: 0, g: 1, b: 0, a: 0.14901961}
-  _capsuleMesh: {fileID: 0}
-  _capsuleScale: {x: 1, y: 1, z: 1}
-  _capsulePositionOffset: {x: 0, y: 1, z: 0}
+  _mesh: {fileID: 6689433775670158009, guid: 4789cc3dbb879a94a87809f39c20906a, type: 3}
+  _meshScale: {x: 1, y: 1, z: 1}
+  _meshPositionOffset: {x: 0, y: 0, z: 0}
+  _meshRotationOffset: {x: 0, y: 180, z: 0}
 --- !u!1 &8893559549111755732
 GameObject:
   m_ObjectHideFlags: 0
@@ -83,7 +84,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8869491492008464450
 Transform:
   m_ObjectHideFlags: 0

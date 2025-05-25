@@ -44,6 +44,8 @@ namespace LOK1game
 
             yield return new WaitForSeconds(AttackRate);
 
+            DebugUtility.DrawSphere(GetDamageSpherePosition(), _damageSphereRadius, Color.red, AttackRate);
+
             var damagableColliders = Physics.OverlapSphere(GetDamageSpherePosition(), _damageSphereRadius,
                 DamagableMask, QueryTriggerInteraction.Collide);
 
@@ -89,15 +91,6 @@ namespace LOK1game
             var camera = Player.Camera.GetCameraTransform();
 
             return camera.position + camera.TransformDirection(_damageSpherePosition);
-        }
-
-        private void OnDrawGizmos()
-        {
-            if (Player == null)
-                return;
-
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(GetDamageSpherePosition(), _damageSphereRadius);
         }
     }
 }

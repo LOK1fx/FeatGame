@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 namespace LOK1game.Editor
@@ -9,9 +8,10 @@ namespace LOK1game.Editor
 #if UNITY_EDITOR
 
         [SerializeField] private Color _capsuleColor = Color.green;
-        [SerializeField] private Mesh _capsuleMesh;
-        [SerializeField] private Vector3 _capsuleScale;
-        [SerializeField] private Vector3 _capsulePositionOffset;
+        [SerializeField] private Mesh _mesh;
+        [SerializeField] private Vector3 _meshScale = Vector3.one;
+        [SerializeField] private Vector3 _meshPositionOffset;
+        [SerializeField] private Vector3 _meshRotationOffset = Vector3.zero;
 
         private CharacterSpawnPoint _spawn;
 
@@ -22,15 +22,24 @@ namespace LOK1game.Editor
 
         private void OnDrawGizmos()
         {
-            if(_capsuleMesh != null)
+            var rotationMatrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
+
+            if (_mesh != null)
             {
                 Gizmos.color = _capsuleColor;
-                Gizmos.DrawWireMesh(_capsuleMesh, transform.position + _capsulePositionOffset, Quaternion.identity, _capsuleScale);
+                var meshMatrix = Matrix4x4.TRS(_meshPositionOffset, Quaternion.Euler(_meshRotationOffset), _meshScale);
+                Gizmos.matrix = rotationMatrix * meshMatrix;
+                Gizmos.DrawWireMesh(_mesh, Vector3.zero, Quaternion.identity, Vector3.one);
             }
 
+
+            
+            Gizmos.matrix = rotationMatrix;
+
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireCube(transform.position + Vector3.up * (Constants.Gameplay.PLAYER_HEIGHT * 0.5f),
+            Gizmos.DrawWireCube(Vector3.up * (Constants.Gameplay.PLAYER_HEIGHT * 0.5f),
                 new Vector3(1, Constants.Gameplay.PLAYER_HEIGHT, 1));
+            Gizmos.matrix = Matrix4x4.identity;
         }
 
 #endif
