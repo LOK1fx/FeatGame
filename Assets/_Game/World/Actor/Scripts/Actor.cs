@@ -1,5 +1,6 @@
 using LOK1game.Utils;
 using LOK1game.World;
+using System.Collections;
 using UnityEngine;
 
 namespace LOK1game
@@ -8,7 +9,7 @@ namespace LOK1game
     /// Base class for any game object placed in the scene with a world.
     /// Provides core functionality for game objects including world management, update cycle, and logging.
     /// </summary>
-    public abstract class Actor : MonoBehaviour, IApplicationUpdatable
+    public abstract class Actor : MonoBehaviour, IApplicationUpdatable, IDestroyableActor
     {
         /// <summary>
         /// The world instance this actor belongs to.
@@ -135,6 +136,11 @@ namespace LOK1game
         protected Loggers GetLoggers()
         {
             return App.Loggers;
+        }
+
+        public virtual IEnumerator OnActorDestroy()
+        {
+            yield return null;
         }
     }
 }

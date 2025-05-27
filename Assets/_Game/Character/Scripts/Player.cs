@@ -195,6 +195,16 @@ namespace LOK1game.PlayerDomain
             UpdateDirectionTransform();
         }
 
+        public override IEnumerator OnActorDestroy()
+        {
+            Movement.StopSprint();
+            Movement.SetAxisInput(Vector2.zero);
+
+            Destroy(gameObject);
+
+            yield return null;
+        }
+
         private void OnLand(float yVelocity)
         {
             yVelocity = Mathf.Max(yVelocity, -12);

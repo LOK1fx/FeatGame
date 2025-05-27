@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace LOK1game
 {
+#if UNITY_EDITOR
     [ExecuteInEditMode]
     public class CharacterSpawnPointPreview : MonoBehaviour
     {
@@ -15,4 +16,5 @@ namespace LOK1game
             transform.rotation = Quaternion.Euler(0f, _parent.transform.rotation.eulerAngles.y, 0f);
         }
     }
+#endif
 }

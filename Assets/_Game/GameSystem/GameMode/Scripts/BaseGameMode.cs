@@ -143,7 +143,12 @@ namespace LOK1game.Game
                 foreach (var obj in GameModeSpawnedObjects)
                 {
                     if (obj != null)
-                        Destroy(obj as GameObject);
+                    {
+                        if (obj.TryGetComponent<IDestroyableActor>(out var destroyableActor))
+                            yield return destroyableActor;
+                        else
+                            Destroy(obj as GameObject);
+                    }
 
                     yield return new WaitForEndOfFrame();
                 }
