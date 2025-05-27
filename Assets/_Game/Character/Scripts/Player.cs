@@ -200,6 +200,8 @@ namespace LOK1game.PlayerDomain
             Movement.StopSprint();
             Movement.SetAxisInput(Vector2.zero);
 
+            GetPlayerLogger().Push("Player destroing", this);
+
             Destroy(gameObject);
 
             yield return null;

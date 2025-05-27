@@ -145,7 +145,7 @@ namespace LOK1game.Game
                     if (obj != null)
                     {
                         if (obj.TryGetComponent<IDestroyableActor>(out var destroyableActor))
-                            yield return destroyableActor;
+                            yield return destroyableActor.OnActorDestroy();
                         else
                             Destroy(obj as GameObject);
                     }

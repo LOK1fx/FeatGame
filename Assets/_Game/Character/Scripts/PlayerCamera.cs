@@ -3,7 +3,7 @@ using Cinemachine;
 
 namespace LOK1game.PlayerDomain
 {
-    public class PlayerCamera : Actor, IPawn
+    public class PlayerCamera : MonoBehaviour, IPawn
     {
         public Controller Controller { get; private set; }
         
@@ -172,10 +172,8 @@ namespace LOK1game.PlayerDomain
             }
         }
 
-        public override void ApplyYaw(float angle)
+        public void ApplyYaw(float angle)
         {
-            base.ApplyYaw(angle);
-
             _xRotation = angle;
         }
 
