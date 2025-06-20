@@ -90,5 +90,13 @@ namespace LOK1game.UI
 
             IsShowing = false;
         }
+
+        public void SetVisible(bool visible)
+        {
+            if (visible)
+                InstaShow();
+            else
+                InstaHide();
+        }
     }
 }

@@ -15,14 +15,15 @@ namespace LOK1game.World
 
             var gameModeManager = App.ProjectContext.GameModeManager;
 
-            if (_standardGameModeOverride != EGameModeId.None)
-            {
-                gameModeManager.SetGameMode(_standardGameModeOverride);
-            }
-            else
-            {
-                gameModeManager.SetGameMode(App.ProjectContext.StandardGameModeId);
-            }
+            // At rework
+            //if (_standardGameModeOverride != EGameModeId.None)
+            //{
+            //    gameModeManager.SetGameMode(_standardGameModeOverride);
+            //}
+            //else
+            //{
+            //    gameModeManager.SetGameMode(App.ProjectContext.StandardGameModeId);
+            //}
             
             Initialize();
         }

@@ -408,15 +408,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5534437494664234449, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
       propertyPath: m_text
-      value: "\u0412\u044B\u0431\u0440\u0430\u0442\u044C \u0443\u0440\u043E\u0432\u0435\u043D\u044C"
+      value: '{button_choose_level}'
       objectReference: {fileID: 0}
     - target: {fileID: 5534437494664234449, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
       propertyPath: m_fontSize
-      value: 55.64
+      value: 52
+      objectReference: {fileID: 0}
+    - target: {fileID: 5534437494664234449, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 52
+      objectReference: {fileID: 0}
+    - target: {fileID: 5534437494664234449, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5929881784052887231, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
       propertyPath: m_Name
       value: Button (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7230049197687975633, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
+      propertyPath: _key
+      value: button_choose_level
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3922,15 +3934,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5534437494664234449, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
       propertyPath: m_text
-      value: "\u0412\u044B\u0439\u0442\u0438"
+      value: '{button_quit}'
       objectReference: {fileID: 0}
     - target: {fileID: 5534437494664234449, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
       propertyPath: m_fontSize
-      value: 55.64
+      value: 52
+      objectReference: {fileID: 0}
+    - target: {fileID: 5534437494664234449, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 52
+      objectReference: {fileID: 0}
+    - target: {fileID: 5534437494664234449, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5929881784052887231, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
       propertyPath: m_Name
       value: Button (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7230049197687975633, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
+      propertyPath: _key
+      value: button_quit
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4654,7 +4678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c368da72a3fc5fd41afd1c15490a5891, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _levelData: {fileID: 11400000, guid: b5bcd925bff087e428634966f5ad7b02, type: 2}
+  _levelData: {fileID: 11400000, guid: 76a7ed10850aa1042974e187819700a3, type: 2}
   _delay: 2
 --- !u!1 &1242406779
 GameObject:
@@ -6306,15 +6330,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5534437494664234449, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
       propertyPath: m_text
-      value: "\u041D\u043E\u0432\u0430\u044F \u0438\u0433\u0440\u0430\n"
+      value: '{button_new_game}'
       objectReference: {fileID: 0}
     - target: {fileID: 5534437494664234449, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
       propertyPath: m_fontSize
-      value: 55.64
+      value: 52
+      objectReference: {fileID: 0}
+    - target: {fileID: 5534437494664234449, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 52
+      objectReference: {fileID: 0}
+    - target: {fileID: 5534437494664234449, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5929881784052887231, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
       propertyPath: m_Name
       value: Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 7230049197687975633, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
+      propertyPath: _key
+      value: button_new_game
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

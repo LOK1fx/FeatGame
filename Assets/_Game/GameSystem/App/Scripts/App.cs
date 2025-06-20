@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LOK1game.Game.Events;
+using LOK1game.Utility;
 using LOK1game.Utils;
 using UnityEngine;
 
@@ -35,6 +36,7 @@ namespace LOK1game
         [SerializeField] private List<LoggerContainer> _loggerContainers = new List<LoggerContainer>();
 
         private const string APP_GAME_OBJECT_NAME = "[App]";
+        private const string APP_DEV_CONSOLE_OBJECT_NAME = "[DevConsole]";
 
         #region Boot
 
@@ -58,6 +60,10 @@ namespace LOK1game
             app.InitializeComponents();
 
             DontDestroyOnLoad(app.gameObject);
+
+            var devConsole = Instantiate(Resources.Load<ConsoleManager>(APP_DEV_CONSOLE_OBJECT_NAME));
+            devConsole.name = APP_DEV_CONSOLE_OBJECT_NAME;
+            DontDestroyOnLoad(devConsole.gameObject);
 
             // LOK1game logger initialized only in components
             // So we can use LOK1game logger only after bootstrap

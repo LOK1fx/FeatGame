@@ -390,6 +390,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4601242720925043493}
   - component: {fileID: 6844720529092184128}
+  - component: {fileID: 3811753684008163223}
   - component: {fileID: 6516249098753065253}
   m_Layer: 0
   m_Name: Text (TMP)
@@ -425,6 +426,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3507380037285926213}
   m_CullTransparentMesh: 1
+--- !u!114 &3811753684008163223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3507380037285926213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0479f28880498994e8100818cc63661b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _key: button_settings
 --- !u!114 &6516249098753065253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -445,7 +459,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u041D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438"
+  m_text: '{button_settings}'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1490,7 +1504,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5534437494664234449, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
       propertyPath: m_text
-      value: "\u041E\u0441\u043D\u043E\u0432\u043D\u044B\u0435"
+      value: '{tab_settings_general}'
       objectReference: {fileID: 0}
     - target: {fileID: 5534437494664234449, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
       propertyPath: m_fontSize
@@ -1516,6 +1530,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Button
       objectReference: {fileID: 0}
+    - target: {fileID: 7230049197687975633, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
+      propertyPath: _key
+      value: tab_settings_general
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1536,7 +1554,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 997680137224157560, guid: 29d22883638151f4f9700df48bdb8f32, type: 3}
       propertyPath: m_text
-      value: "\u0413\u0440\u0430\u0444\u0438\u043A\u0430"
+      value: '{tab_settings_graphics}'
       objectReference: {fileID: 0}
     - target: {fileID: 1066300516267525658, guid: 29d22883638151f4f9700df48bdb8f32, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1642,6 +1660,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4692951171752268252, guid: 29d22883638151f4f9700df48bdb8f32, type: 3}
+      propertyPath: _key
+      value: tab_settings_graphics
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -1692,7 +1714,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 593557333142256497, guid: edcba7a723d8e0848b301ad7d68dac5c, type: 3}
       propertyPath: m_text
-      value: "\u0423\u0440\u043E\u0432\u0435\u043D\u044C \u0433\u0440\u0430\u0444\u0438\u043A\u0438:"
+      value: '{settings_graphics_level}'
       objectReference: {fileID: 0}
     - target: {fileID: 676868994093954538, guid: edcba7a723d8e0848b301ad7d68dac5c, type: 3}
       propertyPath: m_Pivot.x
@@ -1834,6 +1856,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -0.5000038
       objectReference: {fileID: 0}
+    - target: {fileID: 8588382454295378005, guid: edcba7a723d8e0848b301ad7d68dac5c, type: 3}
+      propertyPath: _key
+      value: settings_graphics_level
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1966,7 +1992,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5534437494664234449, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
       propertyPath: m_text
-      value: "\u0413\u0440\u0430\u0444\u0438\u043A\u0430"
+      value: '{tab_settings_graphics}'
       objectReference: {fileID: 0}
     - target: {fileID: 5534437494664234449, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
       propertyPath: m_fontSize
@@ -1991,6 +2017,10 @@ PrefabInstance:
     - target: {fileID: 5929881784052887231, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
       propertyPath: m_Name
       value: Button (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7230049197687975633, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
+      propertyPath: _key
+      value: tab_settings_graphics
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2017,6 +2047,10 @@ PrefabInstance:
     - target: {fileID: 435792174729528387, guid: 69fbad5208d73424b9b52f37c2549227, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 492647295971266027, guid: 69fbad5208d73424b9b52f37c2549227, type: 3}
+      propertyPath: _key
+      value: '{settings_sensitivity_hip}'
       objectReference: {fileID: 0}
     - target: {fileID: 697426447810897207, guid: 69fbad5208d73424b9b52f37c2549227, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2184,7 +2218,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6952242140382092031, guid: 69fbad5208d73424b9b52f37c2549227, type: 3}
       propertyPath: m_text
-      value: "\u0427\u0443\u0432\u0441\u0442\u0432\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0441\u0442\u044C:"
+      value: settings_sensitivity_hip
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2226,7 +2260,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 997680137224157560, guid: 29d22883638151f4f9700df48bdb8f32, type: 3}
       propertyPath: m_text
-      value: "\u041E\u0441\u043D\u043E\u0432\u043D\u044B\u0435"
+      value: '{tab_settings_general}'
       objectReference: {fileID: 0}
     - target: {fileID: 1066300516267525658, guid: 29d22883638151f4f9700df48bdb8f32, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2332,6 +2366,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4692951171752268252, guid: 29d22883638151f4f9700df48bdb8f32, type: 3}
+      propertyPath: _key
+      value: tab_settings_general
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2352,7 +2390,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 997680137224157560, guid: 29d22883638151f4f9700df48bdb8f32, type: 3}
       propertyPath: m_text
-      value: "\u0423\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435"
+      value: '{tab_settings_input}'
       objectReference: {fileID: 0}
     - target: {fileID: 1066300516267525658, guid: 29d22883638151f4f9700df48bdb8f32, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2457,6 +2495,10 @@ PrefabInstance:
     - target: {fileID: 4357582210445361685, guid: 29d22883638151f4f9700df48bdb8f32, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4692951171752268252, guid: 29d22883638151f4f9700df48bdb8f32, type: 3}
+      propertyPath: _key
+      value: tab_settings_input
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2573,7 +2615,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5534437494664234449, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
       propertyPath: m_text
-      value: "\u0420\u0430\u0437\u0440\u0430\u0431\u043E\u0442\u0447\u0438\u043A"
+      value: Developer
       objectReference: {fileID: 0}
     - target: {fileID: 5534437494664234449, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
       propertyPath: m_fontSize
@@ -2598,6 +2640,10 @@ PrefabInstance:
     - target: {fileID: 5929881784052887231, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
       propertyPath: m_Name
       value: Button (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7230049197687975633, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2643,7 +2689,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 593557333142256497, guid: edcba7a723d8e0848b301ad7d68dac5c, type: 3}
       propertyPath: m_text
-      value: "\u041F\u043E\u0441\u0442\u043E\u0431\u0440\u0430\u0431\u043E\u0442\u043A\u0430:"
+      value: '{settings_graphics_postprocessing}'
       objectReference: {fileID: 0}
     - target: {fileID: 676868994093954538, guid: edcba7a723d8e0848b301ad7d68dac5c, type: 3}
       propertyPath: m_Pivot.x
@@ -2763,11 +2809,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8507708355268230514, guid: edcba7a723d8e0848b301ad7d68dac5c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -7.4999466
+      value: -7.499939
       objectReference: {fileID: 0}
     - target: {fileID: 8507708355268230514, guid: edcba7a723d8e0848b301ad7d68dac5c, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -0.5000019
+      objectReference: {fileID: 0}
+    - target: {fileID: 8588382454295378005, guid: edcba7a723d8e0848b301ad7d68dac5c, type: 3}
+      propertyPath: _key
+      value: settings_graphics_postprocessing
       objectReference: {fileID: 0}
     - target: {fileID: 9190381297459020529, guid: edcba7a723d8e0848b301ad7d68dac5c, type: 3}
       propertyPath: m_text
@@ -2885,7 +2935,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5534437494664234449, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
       propertyPath: m_text
-      value: "\u0423\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435"
+      value: '{tab_settings_input}'
       objectReference: {fileID: 0}
     - target: {fileID: 5534437494664234449, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
       propertyPath: m_fontSize
@@ -2910,6 +2960,10 @@ PrefabInstance:
     - target: {fileID: 5929881784052887231, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
       propertyPath: m_Name
       value: Button (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7230049197687975633, guid: 1dd1e209069a78d4cbbec2731f8796bd, type: 3}
+      propertyPath: _key
+      value: tab_settings_input
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

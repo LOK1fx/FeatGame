@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using System;
 using LOK1game.Game;
+using LOK1game.Utility;
 
 namespace LOK1game.PlayerDomain
 {
@@ -168,9 +169,6 @@ namespace LOK1game.PlayerDomain
 
             #endregion
 
-            if (Input.GetKeyDown(KeyCode.U))
-                TakeDamage(new Damage(15));
-
             Interaction.OnInput(this);
             WeaponManager.OnInput();
         }
@@ -264,6 +262,7 @@ namespace LOK1game.PlayerDomain
             OnTakeDamage?.Invoke();
         }
 
+        [ConsoleCommand("player_death", "Kill the main local player")]
         private void Death()
         {
             if (IsDead)

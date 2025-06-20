@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace LOK1game
 {
@@ -11,7 +12,24 @@ namespace LOK1game
             Chinese
         }
 
-        public static ELanguage Language = ELanguage.Russian;
+        public static ELanguage Language 
+        { 
+            get => _currentLanguage;
+            set
+            {
+                if (_currentLanguage != value)
+                {
+                    _currentLanguage = value;
+                    if (IsInit)
+                    {
+                        UpdateCurrentDictionary();
+                    }
+                }
+            }
+        }
+
+        private static ELanguage _currentLanguage = ELanguage.Russian;
+        private static Dictionary<string, string> _currentDictionary = new Dictionary<string, string>();
 
         private static Dictionary<string, string> LocalisedEN;
         private static Dictionary<string, string> LocalisedRU;
@@ -21,39 +39,76 @@ namespace LOK1game
 
         public static void Init()
         {
-            var csvLoader = new CSVLoader();
-            csvLoader.LoadCSV();
+            if (IsInit) return;
 
-            LocalisedEN = csvLoader.GetDictionaryValues("en");
-            LocalisedRU = csvLoader.GetDictionaryValues("ru");
-            LocalisedZH = csvLoader.GetDictionaryValues("zh");
+            try
+            {
+                var csvLoader = new CSVLoader();
+                csvLoader.LoadCSV();
 
-            IsInit = true;
+                LocalisedEN = csvLoader.GetDictionaryValues("en");
+                LocalisedRU = csvLoader.GetDictionaryValues("ru");
+                LocalisedZH = csvLoader.GetDictionaryValues("zh");
+
+                if (LocalisedEN == null || LocalisedRU == null || LocalisedZH == null)
+                {
+                    Debug.LogError("Failed to load localization data!");
+                    return;
+                }
+
+                IsInit = true;
+                UpdateCurrentDictionary();
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"Error initializing localization system: {e.Message}");
+            }
+        }
+
+        private static void UpdateCurrentDictionary()
+        {
+            if (!IsInit) return;
+
+            var newDictionary = Language switch
+            {
+                ELanguage.English => LocalisedEN,
+                ELanguage.Russian => LocalisedRU,
+                ELanguage.Chinese => LocalisedZH,
+                _ => LocalisedEN
+            };
+
+            if (newDictionary != null)
+            {
+                _currentDictionary = newDictionary;
+            }
+            else
+            {
+                Debug.LogError($"Failed to update current dictionary for language: {Language}");
+            }
         }
 
         public static string GetLocalisedValue(string key)
         {
-            if (!IsInit) { Init(); }
-
-            var value = key;
-
-            switch (Language)
+            if (!IsInit)
             {
-                case ELanguage.English:
-                    LocalisedEN.TryGetValue(key, out value);
-                    break;
-                case ELanguage.Russian:
-                    LocalisedRU.TryGetValue(key, out value);
-                    break;
-                case ELanguage.Chinese:
-                    LocalisedZH.TryGetValue(key, out value);
-                    break;
-                default:
-                    LocalisedEN.TryGetValue(key, out value);
-                    break;
+                Debug.LogWarning("Localization system not initialized. Using key as fallback.");
+                return key;
             }
 
-            return value;
+            if (string.IsNullOrEmpty(key))
+                return string.Empty;
+
+            if (_currentDictionary == null)
+            {
+                Debug.LogError("Current dictionary is null! Attempting to reinitialize...");
+                Init();
+                if (_currentDictionary == null)
+                {
+                    return key;
+                }
+            }
+
+            return _currentDictionary.TryGetValue(key, out var value) ? value : key;
         }
     }
 }

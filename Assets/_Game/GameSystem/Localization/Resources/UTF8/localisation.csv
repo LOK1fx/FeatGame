@@ -1,5 +1,5 @@
-﻿"key","en","ru","zh"
-"empty_key","","",""
+"key","en","ru","zh"
+"empty_key",,,
 "height_difference","56 u","56 u","56u"
 "tab_settings_general","General","Общее","一般事务"
 "tab_settings_input","Controls","Управление","管理层"
@@ -32,7 +32,7 @@
 "button_play_story_mode","Play story","Компания","游戏故事"
 "button_play_multiplayer","Play multiplayer","Играть в мультиплеер","多人游戏"
 "button_settings","Settings","Настройки","设置"
-"button_quit","Exit","Выйти","走出去"
+"button_quit","Quit","Выйти","走出去"
 "button_quit_to_menu","Back to main menu","Вернуться в главное меню","返回主菜单"
 "button_change_loadout","Change Loadout","Изменить Снаряжение","更改装载量"
 "ui_loading_screen_loading_text","Loading...","Загрузка...","装货。.."
@@ -43,3 +43,17 @@
 "guns_name_shotgun","Shotgun","Дробовик","猎枪,猎枪"
 "guns_name_pistol","Pistol","Пистолет","枪"
 "dialogue_unknown_name","Unknown","Неизвестный","zh"
+"hero_phrases_01","Wow, these views are amazing!","Воу, эти виды потресающие!","zh"
+"button_return_to_game","Resume","Вернуться к игре",
+"button_quit_to_desktop","Quit to desktop","Выйти на рабочий стол",
+"button_reload_level","Restart the level","Перезапустить уровень",
+"settings_graphics_postprocessing","Post processing","Постобработка",
+"button_new_game","New game","Новая игра",
+"button_choose_level","Choose level","Выбрать уровень",
+"hero_phrases_02","Even that place has spiders in it?!","Даже здесь эти пауки?!",
+"hero_phrases_03","You can’t hide anything from the bravest knight! Ha-ha","Вы ничего не сможете спрятать от самого храброго рыцаря! Ха-ха",
+"hero_phrases_04","And what we got here..","И чтож у нас тут..",
+"hero_phrases_05","Fuck!","Чёрт!",
+"hero_phrases_06","That’s mine now.","Теперь это моё.",
+"hero_phrases_07","All done! The gate is open.","Все готовы! Врата открыты.",
+"hero_phrases_test","I’m on a test level.. Wow.","Я на тестовом уровне.. Вау.",

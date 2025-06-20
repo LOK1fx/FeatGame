@@ -37,6 +37,10 @@ namespace LOK1game
         [Header("Attention! In list, use only \nobjects with GM_ prefix!")]
         [SerializeField] private List<GameObject> _gameModes = new List<GameObject>();
 
+        [Header("Subtitles")]
+        public SubtitleManager SubtitleManager { get; private set; }
+        [SerializeField] private SubtitleManager _subtitleManagerPrefab;
+
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
 
         [Space]
@@ -53,21 +57,38 @@ namespace LOK1game
         {
             LevelManager.Initialize();
 
+            InitializeGameModeManager();
             GameStateManager = new GameStateManager();
+
+            InitializeDevCard();
+
+            LocalisationSystem.Init();
+            InitializeSubtitleManager();
+
+            BroadcastProjectContextInitializedEvent();
+            App.Loggers.GetLogger(ELoggerGroup.BaseInfo).Push("Project context initalized!");
+        }
+
+        private void InitializeGameModeManager()
+        {
             _gameModeManager = new GameModeManager();
 
             foreach (var gameModeObject in _gameModes)
             {
                 var gameMode = gameModeObject.GetComponent<IGameMode>();
-                
+
                 _gameModeManager.AddGameMode(gameMode.Id, gameMode);
             }
+        }
 
+        private void BroadcastProjectContextInitializedEvent()
+        {
             var evt = new OnProjectContextInitializedEvent(this);
             EventManager.Broadcast(evt);
+        }
 
-            App.Loggers.GetLogger(ELoggerGroup.BaseInfo).Push("Project context initalized!");
-
+        private void InitializeDevCard()
+        {
 #if UNITY_EDITOR
 
             if (UnityEditor.EditorUserBuildSettings.development)
@@ -82,6 +103,12 @@ namespace LOK1game
             GameObject.DontDestroyOnLoad(devCard);
 
 #endif
+        }
+
+        private void InitializeSubtitleManager()
+        {
+            SubtitleManager = GameObject.Instantiate(_subtitleManagerPrefab);
+            GameObject.DontDestroyOnLoad(SubtitleManager);
         }
     }
 }

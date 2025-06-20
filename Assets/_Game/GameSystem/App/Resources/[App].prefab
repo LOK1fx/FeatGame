@@ -59,6 +59,7 @@ MonoBehaviour:
     _gameModes:
     - {fileID: 273501598482850652, guid: 353f37b2a0a5bbe428b6793f0829435b, type: 3}
     - {fileID: 5268738137529861291, guid: 23e87304a8d8e404797bd53254b9af40, type: 3}
+    _subtitleManagerPrefab: {fileID: 3136921177188287384, guid: 26eb11c22ac4106499f871c7d678374a, type: 3}
     _devCardPrefab: {fileID: 989347278380142616, guid: 81fa0a389c837364db945127fee54655, type: 3}
   _serverStartSceneName: ServerBoot
   _loggerContainers:
