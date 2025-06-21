@@ -22,7 +22,8 @@ public class LevelManager
         LevelsData = _levelsData;
     }
 
-    // Fixme: flow
+    #region LevelLoading
+
     public static IEnumerator LoadLevel(LevelData data)
     {
         GetLogger().Push($"LoadLevel started with data: {data?.DisplayName ?? "null"}");
@@ -36,13 +37,13 @@ public class LevelManager
         if (LevelsData.Contains(data) == false)
             throw new KeyNotFoundException("There is no that level data in level manager! Add it.");
 
-        GetLogger().Push($"Level -> {data.DisplayName} ({data.MainSceneName})");
+        GetLogger().Push($"-> {data.DisplayName} ({data.MainSceneName})");
 
         // TODO: Show loading screen
 
         GetLogger().Push($"Starting to load main scene: {data.MainSceneName}");
         SceneManager.LoadSceneAsync(data.MainSceneName, LoadSceneMode.Single);
-        SceneManager.activeSceneChanged += LoadLevel2;
+        SceneManager.activeSceneChanged += OnMainSceneLoaded;
 
         if (data.AdditiveScenes.Count > 0)
         {
@@ -55,35 +56,26 @@ public class LevelManager
         GetLogger().Push($"Additive scenes loaded ({data.AdditiveScenes.Count})");
     }
 
-
-    // Fixme: naming and flow
-    private static void LoadLevel2(Scene from, Scene to)
+    private static void OnMainSceneLoaded(Scene previous, Scene newActive)
     {
         GetLogger().Push($"Scene is now active: {SceneManager.GetActiveScene().name}");
 
-        Coroutines.StartRoutine(LoadLevel3(GetLevelData(to.name)));
+        Coroutines.StartRoutine(ApplyGameMode(GetLevelData(newActive.name)));
 
-        GetLogger().Push("LoadLevel completed successfully");
+        GetLogger().Push($"Level = {newActive.name}");
 
 
-        SceneManager.activeSceneChanged -= LoadLevel2;
+        SceneManager.activeSceneChanged -= OnMainSceneLoaded;
     }
 
-    // Fixme: naming and flow
-    private static IEnumerator LoadLevel3(LevelData data)
+    private static IEnumerator ApplyGameMode(LevelData data)
     {
         yield return App.ProjectContext.GameModeManager.SwitchGameModeRoutine(data.LevelGameMode);
 
         // TODO: Hide loading screen
     }
 
-    [Obsolete]
-    public static void LoadNextLevel()
-    {
-        var currentScene = SceneManager.GetActiveScene().buildIndex;
-
-        SceneManager.LoadSceneAsync(currentScene + 1);
-    }
+    #endregion
 
     public static void RestartLevel()
     {
@@ -128,6 +120,8 @@ public class LevelManager
         return App.Loggers.GetLogger(ELoggerGroup.LevelManager);
     }
 
+    #region cmd
+
     [ConsoleCommand("restart_level", "Restarts current level")]
     private static void RestartLevelCommand()
     {
@@ -150,4 +144,6 @@ public class LevelManager
             GetLogger().PushError($"Level not found for scene: {sceneName}");
         }
     }
+
+    #endregion
 }

@@ -55,9 +55,9 @@ namespace LOK1game.Game
         private IEnumerator SwitchGameModeRoutine(IGameMode gameMode)
         {
             if (CurrentGameMode != null)
-                GetLogger().Push($"start switching {CurrentGameModeId} -> {gameMode.Id}");
+                GetLogger().Push($"start switching <b>{CurrentGameModeId}</b> -> <b>{gameMode.Id}</b>");
             else
-                GetLogger().Push($"start switching Nothing -> {gameMode.Id}");
+                GetLogger().Push($"start switching <b>Nothing</b> -> <b>{gameMode.Id}</b>");
 
             yield return new WaitUntil(() => !_isSwithing);
 
@@ -65,22 +65,20 @@ namespace LOK1game.Game
 
             if (CurrentGameMode != null)
             {
-                GetLogger().Push($"{CurrentGameModeId} {nameof(CurrentGameMode.OnEnd)}..");
+                GetLogger().Push($"<b>{CurrentGameModeId}</b> {nameof(CurrentGameMode.OnEnd)}..");
                 
                 yield return CurrentGameMode.OnEnd();
 
-                GetLogger().Push($"{CurrentGameModeId} ended");
+                GetLogger().Push($"<b>{CurrentGameModeId}</b> ended");
             }
 
-            GetLogger().Push($"{gameMode.Id} {nameof(gameMode.OnStart)}..");
+            GetLogger().Push($"<b>{gameMode.Id}</b> {nameof(gameMode.OnStart)}..");
             yield return gameMode.OnStart();
             
-            GetLogger().Push($"{gameMode.Id} started");
+            GetLogger().Push($"<b>{gameMode.Id}</b> started");
 
             CurrentGameMode = gameMode;
             _isSwithing = false;
-
-            GetLogger().Push($"Completed.");
         }
 
         private IGameMode GetGameMode(EGameModeId id)
@@ -100,6 +98,8 @@ namespace LOK1game.Game
             return App.Loggers.GetLogger(ELoggerGroup.GameModeManager);
         }
 
+        #region cmd
+
         [ConsoleCommand("list_game_modes", "Lists all game modes avaible into console")]
         private static void PrintGameModesListToConsole()
         {
@@ -114,5 +114,20 @@ namespace LOK1game.Game
         {
             Debug.Log(App.ProjectContext.GameModeManager.CurrentGameMode.ToString());
         }
+
+        [ConsoleCommand("set_game_mode", "Changes current GameMode by GameModeId")]
+        private static void SetGameMode(int gameModeId)
+        {
+            try
+            {
+                App.ProjectContext.GameModeManager.SetGameMode((EGameModeId)Convert.ToUInt16(gameModeId));
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError(ex.ToString());
+            }
+        }
+
+        #endregion
     }
 }

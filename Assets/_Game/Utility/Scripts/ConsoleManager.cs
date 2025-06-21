@@ -9,9 +9,9 @@ namespace LOK1game.Utility
     [RequireComponent(typeof(Console))]
     public class ConsoleManager : MonoBehaviour
     {
-        private Dictionary<string, MethodInfo> _commands = new Dictionary<string, MethodInfo>();
-        private Dictionary<string, string> _commandDescriptions = new Dictionary<string, string>();
-        private Dictionary<string, object> _commandInstances = new Dictionary<string, object>();
+        private readonly Dictionary<string, MethodInfo> _commands = new Dictionary<string, MethodInfo>();
+        private readonly Dictionary<string, string> _commandDescriptions = new Dictionary<string, string>();
+        private readonly Dictionary<string, object> _commandInstances = new Dictionary<string, object>();
         private Console _console;
 
         private void Awake()

@@ -116,14 +116,14 @@ namespace LOK1game.Utility
         private void ShowHelp()
         {
             var commands = _consoleManager.GetAllCommands();
-            var helpText = "Доступные команды:\n";
+            var text = "";
 
             foreach (var command in commands.OrderBy(c => c.Key))
             {
-                helpText += $"{command.Key}: {command.Value}\n";
+                text += $"<b>{command.Key}</b>: {command.Value}\n";
             }
 
-            AddToOutput(helpText);
+            AddToOutput(text);
         }
 
         public void AddToOutput(string text)
@@ -134,12 +134,23 @@ namespace LOK1game.Utility
             if (lines.Length > _maxOutputLines)
                 _outputText.text = string.Join("\n", lines.Skip(lines.Length - _maxOutputLines));
 
-            ResetPosition();
+            UpdateContentSize();
+            ScrollToBottom();
         }
 
-        private void ResetPosition()
+        private void UpdateContentSize()
         {
-            _scrollRect.verticalNormalizedPosition = 1f;
+            if (_scrollRect.content != null && _outputText != null)
+            {
+                var totalHeight = _outputText.preferredHeight + _outputText.fontSize;
+                var contentRect = _scrollRect.content;
+                contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, totalHeight);
+            }
+        }
+
+        private void ScrollToBottom()
+        {
+            _scrollRect.verticalNormalizedPosition = 0f;
             _scrollRect.horizontalNormalizedPosition = 0f;
         }
 
@@ -147,7 +158,7 @@ namespace LOK1game.Utility
         public void ClearConsole()
         {
             _outputText.text = string.Empty;
-            ResetPosition();
+            ScrollToBottom();
         }
 
         public static void Print(string message)

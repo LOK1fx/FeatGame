@@ -13,13 +13,16 @@ namespace LOK1game
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
-            yield return null;
+            yield return DestroyAllGameModeObjects();
         }
 
         public override IEnumerator OnStart()
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+
+            SpawnGameModeObject(CameraPrefab);
+            SpawnGameModeObject(UiPrefab);
 
             yield return null;
         }

@@ -198,7 +198,7 @@ namespace LOK1game.PlayerDomain
             Movement.StopSprint();
             Movement.SetAxisInput(Vector2.zero);
 
-            GetPlayerLogger().Push("Player destroing", this);
+            GetPlayerLogger().Push("LocalPlayer destroy", this);
 
             Destroy(gameObject);
 
@@ -216,8 +216,6 @@ namespace LOK1game.PlayerDomain
         private void OnJump()
         {
             Camera.AddCameraOffset(Vector3.up * 0.35f);
-
-            GetPlayerLogger().Push("Jump!", this);
         }
 
         private void OnStartCrouching()
