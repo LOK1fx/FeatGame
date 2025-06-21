@@ -5,6 +5,9 @@ using System;
 using System.Linq;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
+using LOK1game.Tools;
+using LOK1game.Utils;
+
 
 #if UNITY_EDITOR
 
@@ -28,7 +31,7 @@ namespace LOK1game.Game
     /// игрового режима
     /// </summary>
     [Serializable]
-    public abstract class BaseGameMode : MonoBehaviour, IGameMode
+    public abstract class BaseGameMode : MonoBehaviour, IGameMode, IDisposable
     {
         public EGameModeState State { get; protected set; }
         public List<GameObject> GameModeSpawnedObjects { get; private set; }
@@ -65,7 +68,19 @@ namespace LOK1game.Game
 
         protected T SpawnGameModeObject<T>(T gameObject, string objectName, string prefix = "", string postfix = "") where T: Object
         {
+            if (gameObject == null)
+            {
+                GetLogger().PushError($"Attempted to spawn null prefab '{objectName}' in {GetType().Name}");
+                return null;
+            }
+
             var newGameObject = Instantiate(gameObject);
+
+            if (newGameObject == null)
+            {
+                GetLogger().PushError($"Failed to instantiate prefab '{objectName}' in {GetType().Name}");
+                return null;
+            }
 
             newGameObject.name = $"{prefix}{objectName}{postfix}";
             
@@ -76,10 +91,21 @@ namespace LOK1game.Game
 
         protected PlayerController CreatePlayerController(IPawn controlledPawn)
         {
+            if (PlayerController == null)
+            {
+                GetLogger().PushError($"PlayerController prefab is not assigned in {GetType().Name}");
+                return null;
+            }
+
             var playerController = Instantiate(PlayerController);
 
-            playerController.name = $"[{nameof(PlayerController)}]";
-            playerController.SetControlledPawn(controlledPawn);
+            if (playerController != null)
+            {
+                playerController.name = $"[{nameof(PlayerController)}]";
+                playerController.SetControlledPawn(controlledPawn);
+
+                RegisterGameModeObject(playerController.gameObject);
+            }
 
             return playerController;
         }
@@ -119,17 +145,33 @@ namespace LOK1game.Game
         /// <returns>Данный объект, прошедший привязку</returns>
         protected T RegisterGameModeObject<T>(T gameObject) where T: Object
         {
-            if (!_isGameModeObjectListInitialized)
+            if (gameObject == null)
             {
-                GameModeSpawnedObjects = new List<GameObject>();
-
-                _isGameModeObjectListInitialized = true;
+                GetLogger().PushError($"Attempted to register null object in {GetType().Name}");
+                return null;
             }
 
-            GameModeSpawnedObjects.Add(gameObject as GameObject);
-            DontDestroyOnLoad(gameObject as GameObject);
+            if (!_isGameModeObjectListInitialized)
+                InitializeGameModeObjectList();
+
+            var gameObjectAsGameObject = gameObject as GameObject;
+            if (gameObjectAsGameObject == null)
+            {
+                GetLogger().PushError($"Failed to cast object {gameObject.name} to GameObject in {GetType().Name}");
+                return gameObject;
+            }
+
+            GameModeSpawnedObjects.Add(gameObjectAsGameObject);
+            DontDestroyOnLoad(gameObjectAsGameObject);
 
             return gameObject;
+        }
+
+        private void InitializeGameModeObjectList()
+        {
+            GameModeSpawnedObjects = new List<GameObject>();
+
+            _isGameModeObjectListInitialized = true;
         }
 
         /// <summary>
@@ -152,8 +194,25 @@ namespace LOK1game.Game
 
                     yield return new WaitForEndOfFrame();
                 }
+                
+                GameModeSpawnedObjects.Clear();
             }
-            
+            else
+            {
+                GetLogger().PushWarning("GameModeObjectList is not initialized.");
+            }
+
+            yield return null;
+        }
+
+        public void Dispose()
+        {
+            Coroutines.StartRoutine(DestroyAllGameModeObjects());
+        }
+
+        protected LOK1gameLogger GetLogger()
+        {
+            return App.Loggers.GetLogger(ELoggerGroup.Application);
         }
     }
 }

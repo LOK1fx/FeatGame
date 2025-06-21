@@ -1,4 +1,4 @@
-using System;
+using LOK1game.Game.Events;
 using UnityEngine;
 
 namespace LOK1game
@@ -9,7 +9,12 @@ namespace LOK1game
 
         protected override void Awake()
         {
-            
+            EventManager.AddListener<OnDevConsoleStateChangedEvent>(OnDevConsoleStateChanged);
+        }
+
+        private void OnDestroy()
+        {
+            EventManager.RemoveListener<OnDevConsoleStateChangedEvent>(OnDevConsoleStateChanged);
         }
 
         public override void ApplicationUpdate()
@@ -41,6 +46,22 @@ namespace LOK1game
 
             Cursor.lockState = Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+        }
+
+        private void OnDevConsoleStateChanged(OnDevConsoleStateChangedEvent evt)
+        {
+            if (evt.Enabled)
+            {
+                IsInputProcessing = false;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            else if (_isEscapedPressed == false)
+            {
+                IsInputProcessing = true;
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
         }
     }
 }

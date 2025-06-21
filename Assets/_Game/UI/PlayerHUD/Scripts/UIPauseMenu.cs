@@ -39,7 +39,7 @@ namespace LOK1game
 
         public void LoadMainMenuLevel()
         {
-            LevelManager.LoadLevel(_mainMenuLevelData);
+            StartCoroutine(LevelManager.LoadLevel(_mainMenuLevelData));
         }
     }
 }

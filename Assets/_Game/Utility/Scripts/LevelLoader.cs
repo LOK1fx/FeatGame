@@ -1,3 +1,4 @@
+using LOK1game.Tools;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -35,7 +36,7 @@ namespace LOK1game
 
         private void LoadLevelDelayed()
         {
-            LevelManager.LoadLevel(_levelData);
+            StartCoroutine(LevelManager.LoadLevel(_levelData));
         }
     }
 }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levelImage: {fileID: 21300000, guid: 152965b2b259b2c47af0b2a142d8c552, type: 3}
   _displayName: WorldComposer Test
-  _levelGameMode: 0
+  _levelGameMode: 3
   _category: 100
   _mainSceneName: WorldComposer
   _addativeScenes: []

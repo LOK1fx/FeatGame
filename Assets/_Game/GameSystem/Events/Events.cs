@@ -26,4 +26,14 @@ namespace LOK1game.Game.Events
             ProjectContext = projectContext;
         }
     }
+
+    public class OnDevConsoleStateChangedEvent : SystemEvent
+    {
+        public readonly bool Enabled;
+
+        public OnDevConsoleStateChangedEvent(bool enabled)
+        {
+            Enabled = enabled;
+        }
+    }
 }

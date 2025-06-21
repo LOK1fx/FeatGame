@@ -19,6 +19,8 @@ namespace LOK1game
         /// </summary>
         public static ProjectContext ProjectContext { get; private set; }
 
+        public static ConsoleManager DevConsole { get; private set; }
+
         /// <summary>
         /// Global access to the logging system.
         /// </summary>
@@ -53,6 +55,10 @@ namespace LOK1game
 
             Debug.Log("Initializing persistanted App object..");
 
+            DevConsole = Instantiate(Resources.Load<ConsoleManager>(APP_DEV_CONSOLE_OBJECT_NAME));
+            DevConsole.name = APP_DEV_CONSOLE_OBJECT_NAME;
+            DontDestroyOnLoad(DevConsole.gameObject);
+
             if (app == null)
                 throw new ApplicationException("Application prefab object not found! Put them into Resources folder.");
 
@@ -60,10 +66,6 @@ namespace LOK1game
             app.InitializeComponents();
 
             DontDestroyOnLoad(app.gameObject);
-
-            var devConsole = Instantiate(Resources.Load<ConsoleManager>(APP_DEV_CONSOLE_OBJECT_NAME));
-            devConsole.name = APP_DEV_CONSOLE_OBJECT_NAME;
-            DontDestroyOnLoad(devConsole.gameObject);
 
             // LOK1game logger initialized only in components
             // So we can use LOK1game logger only after bootstrap
@@ -151,6 +153,20 @@ namespace LOK1game
         {
             if (Loggers.TryGetLogger(ELoggerGroup.Application, out var logger))
                 logger.Push(message, sender);
+            else
+                throw new ApplicationException($"No Application logger container found. Caused by {sender}.//");
+        }
+
+        /// <summary>
+        /// Pushes a log error message to the application logger.
+        /// </summary>
+        /// <param name="message">The message to log</param>
+        /// <param name="sender">The object that generated the log message</param>
+        /// <exception cref="ApplicationException">Thrown when no Application logger is found</exception>
+        public static void PushLogError(object message, UnityEngine.Object sender = null)
+        {
+            if (Loggers.TryGetLogger(ELoggerGroup.Application, out var logger))
+                logger.PushError(message, sender);
             else
                 throw new ApplicationException($"No Application logger container found. Caused by {sender}.//");
         }

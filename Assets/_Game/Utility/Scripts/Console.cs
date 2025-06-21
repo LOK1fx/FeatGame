@@ -4,6 +4,7 @@ using TMPro;
 using System.Collections.Generic;
 using System.Linq;
 using LOK1game.UI;
+using LOK1game.Game.Events;
 
 namespace LOK1game.Utility
 {
@@ -40,14 +41,16 @@ namespace LOK1game.Utility
         private void Update()
         {
             if (Input.GetKeyDown(_toggleKey))
-            {
                 ToggleConsole();
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (_isVisible)
+                    ToggleConsole();
             }
 
             if (_isVisible)
-            {
                 HandleHistoryNavigation();
-            }
         }
 
         private void HandleHistoryNavigation()
@@ -84,14 +87,13 @@ namespace LOK1game.Utility
             _isVisible = !_isVisible;
             _consolePanel.SetVisible(_isVisible);
 
+            var evt = new OnDevConsoleStateChangedEvent(_isVisible);
+            EventManager.Broadcast(evt);
+
             if (_isVisible)
-            {
                 _inputField.ActivateInputField();
-            }
             else
-            {
                 _inputField.DeactivateInputField();
-            }
         }
 
         private void OnCommandSubmitted(string command)
@@ -101,13 +103,9 @@ namespace LOK1game.Utility
             AddToOutput($"> {command}");
 
             if (command.ToLower() == "help")
-            {
                 ShowHelp();
-            }
             else
-            {
                 _consoleManager.ExecuteCommand(command);
-            }
 
             _commandHistory.Add(command);
             _currentHistoryIndex = -1;
@@ -132,16 +130,29 @@ namespace LOK1game.Utility
         {
             _outputText.text += text + "\n";
 
-            // Ограничиваем количество строк
             var lines = _outputText.text.Split('\n');
             if (lines.Length > _maxOutputLines)
-            {
                 _outputText.text = string.Join("\n", lines.Skip(lines.Length - _maxOutputLines));
-            }
 
-            // Прокручиваем к последней строке
-            Canvas.ForceUpdateCanvases();
-            _scrollRect.verticalNormalizedPosition = 0f;
+            ResetPosition();
+        }
+
+        private void ResetPosition()
+        {
+            _scrollRect.verticalNormalizedPosition = 1f;
+            _scrollRect.horizontalNormalizedPosition = 0f;
+        }
+
+        [ConsoleCommand("clear", "Clear console")]
+        public void ClearConsole()
+        {
+            _outputText.text = string.Empty;
+            ResetPosition();
+        }
+
+        public static void Print(string message)
+        {
+            App.DevConsole.Log(message);
         }
     }
 } 

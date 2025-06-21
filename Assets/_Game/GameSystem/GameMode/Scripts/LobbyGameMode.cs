@@ -10,7 +10,10 @@ namespace LOK1game
 
         public override IEnumerator OnEnd()
         {
-            yield return DestroyAllGameModeObjects();
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            yield return null;
         }
 
         public override IEnumerator OnStart()

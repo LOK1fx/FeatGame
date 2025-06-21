@@ -13,5 +13,8 @@
         Physics,
         BaseInfo,
         Application,
+
+        GameModeManager,
+        LevelManager,
     }
 }

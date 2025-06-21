@@ -13,21 +13,51 @@ namespace LOK1game.Game
         {
             State = EGameModeState.Starting;
 
+            if (CameraPrefab == null)
+            {
+                GetLogger().PushError("CameraPrefab is not assigned in DefaultGameMode");
+                yield break;
+            }
             SpawnGameModeObject(CameraPrefab);
 
+            if (PlayerPrefab == null)
+            {
+                GetLogger().PushError("PlayerPrefab is not assigned in DefaultGameMode");
+                yield break;
+            }
             var player = SpawnGameModeObject(PlayerPrefab.gameObject).GetComponent<Player>();
             var spawnPoint = GetRandomSpawnPoint(true);
 
             var playerRigidbody = player.Movement.Rigidbody;
             playerRigidbody.isKinematic = true;
 
-            player.transform.position = spawnPoint.Position;
-            player.ApplyYaw(spawnPoint.Yaw);
+            if (spawnPoint != null )
+            {
+                player.transform.position = spawnPoint.Position;
+                player.ApplyYaw(spawnPoint.Yaw);
+            }
+            else
+            {
+                player.transform.position = Vector3.zero;
+                player.ApplyYaw(0);
+            }
 
             var controller = CreatePlayerController(player.GetComponent<Pawn>());
+            
+            if (controller == null)
+            {
+                GetLogger().PushError("Failed to create PlayerController in DefaultGameMode");
+                yield break;
+            }
+            
+            if (UiPrefab == null)
+            {
+                GetLogger().PushError("UiPrefab is not assigned in DefaultGameMode");
+                yield break;
+            }
             var ui = SpawnGameModeObject(UiPrefab);
 
-            if (ui.TryGetComponent<IPlayerUI>(out var playerUI))
+            if (ui != null && ui.TryGetComponent<IPlayerUI>(out var playerUI))
                 playerUI.Bind(controller, player);
 
             yield return null;

@@ -1,7 +1,12 @@
 using LOK1game;
+using LOK1game.Tools;
+using LOK1game.Utility;
+using LOK1game.Utils;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -17,17 +22,59 @@ public class LevelManager
         LevelsData = _levelsData;
     }
 
-    public static void LoadLevel(LevelData data)
+    // Fixme: flow
+    public static IEnumerator LoadLevel(LevelData data)
     {
+        GetLogger().Push($"LoadLevel started with data: {data?.DisplayName ?? "null"}");
+        
+        if (data == null)
+        {
+            GetLogger().PushError("LoadLevel failed: LevelData is null");
+            yield break;
+        }
+
         if (LevelsData.Contains(data) == false)
             throw new KeyNotFoundException("There is no that level data in level manager! Add it.");
 
-        SceneManager.LoadSceneAsync(data.MainSceneName, LoadSceneMode.Single);
+        GetLogger().Push($"Level -> {data.DisplayName} ({data.MainSceneName})");
 
-        foreach(var addativeScene in data.AdditiveScenes)
+        // TODO: Show loading screen
+
+        GetLogger().Push($"Starting to load main scene: {data.MainSceneName}");
+        SceneManager.LoadSceneAsync(data.MainSceneName, LoadSceneMode.Single);
+        SceneManager.activeSceneChanged += LoadLevel2;
+
+        if (data.AdditiveScenes.Count > 0)
         {
-            SceneManager.LoadSceneAsync(addativeScene, LoadSceneMode.Additive);
+            GetLogger().Push($"Loading {data.AdditiveScenes.Count} additive scenes");
+            foreach (var addativeScene in data.AdditiveScenes)
+            {
+                SceneManager.LoadSceneAsync(addativeScene, LoadSceneMode.Additive);
+            }
         }
+        GetLogger().Push($"Additive scenes loaded ({data.AdditiveScenes.Count})");
+    }
+
+
+    // Fixme: naming and flow
+    private static void LoadLevel2(Scene from, Scene to)
+    {
+        GetLogger().Push($"Scene is now active: {SceneManager.GetActiveScene().name}");
+
+        Coroutines.StartRoutine(LoadLevel3(GetLevelData(to.name)));
+
+        GetLogger().Push("LoadLevel completed successfully");
+
+
+        SceneManager.activeSceneChanged -= LoadLevel2;
+    }
+
+    // Fixme: naming and flow
+    private static IEnumerator LoadLevel3(LevelData data)
+    {
+        yield return App.ProjectContext.GameModeManager.SwitchGameModeRoutine(data.LevelGameMode);
+
+        // TODO: Hide loading screen
     }
 
     [Obsolete]
@@ -41,8 +88,15 @@ public class LevelManager
     public static void RestartLevel()
     {
         var currentLevel = GetCurrentLevelData();
-
-        LoadLevel(currentLevel);
+        
+        if (currentLevel == null)
+        {
+            GetLogger().PushError("RestartLevel failed: currentLevel is null");
+            return;
+        }
+        
+        GetLogger().Push($"Restarting level: {currentLevel.DisplayName}");
+        Coroutines.StartRoutine(LoadLevel(currentLevel));
     }
 
     public static LevelData GetCurrentLevelData()
@@ -57,7 +111,7 @@ public class LevelManager
             }
         }
 
-        Debug.LogError($"LevelManager can't find a level with the SceneName {currentSceneName}.");
+        GetLogger().PushError($"LevelManager can't find a level with the SceneName {currentSceneName}.");
 
         return null;
     }
@@ -67,5 +121,33 @@ public class LevelManager
         var levelData = LevelsData.Where(level => level.MainSceneName == mainSceneName).FirstOrDefault();
 
         return levelData;
+    }
+
+    private static LOK1gameLogger GetLogger()
+    {
+        return App.Loggers.GetLogger(ELoggerGroup.LevelManager);
+    }
+
+    [ConsoleCommand("restart_level", "Restarts current level")]
+    private static void RestartLevelCommand()
+    {
+        GetLogger().Push("RestartLevel command executed");
+        RestartLevel();
+    }
+
+    [ConsoleCommand("load_level", "Load level by MainScene name")]
+    private static void LoadLevelCommand(string sceneName)
+    {
+        GetLogger().Push($"LoadLevel command executed for scene: {sceneName}");
+
+        var levelData = GetLevelData(sceneName);
+        if (levelData != null)
+        {
+            Coroutines.StartRoutine(LoadLevel(levelData));
+        }
+        else
+        {
+            GetLogger().PushError($"Level not found for scene: {sceneName}");
+        }
     }
 }

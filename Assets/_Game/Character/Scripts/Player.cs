@@ -262,7 +262,6 @@ namespace LOK1game.PlayerDomain
             OnTakeDamage?.Invoke();
         }
 
-        [ConsoleCommand("player_death", "Kill the main local player")]
         private void Death()
         {
             if (IsDead)

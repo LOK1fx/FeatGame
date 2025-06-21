@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace LOK1game.Utility
 {
+    [RequireComponent(typeof(Console))]
     public class ConsoleManager : MonoBehaviour
     {
         private Dictionary<string, MethodInfo> _commands = new Dictionary<string, MethodInfo>();
@@ -16,18 +17,42 @@ namespace LOK1game.Utility
         private void Awake()
         {
             _console = GetComponent<Console>();
-            if (_console == null)
-            {
-                Debug.LogError("Console компонент не найден на том же GameObject!");
-                return;
-            }
+
+            Application.logMessageReceived += OnUnityMessageReceived;
 
             RegisterCommands();
         }
 
+        private void OnDestroy()
+        {
+            Application.logMessageReceived -= OnUnityMessageReceived;
+        }
+
+        private void OnUnityMessageReceived(string logMessage, string stackTrace, LogType logType)
+        {
+            switch (logType)
+            {
+                case LogType.Error:
+                    LogError(logMessage);
+                    break;
+                case LogType.Assert:
+                    Log(logMessage);
+                    break;
+                case LogType.Warning:
+                    break;
+                case LogType.Log:
+                    Log(logMessage);
+                    break;
+                case LogType.Exception:
+                    LogError(logMessage);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private void RegisterCommands()
         {
-            // Находим все методы с атрибутом ConsoleCommand во всех сборках
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (var assembly in assemblies)
             {
@@ -46,17 +71,16 @@ namespace LOK1game.Utility
                             _commands[commandName] = method;
                             _commandDescriptions[commandName] = commandAttr.Description;
 
-                            // Если метод не статический, находим экземпляр объекта
                             if (!method.IsStatic)
                             {
-                                var instance = FindObjectOfType(type);
+                                var instance = FindFirstObjectByType(type);
                                 if (instance != null)
                                 {
                                     _commandInstances[commandName] = instance;
                                 }
                                 else
                                 {
-                                    LogWarning($"Не найден экземпляр {type.Name} для команды {commandName}");
+                                    LogWarning($"{type.Name} not found for command {commandName}");
                                 }
                             }
                         }
@@ -81,7 +105,6 @@ namespace LOK1game.Utility
                     var parameters = method.GetParameters();
                     var convertedArgs = new object[parameters.Length];
 
-                    // Преобразуем аргументы в нужные типы
                     for (int i = 0; i < parameters.Length; i++)
                     {
                         if (i < args.Length)
@@ -94,18 +117,17 @@ namespace LOK1game.Utility
                         }
                         else
                         {
-                            LogError($"Недостаточно аргументов для команды {commandName}");
+                            LogError($"Not enoughn args for {commandName}");
                             return false;
                         }
                     }
 
-                    // Вызываем метод
                     object instance = null;
                     if (!method.IsStatic)
                     {
                         if (!_commandInstances.TryGetValue(commandName, out instance))
                         {
-                            LogError($"Не найден экземпляр объекта для команды {commandName}");
+                            LogError($"Object not found for {commandName}");
                             return false;
                         }
                     }
@@ -115,12 +137,12 @@ namespace LOK1game.Utility
                 }
                 catch (Exception e)
                 {
-                    LogError($"Ошибка при выполнении команды {commandName}: {e.Message}");
+                    LogError($"Error running {commandName}: {e.Message}");
                     return false;
                 }
             }
 
-            LogError($"Команда {commandName} не найдена");
+            LogError($"Command {commandName} not found");
             return false;
         }
 

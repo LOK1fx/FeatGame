@@ -38,7 +38,7 @@ namespace LOK1game.UI
 
         private void OnClicked()
         {
-            LevelManager.LoadLevel(_levelData);
+            StartCoroutine(LevelManager.LoadLevel(_levelData));
         }
     }
 }
