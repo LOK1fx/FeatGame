@@ -81,13 +81,14 @@ namespace LOK1game
                 
                 if (gameModeInstance.TryGetComponent<IGameMode>(out var gameMode))
                 {
-                    _gameModeManager.AddGameMode(gameMode.Id, gameMode);
+                    gameModeInstance.name = gameModePrefab.name;
+                    _gameModeManager.AddGameMode(gameMode);
                 }
                 else
                 {
                     App.PushLogError($"{gameModePrefab.name} doesn't have {nameof(IGameMode)} interface! " +
                                      $"Ensure that prefab has one.");
-                    GameObject.Destroy(gameModeInstance); // Удаляем бесполезный объект
+                    GameObject.Destroy(gameModeInstance);
                 }
             }
         }

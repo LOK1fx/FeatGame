@@ -35,9 +35,15 @@ namespace LOK1game.Game
         private readonly List<GameModeContainer> _gameModes = new List<GameModeContainer>();
         private bool _isSwithing;
 
-        public void AddGameMode(EGameModeId id, IGameMode mode)
+        public void AddGameMode(IGameMode gameMode)
         {
-            _gameModes.Add(new GameModeContainer(id, mode));
+            if (_gameModes.Where(g => g.Id == gameMode.Id).Any())
+            {
+                GetLogger().PushWarning($"GameMode {gameMode.Id} is already registred. Skipping..");
+                return;
+            }
+
+            _gameModes.Add(new GameModeContainer(gameMode.Id, gameMode));
         }
 
         public void SetGameMode(EGameModeId id)
@@ -100,7 +106,7 @@ namespace LOK1game.Game
 
         #region cmd
 
-        [ConsoleCommand("list_game_modes", "Lists all game modes avaible into console")]
+        [ConsoleCommand("gm_list", "[GameMode Manager] Lists all game modes avaible into console")]
         private static void PrintGameModesListToConsole()
         {
             foreach (var gameMode in App.ProjectContext.GameModeManager._gameModes)
@@ -109,13 +115,13 @@ namespace LOK1game.Game
             }
         }
 
-        [ConsoleCommand("current_game_mode", "Print CurrentGameMode to console")]
+        [ConsoleCommand("gm_current", "[GameMode Manager] Print CurrentGameMode to console")]
         private static void PrintCurrentGameModeToConsole()
         {
             Debug.Log(App.ProjectContext.GameModeManager.CurrentGameMode.ToString());
         }
 
-        [ConsoleCommand("set_game_mode", "Changes current GameMode by GameModeId")]
+        [ConsoleCommand("gm_set", "[GameMode Manager] Changes current GameMode by id")]
         private static void SetGameMode(int gameModeId)
         {
             try

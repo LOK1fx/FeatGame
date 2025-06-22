@@ -48,3 +48,6 @@ MonoBehaviour:
   _cameraPrefab: {fileID: 2998117770608552253, guid: fd10cca3a306ccb429ec4872094d544b, type: 3}
   _playerPrefab: {fileID: 0}
   _playerController: {fileID: 0}
+  _characterPrefab: {fileID: 6491318704111193047, guid: 200501c39e9a9a5459e2e8e504c14a94, type: 3}
+  _characterPosition: {x: -4.5, y: 0, z: 3.25}
+  _characterRotation: {x: 0, y: -113, z: 0}

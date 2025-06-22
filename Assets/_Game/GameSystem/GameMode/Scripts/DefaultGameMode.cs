@@ -18,6 +18,7 @@ namespace LOK1game.Game
                 GetLogger().PushError("CameraPrefab is not assigned in DefaultGameMode");
                 yield break;
             }
+
             SpawnGameModeObject(CameraPrefab);
 
             if (PlayerPrefab == null)
@@ -25,7 +26,7 @@ namespace LOK1game.Game
                 GetLogger().PushError("PlayerPrefab is not assigned in DefaultGameMode");
                 yield break;
             }
-            var player = SpawnGameModeObject(PlayerPrefab.gameObject).GetComponent<Player>();
+            var player = SpawnGameModeObject(PlayerPrefab).GetComponent<Player>();
             var spawnPoint = GetRandomSpawnPoint(true);
 
             var playerRigidbody = player.Movement.Rigidbody;
@@ -40,15 +41,14 @@ namespace LOK1game.Game
             {
                 player.transform.position = Vector3.zero;
                 player.ApplyYaw(0);
+
+                GetLogger().PushWarning("Couldn't find a spawn point for player. Spawned at (0, 0, 0).");
             }
 
             var controller = CreatePlayerController(player.GetComponent<Pawn>());
             
             if (controller == null)
-            {
-                GetLogger().PushError("Failed to create PlayerController in DefaultGameMode");
                 yield break;
-            }
             
             if (UiPrefab == null)
             {

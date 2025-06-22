@@ -25,7 +25,7 @@ namespace LOK1game.Utility
             _consoleManager.Log($"Message: {message}");
         }
 
-        [ConsoleCommand("set_fps", "Set limits on FPS")]
+        [ConsoleCommand("r_set_fps", "Set limits on FPS")]
         public void SetFPS(int fps)
         {
             Application.targetFrameRate = fps;

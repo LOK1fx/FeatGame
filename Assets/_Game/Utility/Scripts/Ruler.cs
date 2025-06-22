@@ -3,7 +3,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace LOK1game
+namespace LOK1game.Tools
 {
     public class Ruler : MonoBehaviour
     {

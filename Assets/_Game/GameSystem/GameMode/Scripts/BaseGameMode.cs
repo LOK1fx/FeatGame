@@ -61,12 +61,12 @@ namespace LOK1game.Game
         /// <param name="postfix">Постфикс после названия объекта {prefix}{objectName}{postfix}</param>
         /// <typeparam name="T">Тип объекта</typeparam>
         /// <returns>Созданый объект</returns>
-        protected T SpawnGameModeObject<T>(T gameObject, string prefix = "", string postfix = "") where T : Object
+        protected T SpawnGameModeObject<T>(T gameObject, Vector3 position = new(), Quaternion rotation = new(), string prefix = "", string postfix = "") where T : Object
         {
-            return SpawnGameModeObject<T>(gameObject, gameObject.name, prefix, postfix);
+            return SpawnGameModeObject<T>(gameObject, gameObject.name, position, rotation, prefix, postfix);
         }
 
-        protected T SpawnGameModeObject<T>(T gameObject, string objectName, string prefix = "", string postfix = "") where T: Object
+        protected T SpawnGameModeObject<T>(T gameObject, string objectName, Vector3 position = new(), Quaternion rotation = new(), string prefix = "", string postfix = "") where T: Object
         {
             if (gameObject == null)
             {
@@ -74,7 +74,7 @@ namespace LOK1game.Game
                 return null;
             }
 
-            var newGameObject = Instantiate(gameObject);
+            var newGameObject = Instantiate(gameObject, position, rotation);
 
             if (newGameObject == null)
             {
