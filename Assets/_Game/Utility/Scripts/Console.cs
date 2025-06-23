@@ -21,21 +21,21 @@ namespace LOK1game.Utility
         [SerializeField] private KeyCode _toggleKey = KeyCode.BackQuote;
 
         private ConsoleManager _consoleManager;
-        private List<string> _commandHistory = new List<string>();
+        private List<string> _commandHistory = new();
         private int _currentHistoryIndex = -1;
         private bool _isVisible;
 
         private void Awake()
         {
             _consoleManager = GetComponent<ConsoleManager>();
-            if (_consoleManager == null)
-            {
-                Debug.LogError("ConsoleManager не найден на том же GameObject!");
-                return;
-            }
 
             _inputField.onSubmit.AddListener(OnCommandSubmitted);
             _consolePanel.InstaHide();
+        }
+
+        private void Start()
+        {
+            Print("<color=grey><b>[Console]</b></color> Type <b>help</b> for commands list");
         }
 
         private void Update()
@@ -77,7 +77,8 @@ namespace LOK1game.Utility
             }
             else
             {
-                _inputField.text = _commandHistory[_currentHistoryIndex];
+                var pos = _commandHistory.Count - 1 - _currentHistoryIndex;
+                _inputField.text = _commandHistory[pos];
                 _inputField.caretPosition = _inputField.text.Length;
             }
         }
@@ -91,9 +92,14 @@ namespace LOK1game.Utility
             EventManager.Broadcast(evt);
 
             if (_isVisible)
+            {
                 _inputField.ActivateInputField();
+            }   
             else
+            {
                 _inputField.DeactivateInputField();
+                _inputField.text = string.Empty;
+            } 
         }
 
         private void OnCommandSubmitted(string command)
@@ -115,15 +121,39 @@ namespace LOK1game.Utility
 
         private void ShowHelp()
         {
-            var commands = _consoleManager.GetAllCommands();
+            var commandInfos = _consoleManager.GetAllCommandInfos();
             var text = "";
 
-            foreach (var command in commands.OrderBy(c => c.Key))
+            foreach (var info in commandInfos.OrderBy(c => c.Name))
             {
-                text += $"<b>{command.Key}</b>: {command.Value}\n";
+                var args = string.Join(" ", info.Parameters.Select(p => $"<{p.Name}: {GetTypeAlias(p.ParameterType)}>{(p.IsOptional ? $"={p.DefaultValue}" : "")}"));
+                text += $"<b>{info.Name}</b> <color=grey>{args}: {info.Description}</color>\n";
             }
 
             AddToOutput(text);
+        }
+
+        private string GetTypeAlias(System.Type type)
+        {
+            if (type == typeof(int)) return "int";
+            if (type == typeof(float)) return "float";
+            if (type == typeof(double)) return "double";
+            if (type == typeof(long)) return "long";
+            if (type == typeof(uint)) return "uint";
+            if (type == typeof(ulong)) return "ulong";
+            if (type == typeof(short)) return "short";
+            if (type == typeof(ushort)) return "ushort";
+            if (type == typeof(byte)) return "byte";
+            if (type == typeof(sbyte)) return "sbyte";
+            if (type == typeof(char)) return "char";
+            if (type == typeof(decimal)) return "decimal";
+            if (type == typeof(string)) return "string";
+            if (type == typeof(bool)) return "bool";
+            if (type == typeof(Vector2)) return "Vector2";
+            if (type == typeof(Vector3)) return "Vector3";
+            if (type == typeof(Color)) return "Color";
+
+            return type.Name;
         }
 
         public void AddToOutput(string text)

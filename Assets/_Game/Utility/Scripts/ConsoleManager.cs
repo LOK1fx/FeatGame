@@ -75,13 +75,9 @@ namespace LOK1game.Utility
                             {
                                 var instance = FindFirstObjectByType(type);
                                 if (instance != null)
-                                {
                                     _commandInstances[commandName] = instance;
-                                }
                                 else
-                                {
-                                    LogWarning($"{type.Name} not found for command {commandName}");
-                                }
+                                    LogWarning($"{type.Name} not found for command {commandName}. Make method static or provide object with that method.");
                             }
                         }
                     }
@@ -164,6 +160,18 @@ namespace LOK1game.Utility
         public void LogWarning(string message)
         {
             _console.AddToOutput($"<color=yellow>{message}</color>");
+        }
+
+        public IEnumerable<(string Name, string Description, ParameterInfo[] Parameters)> GetAllCommandInfos()
+        {
+            foreach (var pair in _commands)
+            {
+                var name = pair.Key;
+                var method = pair.Value;
+                var description = _commandDescriptions.TryGetValue(name, out var desc) ? desc : string.Empty;
+                var parameters = method.GetParameters();
+                yield return (name, description, parameters);
+            }
         }
     }
 } 

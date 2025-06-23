@@ -1,4 +1,5 @@
 using LOK1game.Game.Events;
+using LOK1game.Utility;
 using UnityEngine;
 
 namespace LOK1game
@@ -6,6 +7,8 @@ namespace LOK1game
     [RequireComponent(typeof(Camera))]
     public class SpectatorCamera : MonoBehaviour
     {
+        private static float _speedMultiplier = 1f;
+
         [Header("Movement")]
         [SerializeField] private float _moveSpeed = 10f;
         [SerializeField] private float _fastMoveSpeed = 20f;
@@ -69,7 +72,7 @@ namespace LOK1game
         
         private void UpdateMovement()
         {
-            var moveSpeed = Input.GetKey(KeyCode.LeftShift) ? _fastMoveSpeed : _moveSpeed;
+            var moveSpeed = (Input.GetKey(KeyCode.LeftShift) ? _fastMoveSpeed : _moveSpeed) * _speedMultiplier;
             var deltaTime = Time.deltaTime;
             
             if (Input.GetKey(KeyCode.W))
@@ -128,6 +131,14 @@ namespace LOK1game
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
             }
+        }
+
+
+        [ConsoleCommand("cl_spectator_speed", "changes the spectator camera movement speed multiplier")]
+        private static void ChangeSpeedMultiplier(float multiplier)
+        {
+            _speedMultiplier = multiplier;
+            Debug.Log($"{nameof(_speedMultiplier)} = {multiplier}");
         }
     }
 }

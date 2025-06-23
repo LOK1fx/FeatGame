@@ -17,11 +17,11 @@ namespace LOK1game.World
 
             if (gameModeManager.CurrentGameMode == null && _standardGameModeOverride == EGameModeId.None)
             {
-                gameModeManager.SetGameMode(App.ProjectContext.StandardGameModeId);
+                StartCoroutine(gameModeManager.SwitchGameModeRoutine(App.ProjectContext.StandardGameModeId));
             }
             else if (gameModeManager.CurrentGameMode == null)
             {
-                gameModeManager.SetGameMode(_standardGameModeOverride);
+                StartCoroutine(gameModeManager.SwitchGameModeRoutine(_standardGameModeOverride));
             }
 
             Initialize();

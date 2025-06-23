@@ -1,6 +1,5 @@
 using System.Linq;
 using UnityEngine;
-using Logger = LOK1game.Utils.LOK1gameLogger;
 
 namespace LOK1game
 {
@@ -65,7 +64,7 @@ namespace LOK1game
         /// <returns>A random spawn position vector</returns>
         public static Vector3 GetRandomSpawnPosition(bool playerFlag)
         {
-            var spawnPoints = FindObjectsOfType<CharacterSpawnPoint>().ToList();
+            var spawnPoints = FindObjectsByType<CharacterSpawnPoint>(FindObjectsSortMode.InstanceID).ToList();
 
             if (playerFlag)
                 spawnPoints.RemoveAll(point => point.AllowPlayer == false);

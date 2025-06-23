@@ -138,6 +138,11 @@ namespace LOK1game
             return App.Loggers;
         }
 
+        protected LOK1gameLogger GetLogger(ELoggerGroup loggerGroup)
+        {
+            return GetLoggers().GetLogger(loggerGroup);
+        }
+
         public virtual IEnumerator OnActorDestroy()
         {
             yield return null;

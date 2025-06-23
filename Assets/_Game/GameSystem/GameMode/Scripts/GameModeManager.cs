@@ -9,20 +9,21 @@ using LOK1game.Utils;
 
 namespace LOK1game.Game
 {
-    public struct GameModeContainer
-    {
-        public EGameModeId Id;
-        public IGameMode GameMode;
-
-        public GameModeContainer(EGameModeId id, IGameMode gameMode)
-        {
-            Id = id;
-            GameMode = gameMode;
-        }
-    }
-
+    
     public sealed class GameModeManager
     {
+        private struct GameModeContainer
+        {
+            public EGameModeId Id;
+            public IGameMode GameMode;
+
+            public GameModeContainer(EGameModeId id, IGameMode gameMode)
+            {
+                Id = id;
+                GameMode = gameMode;
+            }
+        }
+
         public IGameMode CurrentGameMode { get; private set; }
         public EGameModeId CurrentGameModeId
         {
@@ -46,28 +47,39 @@ namespace LOK1game.Game
             _gameModes.Add(new GameModeContainer(gameMode.Id, gameMode));
         }
 
-        public void SetGameMode(EGameModeId id)
+        public IEnumerator SwitchGameModeRoutine(EGameModeId id, bool force = false)
         {
-            var gamemode = GetGameMode(id);
-
-            Coroutines.StartRoutine(SwitchGameModeRoutine(gamemode));
+            yield return SwitchGameModeRoutine(GetGameMode(id), force);
         }
 
-        public IEnumerator SwitchGameModeRoutine(EGameModeId id)
+        private IEnumerator SwitchGameModeRoutine(IGameMode gameMode, bool force = false)
         {
-            yield return SwitchGameModeRoutine(GetGameMode(id));
-        }
+            if (_isSwithing)
+            {
+                GetLogger().Push($"Switching is already in progress, wait...");
+                while (_isSwithing)
+                {
+                    yield return null;
+                }
+            }
+            
+            _isSwithing = true;
 
-        private IEnumerator SwitchGameModeRoutine(IGameMode gameMode)
-        {
             if (CurrentGameMode != null)
-                GetLogger().Push($"start switching <b>{CurrentGameModeId}</b> -> <b>{gameMode.Id}</b>");
+            {
+                if (CurrentGameModeId != gameMode.Id || force == true)
+                {
+                    GetLogger().Push($"start switching <b>{CurrentGameModeId}</b> -> <b>{gameMode.Id}</b>");
+                }
+                else
+                {
+                    GetLogger().Push("GameModes are same.");
+                    _isSwithing = false;
+                    yield break;
+                }
+            }
             else
                 GetLogger().Push($"start switching <b>Nothing</b> -> <b>{gameMode.Id}</b>");
-
-            yield return new WaitUntil(() => !_isSwithing);
-
-            _isSwithing = true;
 
             if (CurrentGameMode != null)
             {
@@ -126,7 +138,7 @@ namespace LOK1game.Game
         {
             try
             {
-                App.ProjectContext.GameModeManager.SetGameMode((EGameModeId)Convert.ToUInt16(gameModeId));
+                Coroutines.StartRoutine(App.ProjectContext.GameModeManager.SwitchGameModeRoutine((EGameModeId)Convert.ToUInt16(gameModeId)));
             }
             catch (Exception ex)
             {

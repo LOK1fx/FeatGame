@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using System;
 using LOK1game.Game;
-using LOK1game.Utility;
 
 namespace LOK1game.PlayerDomain
 {
@@ -15,6 +14,7 @@ namespace LOK1game.PlayerDomain
         public event Action OnTakeDamage;
         public event Action OnStaminaOut;
         public event Action OnStaminaRecovered;
+        public event Action<float> OnStaminaChanged;
 
         public PlayerMovement Movement { get; private set; }
         public PlayerCamera Camera { get; private set; }
@@ -48,9 +48,10 @@ namespace LOK1game.PlayerDomain
 
         public float Stamina { get; private set; }
 
-        private float _currentStaminaRecovery;
         private bool _staminaIsOut;
-
+        private float _staminaRecoveryDelay = 1f;
+        private float _currentRecoveryDelay;
+        private bool _isInRecoveryDelay;
 
         private void Awake()
         {
@@ -106,6 +107,8 @@ namespace LOK1game.PlayerDomain
 
             Camera.Tilt = Mathf.Lerp(Camera.Tilt, _targetTilt, Time.deltaTime * 8f);
 
+            var previousStamina = Stamina;
+
             if (State.IsSprinting && _staminaIsOut == false)
             {
                 Stamina -= Time.deltaTime;
@@ -115,23 +118,47 @@ namespace LOK1game.PlayerDomain
                     Movement.StopSprint();
 
                     _staminaIsOut = true;
+                    _isInRecoveryDelay = false;
                     OnStaminaOut?.Invoke();
                 }
-            }
-
-            if (_staminaIsOut)
-            {
-                _currentStaminaRecovery += Time.deltaTime;
-
-                if (_currentStaminaRecovery >= _staminaRecoveryTime)
+                else if (Stamina < _maxSprintTime)
                 {
-                    _currentStaminaRecovery = 0f;
-                    Stamina = _maxSprintTime;
-
-                    _staminaIsOut = false;
-                    OnStaminaRecovered?.Invoke();
+                    _isInRecoveryDelay = true;
+                    _currentRecoveryDelay = 0f;
                 }
             }
+            else if (Stamina < _maxSprintTime)
+            {
+                if (_staminaIsOut)
+                {
+                    Stamina += Time.deltaTime / _staminaRecoveryTime * _maxSprintTime;
+                    Stamina = Mathf.Min(Stamina, _maxSprintTime);
+
+                    if (Stamina >= _maxSprintTime)
+                    {
+                        _staminaIsOut = false;
+                        OnStaminaRecovered?.Invoke();
+                    }
+                }
+                else if (_isInRecoveryDelay)
+                {
+                    _currentRecoveryDelay += Time.deltaTime;
+
+                    if (_currentRecoveryDelay >= _staminaRecoveryDelay)
+                    {
+                        _isInRecoveryDelay = false;
+                        _currentRecoveryDelay = 0f;
+                    }
+                }
+                else
+                {
+                    Stamina += Time.deltaTime / _staminaRecoveryTime * _maxSprintTime;
+                    Stamina = Mathf.Min(Stamina, _maxSprintTime);
+                }
+            }
+
+            if (Stamina != previousStamina)
+                OnStaminaChanged?.Invoke(Stamina);
         }
 
         private void UpdateDirectionTransform()
@@ -162,7 +189,7 @@ namespace LOK1game.PlayerDomain
                 if(Movement.CanStand())
                     Movement.StopCrouch();
 
-            if (Input.GetKeyDown(KeyCode.LeftShift) && State.OnGround && _staminaIsOut == false)
+            if (Input.GetKeyDown(KeyCode.LeftShift) && State.OnGround && _staminaIsOut == false && Stamina > 0f)
                 Movement.StartSprint();
             else if (Input.GetKeyUp(KeyCode.LeftShift))
                 Movement.StopSprint();

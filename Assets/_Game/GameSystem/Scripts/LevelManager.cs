@@ -70,7 +70,7 @@ public class LevelManager
 
     private static IEnumerator ApplyGameMode(LevelData data)
     {
-        yield return App.ProjectContext.GameModeManager.SwitchGameModeRoutine(data.LevelGameMode);
+        yield return App.ProjectContext.GameModeManager.SwitchGameModeRoutine(data.LevelGameMode, true);
 
         // TODO: Hide loading screen
     }

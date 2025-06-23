@@ -78,10 +78,7 @@ namespace LOK1game.PlayerDomain
         private void Update()
         {
             _camera.m_Lens.FieldOfView = Mathf.Lerp(_camera.m_Lens.FieldOfView, _targetFov, Time.deltaTime * _fovChangeSpeed);
-        }
 
-        private void LateUpdate()
-        {
             var targetRot = Quaternion.Euler(_yRotation, _xRotation, Tilt);
 
             _cameraTransform.localRotation = targetRot;
@@ -94,6 +91,8 @@ namespace LOK1game.PlayerDomain
             _animationCamera.localRotation = new Quaternion(animationRotation.x, animationRotation.z, animationRotation.y, animationRotation.w)
                 * Quaternion.Euler(_animationCameraRotationOffset);
         }
+
+        
 
         private void FixedUpdate()
         {

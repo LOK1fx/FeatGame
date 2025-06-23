@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace LOK1game
 {
-    public class PlayerHUD : MonoBehaviour, IPlayerUI
+    public class PlayerHUD : MonoBehaviour, IPlayerUI, IApplicationUpdatable
     {
         private Player _player;
         private PlayerController _controller;
@@ -27,6 +27,7 @@ namespace LOK1game
 
             _player.OnStaminaRecovered += OnStaminaRecovered;
             _player.OnStaminaOut += OnStaminaOut;
+            _player.OnStaminaChanged += OnStaminaChanged;
 
             _player.Interaction.OnInteractionFound += OnInteractionFound;
             _player.Interaction.OnInteractionLost += OnInteractionLost;
@@ -42,6 +43,7 @@ namespace LOK1game
         {
             _player.OnStaminaRecovered -= OnStaminaRecovered;
             _player.OnStaminaOut -= OnStaminaOut;
+            _player.OnStaminaChanged -= OnStaminaChanged;
 
             _player.Interaction.OnInteractionFound -= OnInteractionFound;
             _player.Interaction.OnInteractionLost -= OnInteractionLost;
@@ -52,12 +54,19 @@ namespace LOK1game
             EventManager.RemoveListener<OnGameStateChangedEvent>(OnGameStateChanged);
         }
 
-        private void Update()
+        private void OnEnable()
         {
-            if (_player == null)
-                return;
+            ApplicationUpdateManager.Register(this);
+        }
 
-            _staminaBar.SetValue(_player.Stamina, 0, _player.MaxStamina);
+        private void OnDisable()
+        {
+            ApplicationUpdateManager.Unregister(this);
+        }
+
+        public void ApplicationUpdate()
+        {
+            
         }
 
         private void OnPlayerTakeDamage()
@@ -74,6 +83,11 @@ namespace LOK1game
             _staminaTextCount++;
 
             _staminaBar.SetValue(0);
+        }
+
+        private void OnStaminaChanged(float stamina)
+        {
+            _staminaBar.SetValue(stamina, 0, _player.MaxStamina);
         }
 
         private void OnStaminaRecovered()
