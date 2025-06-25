@@ -179,6 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac55556192e4d604481c19680eb07769, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  networkVisibility: -1
   playerType: 0
   _firstPersonArms: {fileID: 8189195622838826430}
   _crouchEyePosition: {x: 0, y: 1, z: 0}

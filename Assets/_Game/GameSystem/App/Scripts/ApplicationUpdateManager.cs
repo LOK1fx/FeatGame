@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,8 +5,8 @@ namespace LOK1game
 {
     public class ApplicationUpdateManager : MonoBehaviour
     {
-        private static List<IApplicationUpdatable> _updatables = new();
-        private static List<IApplicationUpdatable> _pendingUpdatables = new();
+        private static readonly List<IApplicationUpdatable> _updatables = new();
+        private static readonly List<IApplicationUpdatable> _pendingUpdatables = new();
 
         private static int _currentIndex = 0;
 

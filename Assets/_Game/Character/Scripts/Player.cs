@@ -15,7 +15,7 @@ namespace LOK1game.PlayerDomain
         public event Action OnStaminaOut;
         public event Action OnStaminaRecovered;
         public event Action<float> OnStaminaChanged;
-
+        
         public PlayerMovement Movement { get; private set; }
         public PlayerCamera Camera { get; private set; }
         public PlayerState State { get; private set; }
@@ -26,21 +26,21 @@ namespace LOK1game.PlayerDomain
         public bool IsDead { get; private set; }
 
         public FirstPersonArms FirstPersonArms => _firstPersonArms;
+        [Header(nameof(Player))]
         [SerializeField] private FirstPersonArms _firstPersonArms;
 
         [SerializeField] private Vector3 _crouchEyePosition;
         private Vector3 _defaultEyePosition;
+        private float _targetTilt;
 
         [SerializeField] private float _minimalSpeedToSlide = 7f;
 
-        
         public float RespawnTime => _respawnTime;
 
         [SerializeField] private float _respawnTime;
+        
 
-        private float _targetTilt;
-
-        [Space]
+        [Header("Stamina")]
         [SerializeField] private float _maxSprintTime = 1f;
         public float MaxStamina => _maxSprintTime;
 
@@ -90,8 +90,6 @@ namespace LOK1game.PlayerDomain
 
         private void Start()
         {
-            playerType = EPlayerType.View;
-
             Stamina = _maxSprintTime;
 
             WeaponManager.Construct(this);

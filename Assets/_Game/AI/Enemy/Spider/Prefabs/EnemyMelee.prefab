@@ -366,6 +366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b220560494c3324c8df67dd96bc1147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  networkVisibility: -1
   _defaultSpeed: 10
   _startState: 1
   _health: {fileID: 4862062050190573538}
@@ -1112,6 +1113,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 0d4bb41667867d44a8bc6c9a7bc21bc9, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 5c147279a5da7b44082d32be4f81b798, type: 3}
+      propertyPath: m_CullingMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5977854003950742429, guid: 5c147279a5da7b44082d32be4f81b798, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 

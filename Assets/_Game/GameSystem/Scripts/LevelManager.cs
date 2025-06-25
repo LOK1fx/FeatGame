@@ -1,5 +1,6 @@
 using LOK1game;
 using LOK1game.Tools;
+using LOK1game.UI;
 using LOK1game.Utility;
 using LOK1game.Utils;
 using System;
@@ -17,9 +18,12 @@ public class LevelManager
 
     [SerializeField] private List<LevelData> _levelsData = new List<LevelData>();
 
-    public void Initialize()
+    private static UILoadingScreen _loadingScreen;
+
+    public void Initialize(UILoadingScreen loadingScreen)
     {
         LevelsData = _levelsData;
+        _loadingScreen = loadingScreen;
     }
 
     #region LevelLoading
@@ -39,7 +43,7 @@ public class LevelManager
 
         GetLogger().Push($"-> {data.DisplayName} ({data.MainSceneName})");
 
-        // TODO: Show loading screen
+        _loadingScreen.Show();
 
         GetLogger().Push($"Starting to load main scene: {data.MainSceneName}");
         SceneManager.LoadSceneAsync(data.MainSceneName, LoadSceneMode.Single);
@@ -72,7 +76,7 @@ public class LevelManager
     {
         yield return App.ProjectContext.GameModeManager.SwitchGameModeRoutine(data.LevelGameMode, true);
 
-        // TODO: Hide loading screen
+        _loadingScreen.Hide();
     }
 
     #endregion

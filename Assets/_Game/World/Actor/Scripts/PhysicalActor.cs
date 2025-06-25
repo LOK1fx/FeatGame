@@ -41,9 +41,7 @@ namespace LOK1game
                 return;
 
             if (Time.time - _lastInteractionTime > _sleepDelay)
-            {
                 PutToSleep();
-            }
         }
 
         private void OnCollisionEnter(Collision collision)

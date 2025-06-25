@@ -1,10 +1,22 @@
 using LOK1game.Utils;
 using LOK1game.World;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace LOK1game
 {
+    /// <summary>
+    /// Flags for determining the activity of a game object during a networked game.
+    /// </summary>
+    [Flags]
+    public enum ENetworkVisibility : int // It's better to have bytes here, but unity doesn't support byte flags.
+    {
+        None = 0,
+        Client = 1 << 0,
+        Others = 1 << 1,
+    }
+
     /// <summary>
     /// Base class for any game object placed in the scene with a world.
     /// Provides core functionality for game objects including world management, update cycle, and logging.
@@ -16,6 +28,10 @@ namespace LOK1game
         /// </summary>
         public GameWorld CurrentWorld { get; private set; }
         public UniqueActorId UniqueId { get; private set; }
+
+        [Header(nameof(Actor))]
+        [SerializeField] protected ENetworkVisibility networkVisibility = ENetworkVisibility.Client | ENetworkVisibility.Others;
+
 
         protected virtual void OnEnable()
         {

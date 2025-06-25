@@ -4,7 +4,7 @@ using UnityEngine;
 namespace LOK1game.UI
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public class CanvasGroupFade : MonoBehaviour
+    public class CanvasGroupFade : MonoBehaviour, IApplicationUpdatable
     {
         public float TargetAlpha;
 
@@ -28,8 +28,24 @@ namespace LOK1game.UI
             }
         }
 
-        private void Update()
+        private void OnEnable()
         {
+            ApplicationUpdateManager.Register(this);
+        }
+
+        private void OnDisable()
+        {
+            ApplicationUpdateManager.Unregister(this);
+        }
+
+        public void ApplicationUpdate()
+        {
+            if (Mathf.Abs(_canvas.alpha - TargetAlpha) < 0.01f)
+            {
+                _canvas.alpha = TargetAlpha;
+                return;
+            }
+            
             _canvas.alpha = Mathf.Lerp(_canvas.alpha, TargetAlpha, _fadeSpeed * Time.deltaTime);
         }
 

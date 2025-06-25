@@ -22,7 +22,11 @@ namespace LOK1game.UI
 
             if (_isEntering)
                 multiplier = _dropSpeed * 4f;
-
+            if (Mathf.Abs(_canvas.alpha - _targetAlpha) < 0.01f)
+            {
+                _canvas.alpha = _targetAlpha;
+                return;
+            }
             _canvas.alpha = Mathf.Lerp(_canvas.alpha, _targetAlpha, Time.deltaTime * multiplier);
         }
 

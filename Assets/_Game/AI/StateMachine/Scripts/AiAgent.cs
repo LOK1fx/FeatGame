@@ -31,7 +31,7 @@ namespace LOK1game.AI
 
         protected abstract void OnAwake();
 
-        private void Update()
+        public override void ApplicationUpdate()
         {
             StateMachine.Update();
 

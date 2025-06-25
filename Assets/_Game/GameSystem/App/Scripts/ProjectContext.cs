@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using LOK1game.Game.Events;
 using UnityEngine;
+using LOK1game.UI;
 
 namespace LOK1game
 {
@@ -41,6 +42,10 @@ namespace LOK1game
         public SubtitleManager SubtitleManager { get; private set; }
         [SerializeField] private SubtitleManager _subtitleManagerPrefab;
 
+        [Header("Loading screen")]
+        public UILoadingScreen LoadingScreen { get; private set; }
+        [SerializeField] private UILoadingScreen _loadingScreenPrefab;
+
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
 
         [Space]
@@ -55,7 +60,8 @@ namespace LOK1game
         /// </summary>
         public override void Initialize()
         {
-            LevelManager.Initialize();
+            var loadingScreen = CreateLoadingScreen();
+            LevelManager.Initialize(loadingScreen);
 
             InitializeGameModeManager();
             GameStateManager = new GameStateManager();
@@ -121,6 +127,15 @@ namespace LOK1game
         {
             SubtitleManager = GameObject.Instantiate(_subtitleManagerPrefab);
             GameObject.DontDestroyOnLoad(SubtitleManager);
+        }
+
+        private UILoadingScreen CreateLoadingScreen()
+        {
+            LoadingScreen = GameObject.Instantiate(_loadingScreenPrefab);
+            GameObject.DontDestroyOnLoad(LoadingScreen);
+            LoadingScreen.Hide();
+
+            return LoadingScreen;
         }
     }
 }

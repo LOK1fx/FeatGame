@@ -9,14 +9,11 @@ namespace LOK1game
     /// </summary>
     public abstract class Pawn : Actor, IPawn
     {
+        [Header(nameof(Pawn))]
         /// <summary>
         /// Indicates whether this pawn is controlled by the local player.
         /// </summary>
         public bool IsLocal { get; private set; } = true;
-
-        public EPlayerType PlayerType => playerType;
-
-        [SerializeField] protected EPlayerType playerType;
 
         private Controller _controller;
 
