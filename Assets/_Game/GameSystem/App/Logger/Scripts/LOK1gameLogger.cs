@@ -79,7 +79,7 @@ namespace LOK1game
 
         private string GenerateMessage(object message)
         {
-            return $"<color={GetHexColor()}>{Group.ToString()}</color>: {message}";
+            return $"<color={GetHexColor()}>[{Group}]</color> {message}";
         }
 
         private string GetHexColor()

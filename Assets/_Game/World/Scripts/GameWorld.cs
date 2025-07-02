@@ -17,6 +17,7 @@ namespace LOK1game.World
 
             if (gameModeManager.CurrentGameMode == null && _standardGameModeOverride == EGameModeId.None)
             {
+                GetLogger().Push("Theres no GameModeOverride in world, switching to App's StandardGameMode...");
                 StartCoroutine(gameModeManager.SwitchGameModeRoutine(App.ProjectContext.StandardGameModeId));
             }
             else if (gameModeManager.CurrentGameMode == null)
@@ -45,5 +46,10 @@ namespace LOK1game.World
         }
 
         protected abstract void Initialize();
+
+        protected LOK1gameLogger GetLogger()
+        {
+            return App.Loggers.GetLogger(ELoggerGroup.CurrentWorld);
+        }
     }
 }
