@@ -311,7 +311,7 @@ namespace LOK1game.PlayerDomain
 
         public Vector3 GetSlopeDirection(Vector2 input)
         {
-            return CharacterMath.Project(GetDirection(input), _slopeHit.normal);
+            return CharacterMath.ProjectOnPlane(GetDirection(input), _slopeHit.normal);
         }
 
         /// <summary>
@@ -384,6 +384,20 @@ namespace LOK1game.PlayerDomain
 
         private Vector3 AccelerateVelocity(float min, float max, CharacterMath.MoveParams moveParams)
         {
+            //var character = new CharacterMath.CharacterData()
+            //{
+            //    Height = PlayerCollider.height,
+            //    Radius = PlayerCollider.radius,
+            //    SkinWidth = 0.015f,
+            //    WorldLayerMask = 0 | 1 | 2 | 3 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 11| 12,
+            //    MaxSlopeAngle = 35f
+            //};
+
+            //var vel = CharacterMath.TestAccelerate(moveParams, min, max, Time.fixedDeltaTime, character, transform.position, false, _playerState.OnGround);
+            //vel += CharacterMath.CollideAndSlide(vel, transform.position, character, 0, true, vel, _playerState.OnGround);
+
+            //return vel;
+
             return CharacterMath.Accelerate(moveParams, min, max, Time.fixedDeltaTime);
         }
 
@@ -400,7 +414,7 @@ namespace LOK1game.PlayerDomain
             Gizmos.DrawLine(transform.position, transform.position + _slopeHit.normal * 3f);
 
             Gizmos.color = Color.blue;
-            Gizmos.DrawLine(transform.position, transform.position + CharacterMath.Project(_moveDirection, _slopeHit.normal) * 3f);
+            Gizmos.DrawLine(transform.position, transform.position + CharacterMath.ProjectOnPlane(_moveDirection, _slopeHit.normal) * 3f);
         }
     }
 }
