@@ -30,3 +30,9 @@ The project also features a [developer console](https://github.com/LOK1fx/FeatGa
 In a branch [speech-synth-test](https://github.com/LOK1fx/FeatGame/tree/speech-synth-test), a speech synthesizer is being developed for rapid prototyping of dialogs or cutscenes, in-game videos.
 
 There is also a simple localization system.
+
+| Custom scene manager | Character spawn points and gizmos |
+|---|---|
+| <img alt="Unity_3qY1CPvAW9" src="https://github.com/user-attachments/assets/ccb8b8da-db76-4616-ba7f-5c712cbf72db" /> | <img alt="image" src="https://github.com/user-attachments/assets/9ace9e11-3edc-4f3a-8892-e4cc62d7246a" /> |
+
+
