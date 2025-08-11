@@ -1,14 +1,13 @@
 # Large testing area for custom systems and frameworks
 This project showcases systems and protype of game developed by me.
 
-### Gameplay
-![Unity_VJMNBa3nJx](https://github.com/user-attachments/assets/a5153892-e534-47aa-a770-45865a7508c2)
+| Gameplay |
+|---|
+| ![](https://github.com/user-attachments/assets/a5153892-e534-47aa-a770-45865a7508c2) |
 
-### Pause menu
-![IxyaCZjTuO](https://github.com/user-attachments/assets/3dd5ab55-436c-4dc3-bebd-43f44b2c874c)
-
-### Main menu
-![Unity_IX0vCQ9W2b](https://github.com/user-attachments/assets/4600175e-4a99-4268-a563-f08093150834)
+| Pause menu | Main menu |
+|---| --- |
+| ![](https://github.com/user-attachments/assets/3dd5ab55-436c-4dc3-bebd-43f44b2c874c) | ![Unity_IX0vCQ9W2b](https://github.com/user-attachments/assets/4600175e-4a99-4268-a563-f08093150834) |
 
 > Knight model made by Ayna Khallanova
 
