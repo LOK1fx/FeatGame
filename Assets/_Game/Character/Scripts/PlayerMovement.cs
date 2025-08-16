@@ -43,7 +43,6 @@ namespace LOK1game.PlayerDomain
         private float _currentSlideTime;
 
         [SerializeField] private float _minLandVelocity = -4f;
-
         public Transform DirectionTransform => _directionTransform;
 
         [SerializeField] private Transform _directionTransform;

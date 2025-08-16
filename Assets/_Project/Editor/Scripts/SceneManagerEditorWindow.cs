@@ -61,13 +61,22 @@ namespace LOK1game.Editor
 
                 GUILayout.BeginHorizontal();
 
-                GUI.contentColor = Color.green;
-
-                if (TryGetSceneByPath(scene.path, out var foundAdditiveScene) && foundAdditiveScene.isLoaded == false)
+                if (ConvertScenePathToName(scene.path) != EditorSceneManager.GetActiveScene().name)
                 {
-                    if (GUILayout.Button("Additive"))
-                        _openedEditorScenes.Add(EditorSceneManager.OpenScene(scene.path, OpenSceneMode.Additive));
+                    if (TryGetSceneByPath(scene.path, out var foundAdditiveScene) && foundAdditiveScene.isLoaded == false)
+                    {
+                        GUI.contentColor = Color.green;
+
+                        if (GUILayout.Button("Additive"))
+                            _openedEditorScenes.Add(EditorSceneManager.OpenScene(scene.path, OpenSceneMode.Additive));
+                    }
                 }
+                else
+                {
+                    GUI.contentColor = Color.yellow;
+                    GUILayout.Button("Active scene");
+                }
+                
 
                 if (TryGetSceneByPath(scene.path, out var foundScene) && foundScene.isLoaded == true)
                 {
@@ -86,7 +95,7 @@ namespace LOK1game.Editor
 
                 GUI.contentColor = normalContentColor;
 
-                GUILayout.Space(4f);
+                GUILayout.Space(6f);
             }
         }
 

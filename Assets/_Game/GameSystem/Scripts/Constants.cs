@@ -41,7 +41,7 @@ namespace LOK1game
         public static class Editor
         {
             public const string APP_PATH = GAME_SYSTEM_PATH + "/App/Resources/[App].prefab";
-            public const string LEVEL_DB_PATH = GAME_SYSTEM_PATH + "/Levels/Data/" + LEVEL_DB_LINKER_ASSET_NAME + ExtensionsNames.ASSET; //name.asset
+            public const string LEVEL_DB_PATH = GAME_SYSTEM_PATH + "/Levels/Resources/Data/" + LEVEL_DB_LINKER_ASSET_NAME + ExtensionsNames.ASSET; //name.asset
             public const int APP_FILE_INSTANCE_ID = -1; //not currently definded
             public const string SCENES_PATH = "Assets/_Game/Scenes";
 

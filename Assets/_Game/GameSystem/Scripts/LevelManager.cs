@@ -2,12 +2,10 @@ using LOK1game;
 using LOK1game.Tools;
 using LOK1game.UI;
 using LOK1game.Utility;
-using LOK1game.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,13 +14,24 @@ public class LevelManager
 {
     public static List<LevelData> LevelsData { get; private set; }
 
-    [SerializeField] private List<LevelData> _levelsData = new List<LevelData>();
-
     private static UILoadingScreen _loadingScreen;
 
     public void Initialize(UILoadingScreen loadingScreen)
     {
-        LevelsData = _levelsData;
+        try
+        {
+            var path = "Data";
+
+            LevelsData = Resources.LoadAll<LevelData>(path).ToList();
+
+            if (LevelsData.Count == 0)
+                throw new Exception($"No files found in Resources/{path}/");
+        }
+        catch (Exception ex)
+        {
+            GetLogger().PushError($"Error while loading level data from resources: \n{ex}");
+        }
+
         _loadingScreen = loadingScreen;
     }
 
@@ -39,7 +48,7 @@ public class LevelManager
         }
 
         if (LevelsData.Contains(data) == false)
-            throw new KeyNotFoundException("There is no that level data in level manager! Add it.");
+            GetLogger().PushError("There is no that level data in level manager! Add it.");
 
         GetLogger().Push($"-> {data.DisplayName} ({data.MainSceneName})");
 
