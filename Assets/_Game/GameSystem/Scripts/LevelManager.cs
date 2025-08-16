@@ -50,12 +50,12 @@ public class LevelManager
         if (LevelsData.Contains(data) == false)
             GetLogger().PushError("There is no that level data in level manager! Add it.");
 
-        GetLogger().Push($"-> {data.DisplayName} ({data.MainSceneName})");
+        GetLogger().Push($"-> {data.DisplayName} ({data.MainScene})");
 
         _loadingScreen.Show();
 
-        GetLogger().Push($"Starting to load main scene: {data.MainSceneName}");
-        SceneManager.LoadSceneAsync(data.MainSceneName, LoadSceneMode.Single);
+        GetLogger().Push($"Starting to load main scene: {data.MainScene}");
+        SceneManager.LoadSceneAsync(data.MainScene, LoadSceneMode.Single);
         SceneManager.activeSceneChanged += OnMainSceneLoaded;
 
         if (data.AdditiveScenes.Count > 0)
@@ -110,7 +110,7 @@ public class LevelManager
 
         foreach (var level in LevelsData)
         {
-            if(level.MainSceneName == currentSceneName)
+            if(level.MainScene == currentSceneName)
             {
                 return level;
             }
@@ -123,7 +123,7 @@ public class LevelManager
 
     public static LevelData GetLevelData(string mainSceneName)
     {
-        var levelData = LevelsData.Where(level => level.MainSceneName == mainSceneName).FirstOrDefault();
+        var levelData = LevelsData.Where(level => level.MainScene == mainSceneName).FirstOrDefault();
 
         return levelData;
     }

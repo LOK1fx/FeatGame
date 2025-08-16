@@ -16,5 +16,7 @@ MonoBehaviour:
   _displayName: Main menu
   _levelGameMode: 21
   _category: 0
-  _mainSceneName: MainMenu
+  _mainScene:
+    _sceneAsset: {fileID: 102900000, guid: 324a820ad105b38479f8388aafea4ddb, type: 3}
+    _sceneName: MainMenu
   _addativeScenes: []

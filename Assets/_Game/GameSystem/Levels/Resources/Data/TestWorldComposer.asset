@@ -16,5 +16,7 @@ MonoBehaviour:
   _displayName: WorldComposer Test
   _levelGameMode: 3
   _category: 100
-  _mainSceneName: WorldComposer
+  _mainScene:
+    _sceneAsset: {fileID: 102900000, guid: bff5bfdf83562ce4995a725f11f180a3, type: 3}
+    _sceneName: WorldComposer
   _addativeScenes: []

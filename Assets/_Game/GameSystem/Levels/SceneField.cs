@@ -30,10 +30,7 @@ namespace LOK1game
 
 #endif
 
-        public static implicit operator string(SceneField sceneField)
-        {
-            return sceneField.SceneName;
-        }
+        public static implicit operator string(SceneField sceneField) => sceneField.SceneName;
     }
 
 #if UNITY_EDITOR

@@ -16,5 +16,7 @@ MonoBehaviour:
   _displayName: Caves
   _levelGameMode: 1
   _category: 1
-  _mainSceneName: GreenLevel 1
+  _mainScene:
+    _sceneAsset: {fileID: 102900000, guid: 5a17b0972dea9cd4fb28b4bad9333de6, type: 3}
+    _sceneName: GreenLevel 1
   _addativeScenes: []

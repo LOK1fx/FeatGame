@@ -19,8 +19,8 @@ namespace LOK1game
         public string DisplayName => _displayName;
         public EGameModeId LevelGameMode => _levelGameMode;
         public ELevelCategory Category => _category;
-        public List<string> AdditiveScenes => _addativeScenes;
-        public string MainSceneName => _mainSceneName;
+        public List<SceneField> AdditiveScenes => _addativeScenes;
+        public SceneField MainScene => _mainScene;
 
 
         [SerializeField] private Sprite _levelImage;
@@ -30,7 +30,7 @@ namespace LOK1game
 
         [Space]
         [Header("Scene info")]
-        [SerializeField] private string _mainSceneName;
-        [SerializeField] private List<string> _addativeScenes = new();
+        [SerializeField] private SceneField _mainScene;
+        [SerializeField] private List<SceneField> _addativeScenes = new();
     }
 }

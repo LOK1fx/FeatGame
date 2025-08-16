@@ -16,5 +16,7 @@ MonoBehaviour:
   _displayName: Primal Mind | Level 2
   _levelGameMode: 1
   _category: 2
-  _mainSceneName: Level2
+  _mainScene:
+    _sceneAsset: {fileID: 102900000, guid: cae446c078fa5d544bf9e9ca60d9fb98, type: 3}
+    _sceneName: Level2
   _addativeScenes: []

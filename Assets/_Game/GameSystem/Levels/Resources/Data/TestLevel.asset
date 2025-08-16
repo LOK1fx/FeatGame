@@ -16,5 +16,7 @@ MonoBehaviour:
   _displayName: Test level
   _levelGameMode: 1
   _category: 100
-  _mainSceneName: SampleScene
+  _mainScene:
+    _sceneAsset: {fileID: 102900000, guid: 28512dd07c89df74a9c7d4ae5f74ce7f, type: 3}
+    _sceneName: SampleScene
   _addativeScenes: []
