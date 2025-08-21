@@ -130,6 +130,12 @@ namespace LOK1game
         {
             Loggers = new Loggers(_loggerContainers.ToArray());
 
+#if UNITY_EDITOR
+            Application.SetStackTraceLogType(LogType.Error | LogType.Exception | LogType.Log, StackTraceLogType.ScriptOnly);
+#else
+            Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
+#endif
+
             PushLogInfo("LOK1gameLogger initialized!");
         }
 

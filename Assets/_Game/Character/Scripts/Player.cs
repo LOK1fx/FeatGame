@@ -33,8 +33,6 @@ namespace LOK1game.PlayerDomain
         private Vector3 _defaultEyePosition;
         private float _targetTilt;
 
-        [SerializeField] private float _minimalSpeedToSlide = 7f;
-
         public float RespawnTime => _respawnTime;
 
         [SerializeField] private float _respawnTime;
