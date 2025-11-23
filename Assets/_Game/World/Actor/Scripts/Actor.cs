@@ -68,6 +68,14 @@ namespace LOK1game
             ApplyRoll(eulerAngles.z);
         }
 
+        public static Actor Spawn(Actor actor, Vector3 position, Quaternion rotation, Transform parent = null)
+        {
+            var spawnedActor = Instantiate(actor, position, Quaternion.identity, parent);
+            spawnedActor.ApplyRotation(rotation.eulerAngles);
+
+            return spawnedActor;
+        }
+
         /// <summary>
         /// Assigns a world instance to this actor.
         /// </summary>

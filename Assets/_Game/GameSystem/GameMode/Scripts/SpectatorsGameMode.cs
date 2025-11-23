@@ -18,6 +18,8 @@ namespace LOK1game.Game
 
             SpawnGameModeObject(CameraPrefab);
 
+            App.ProjectContext.GameStateManager.SetState(EGameStateId.Gameplay);
+
             yield return null;
         }
     }

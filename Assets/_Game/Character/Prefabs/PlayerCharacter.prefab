@@ -180,10 +180,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   networkVisibility: -1
-  playerType: 0
   _firstPersonArms: {fileID: 8189195622838826430}
   _crouchEyePosition: {x: 0, y: 1, z: 0}
-  _minimalSpeedToSlide: 5
   _respawnTime: 2
   _maxSprintTime: 2.5
   _staminaRecoveryTime: 3
@@ -262,11 +260,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e6a21dfa5e80b40a235343a3ce3956, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _actionKey: 102
   _interactableLayer:
     serializedVersion: 2
     m_Bits: 1
   _distance: 1.6
+  _interactableCheckDelay: 0.15
 --- !u!114 &5882569105048916213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -551,6 +549,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 151606639c39c84409e8e201d66eb71f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: {fileID: 2079026467656603300}
   _firstPersonScale: {x: 0.15, y: 0.15, z: 0.15}
 --- !u!1 &1929462128658681306
 GameObject:
@@ -945,7 +944,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 10
+  m_Priority: 0
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
@@ -1672,6 +1671,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mainCamera: {fileID: 6259633107132137100}
   _arms: {fileID: 8886162710686673626}
+  _player: {fileID: 2079026467656603300}
   _additionalLight: {fileID: 1908089399988780562}
 --- !u!114 &7445589291102004324
 MonoBehaviour:

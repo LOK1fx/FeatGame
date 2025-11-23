@@ -45,7 +45,7 @@ namespace LOK1game.Game
                 GetLogger().PushWarning("Couldn't find a spawn point for player. Spawned at (0, 0, 0).");
             }
 
-            var controller = CreatePlayerController(player.GetComponent<Pawn>());
+            var controller = CreatePlayerController(player.GetComponent<Pawn>(), true);
             
             if (controller == null)
                 yield break;
@@ -59,6 +59,8 @@ namespace LOK1game.Game
 
             if (ui != null && ui.TryGetComponent<IPlayerUI>(out var playerUI))
                 playerUI.Bind(controller, player);
+
+            App.ProjectContext.GameStateManager.SetState(EGameStateId.Gameplay);
 
             yield return null;
 

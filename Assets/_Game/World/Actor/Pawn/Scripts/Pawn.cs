@@ -13,7 +13,7 @@ namespace LOK1game
         /// <summary>
         /// Indicates whether this pawn is controlled by the local player.
         /// </summary>
-        public bool IsLocal { get; private set; } = true;
+        public bool IsLocallyControlled { get; private set; } = false;
 
         private Controller _controller;
 
@@ -26,13 +26,13 @@ namespace LOK1game
         /// Called when input is received from the controller.
         /// </summary>
         /// <param name="sender">The object that sent the input</param>
-        public abstract void OnInput(object sender);
+        public abstract void OnInput(object sender, PlayerCharacterInputContext inputContext);
 
         /// <summary>
         /// Called when a controller takes possession of this pawn.
         /// </summary>
         /// <param name="sender">The controller that is taking possession</param>
-        public virtual void OnPocces(Controller sender)
+        public virtual void OnPocces(Controller sender, PlayerCharacterInputContext inputContext)
         {
             _controller = sender;
         }
@@ -40,9 +40,14 @@ namespace LOK1game
         /// <summary>
         /// Called when a controller releases possession of this pawn.
         /// </summary>
-        public virtual void OnUnpocces()
+        public virtual void OnUnpocces(PlayerCharacterInputContext inputContext)
         {
             _controller = null;
+        }
+
+        public void SetLocal(bool isLocal)
+        {
+            IsLocallyControlled = isLocal;
         }
 
         /// <summary>

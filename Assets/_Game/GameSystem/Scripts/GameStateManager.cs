@@ -1,8 +1,11 @@
 using LOK1game.Game.Events;
+using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace LOK1game.Game
 {
-    public enum EGameState
+    public enum EGameStateId
     {
         Gameplay,
         Paused
@@ -10,22 +13,70 @@ namespace LOK1game.Game
 
     public class GameStateManager
     {
-        public EGameState CurrentGameState { get; private set; }
+        public EGameStateId CurrentGameStateId { get; private set; }
+        public IGameState CurrentGameState { get; private set; }
 
-        public delegate void GameStateChangeHandler(EGameState newGameState);
+        public delegate void GameStateChangeHandler(EGameStateId newGameState);
         public event GameStateChangeHandler OnGameStateChanged;
 
-        public void SetState(EGameState gameState)
+        private readonly Dictionary<EGameStateId, IGameState> _gameStates = new()
         {
-            if (gameState == CurrentGameState)
+            { EGameStateId.Paused, new PauseGameState() },
+            { EGameStateId.Gameplay, new GameplayGameState() },
+        };
+
+        public void SetState(EGameStateId gameState)
+        {
+            if (gameState == CurrentGameStateId)
                 return;
 
-            var evt = new OnGameStateChangedEvent(CurrentGameState, gameState);
-            
+            if (_gameStates.ContainsKey(gameState) == false)
+                throw new ArgumentOutOfRangeException(nameof(gameState));
+
+            CurrentGameState?.OnExit();
+            CurrentGameState = _gameStates[gameState];
+            CurrentGameState.OnEnter();
+
+            CurrentGameStateId = gameState;
+
+            var evt = new OnGameStateChangedEvent(CurrentGameStateId, gameState);
             EventManager.Broadcast(evt);
 
-            CurrentGameState = gameState;
-            OnGameStateChanged?.Invoke(CurrentGameState);
+            OnGameStateChanged?.Invoke(CurrentGameStateId);
         }
+    }
+
+    public interface IGameState
+    {
+        public EGameStateId Id { get; }
+
+        public abstract void OnEnter();
+        public abstract void OnExit();
+    }
+
+    public class PauseGameState : IGameState
+    {
+        public EGameStateId Id => EGameStateId.Paused;
+
+        public void OnEnter()
+        {
+            Cursor.lockState = Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+
+        public void OnExit() { }
+    }
+
+    public class GameplayGameState : IGameState
+    {
+        public EGameStateId Id => EGameStateId.Gameplay;
+
+        public void OnEnter()
+        {
+            Cursor.lockState = Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+
+        public void OnExit() { }
     }
 }

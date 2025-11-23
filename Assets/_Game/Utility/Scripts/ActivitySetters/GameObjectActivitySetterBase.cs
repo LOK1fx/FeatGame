@@ -13,7 +13,7 @@ namespace LOK1game.Tools
             App.ProjectContext.GameStateManager.OnGameStateChanged += OnGameStateChanged;
         }
 
-        protected abstract void OnGameStateChanged(EGameState newGameState);
+        protected abstract void OnGameStateChanged(EGameStateId newGameState);
 
         private void OnDestroy()
         {

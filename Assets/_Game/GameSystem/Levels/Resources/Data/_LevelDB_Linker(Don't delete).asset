@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c088fcdcaf16395498caec6e8cec1b3a, type: 3}
   m_Name: _LevelDB_Linker(Don't delete)
   m_EditorClassIdentifier: 
-  LevelImage: {fileID: 0}
-  BuildIndex: -1
-  Name: 
-  ScenesInLevelIndex: 
-  IsCompleted: 0
+  _levelImage: {fileID: 21300000, guid: c910113777155a4449dffd3e204f5171, type: 3}
+  _displayName: 
+  _levelGameMode: 0
+  _category: 0
+  _mainScene:
+    _sceneAsset: {fileID: 0}
+    _sceneName: 
+  _addativeScenes: []

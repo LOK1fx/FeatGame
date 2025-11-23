@@ -118,10 +118,10 @@ namespace LOK1game
         {
             switch (evt.NewState)
             {
-                case Game.EGameState.Gameplay:
+                case Game.EGameStateId.Gameplay:
                     _pauseMenu.Resume();
                     break;
-                case Game.EGameState.Paused:
+                case Game.EGameStateId.Paused:
                     _pauseMenu.Show();
                     break;
                 default:

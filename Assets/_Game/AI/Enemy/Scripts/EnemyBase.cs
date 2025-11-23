@@ -63,10 +63,10 @@ namespace LOK1game
         {
             switch (evt.NewState)
             {
-                case Game.EGameState.Gameplay:
+                case Game.EGameStateId.Gameplay:
                     StateMachine.SetState(_previousStateId);
                     break;
-                case Game.EGameState.Paused:
+                case Game.EGameStateId.Paused:
                     _previousStateId = StateMachine.CurrentStateId;
                     StateMachine.SetState(EAiStateId.Nothing);
                     break;

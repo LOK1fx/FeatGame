@@ -25,14 +25,6 @@ namespace LOK1game.PlayerDomain
             InitializePrefabs();
         }
 
-        public void OnInput()
-        {
-            if (Input.GetKeyDown(KeyCode.Mouse0))
-                Use();
-            else if (Input.GetKeyDown(KeyCode.Mouse1))
-                AltUse();
-        }
-
         public void EquipSlot(int index)
         {
             if (index >= _weapons.Count)

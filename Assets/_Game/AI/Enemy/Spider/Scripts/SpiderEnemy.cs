@@ -6,7 +6,7 @@ namespace LOK1game
     {
         [SerializeField] private GameObject _particles;
 
-        public override void OnInput(object sender)
+        public override void OnInput(object sender, PlayerCharacterInputContext inputContext)
         {
             
         }

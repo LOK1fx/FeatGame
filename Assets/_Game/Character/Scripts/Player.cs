@@ -36,6 +36,10 @@ namespace LOK1game.PlayerDomain
         public float RespawnTime => _respawnTime;
 
         [SerializeField] private float _respawnTime;
+
+        //[Tooltip("If player is not locally controlled, it will change their layer to this layer so other players can damage it.")]
+        //[SerializeField] private LayerMask _nonLocalCharacterLayer;
+        private int _localCharacterLayer;
         
 
         [Header("Stamina")]
@@ -72,6 +76,7 @@ namespace LOK1game.PlayerDomain
             Movement.OnStopSprint += OnStopSprint;
 
             _defaultEyePosition = Camera.GetCameraTransform().localPosition;
+            _localCharacterLayer = gameObject.layer;
         }
 
         private void OnDestroy()
@@ -96,9 +101,6 @@ namespace LOK1game.PlayerDomain
 
         public override void ApplicationUpdate()
         {
-            if (IsLocal == false)
-                return;
-
             UpdateDirectionTransform();
 
             Camera.Tilt = Mathf.Lerp(Camera.Tilt, _targetTilt, Time.deltaTime * 8f);
@@ -163,37 +165,65 @@ namespace LOK1game.PlayerDomain
             Movement.DirectionTransform.rotation = Quaternion.Euler(0f, cameraRotation.y, 0f);
         }
 
-        public override void OnInput(object sender)
+        public override void OnPocces(Controller sender, PlayerCharacterInputContext inputContext)
         {
-            if (IsDead || IsLocal == false)
+            base.OnPocces(sender, inputContext);
+
+            inputContext.OnJumpButtonDown += Movement.Jump;
+
+            inputContext.OnCrouchButtonDown += Movement.StartCrouch;
+            inputContext.OnCrouchButtonUp += TryStopCrouch;
+
+            inputContext.OnSprintButtonDown += TryStartSprint;
+            inputContext.OnSprintButtonUp += Movement.StopSprint;
+
+            inputContext.OnFireButtonDown += WeaponManager.Use;
+            inputContext.OnAltFireButtonDown += WeaponManager.AltUse;
+
+            Interaction.BindInputContext(inputContext);
+
+            UpdatePhysicsLayer();
+        }
+
+        public override void OnUnpocces(PlayerCharacterInputContext inputContext)
+        {
+            base.OnUnpocces(inputContext);
+
+            inputContext.OnJumpButtonDown -= Movement.Jump;
+
+            inputContext.OnCrouchButtonDown -= Movement.StartCrouch;
+            inputContext.OnCrouchButtonUp -= TryStopCrouch;
+
+            inputContext.OnSprintButtonDown -= TryStartSprint;
+            inputContext.OnSprintButtonUp -= Movement.StopSprint;
+
+            inputContext.OnFireButtonDown -= WeaponManager.Use;
+            inputContext.OnAltFireButtonDown -= WeaponManager.AltUse;
+
+            Interaction.UnbindInputContext(inputContext);
+
+            UpdatePhysicsLayer();
+        }
+
+        private void TryStopCrouch()
+        {
+            if (Movement.CanStand())
+                Movement.StopCrouch();
+        }
+
+        private void TryStartSprint()
+        {
+            if (State.OnGround && _staminaIsOut == false && Stamina > 0f)
+                Movement.StartSprint();
+        }
+
+        public override void OnInput(object sender, PlayerCharacterInputContext inputContext)
+        {
+            if (IsDead)
                 return;
 
-            var inputAxis = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-
-            Camera.OnInput(this);
-            Movement.SetAxisInput(inputAxis);
-
-            #region movement inputs
-            if (Input.GetKeyDown(KeyCode.Space))
-                Movement.Jump();
-
-            if (Input.GetKeyDown(KeyCode.LeftControl))
-                Movement.StartCrouch();
-                
-
-            if (Input.GetKeyUp(KeyCode.LeftControl))
-                if(Movement.CanStand())
-                    Movement.StopCrouch();
-
-            if (Input.GetKeyDown(KeyCode.LeftShift) && State.OnGround && _staminaIsOut == false && Stamina > 0f)
-                Movement.StartSprint();
-            else if (Input.GetKeyUp(KeyCode.LeftShift))
-                Movement.StopSprint();
-
-            #endregion
-
-            Interaction.OnInput(this);
-            WeaponManager.OnInput();
+            Camera.OnInput(this, inputContext);
+            Movement.SetAxisInput(inputContext.MovementInput);
         }
 
         public bool TryGetPlayerController(out PlayerController controller)
@@ -324,6 +354,14 @@ namespace LOK1game.PlayerDomain
             Movement.Rigidbody.isKinematic = false;
 
             OnRespawned?.Invoke();
+        }
+        
+        private void UpdatePhysicsLayer()
+        {
+            if (IsLocallyControlled)
+                gameObject.layer = _localCharacterLayer;
+            else
+                gameObject.layer = LayerMask.NameToLayer("Enemy");
         }
     }
 }

@@ -53,16 +53,19 @@ namespace LOK1game.PlayerDomain
 
         private void Start()
         {
-            if (_player.IsLocal)
+            if (_player.IsLocallyControlled)
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
+
+                if (Settings.TryGetSensivity(out var sensitivity))
+                    _sensitivity = sensitivity;
+
+                Settings.OnSensivityChanged += OnSensivityChanged;
+
+                _camera.Priority = 100;
+                _camera.ForceCameraPosition(_camera.transform.position, _camera.transform.rotation);
             }
-
-            if (Settings.TryGetSensivity(out var sensitivity))
-                _sensitivity = sensitivity;
-
-            Settings.OnSensivityChanged += OnSensivityChanged;
 
             DesiredPosition = _cameraTransform.localPosition;
             _defaultFov = _camera.m_Lens.FieldOfView;
@@ -106,26 +109,10 @@ namespace LOK1game.PlayerDomain
             _recoilCameraRotation += new Vector3(-recoil.x, Random.Range(-recoil.y, recoil.y), Random.Range(-recoil.z, recoil.z));
         }
 
-        public void OnInput(object sender)
+        public void OnInput(object sender, PlayerCharacterInputContext inputContext)
         {
-            var x = 0f;
-            var y = 0f;
-
-            if (!Application.isMobilePlatform && Cursor.lockState == CursorLockMode.Locked)
-            {
-                x = Input.GetAxisRaw("Mouse X");
-                y = Input.GetAxisRaw("Mouse Y");
-            }
-            else
-            {
-                if (Input.touchCount >= 1)
-                {
-                    x = Input.GetTouch(0).deltaPosition.x;
-                    y = Input.GetTouch(0).deltaPosition.y;
-                }
-            }
-            _xRotation += x * GetSensivityMultiplier();
-            _yRotation -= y * GetSensivityMultiplier();
+            _xRotation += inputContext.LookInput.x * GetSensivityMultiplier();
+            _yRotation -= inputContext.LookInput.y * GetSensivityMultiplier();
 
             _xRotation = Mathf.Clamp(_xRotation, -_maxLeftViewAngle, _maxRightViewAngle);
             _yRotation = Mathf.Clamp(_yRotation, -_maxUpViewAngle, _maxDownViewAngle);
@@ -196,12 +183,12 @@ namespace LOK1game.PlayerDomain
             return _defaultFov;
         }
 
-        public void OnPocces(Controller sender)
+        public void OnPocces(Controller sender, PlayerCharacterInputContext inputContext)
         {
             Controller = sender;
         }
         
-        public void OnUnpocces()
+        public void OnUnpocces(PlayerCharacterInputContext inputContext)
         {
             Controller = null;
         }

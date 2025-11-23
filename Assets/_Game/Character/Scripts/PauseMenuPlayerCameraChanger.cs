@@ -1,5 +1,4 @@
 using Cinemachine;
-using UnityEngine.Events;
 using LOK1game.Game.Events;
 using LOK1game.Tools;
 using UnityEngine;
@@ -14,6 +13,7 @@ namespace LOK1game
         private int _mainCameraDefaultPriority;
 
         [SerializeField] private PlayerFirstPersonArmsOverObjectsHandler _arms;
+        [SerializeField] private PlayerDomain.Player _player;
 
         [SerializeField] private Light _additionalLight;
 
@@ -26,14 +26,15 @@ namespace LOK1game
             DebugUtility.AssertNotNull(_mainCamera);
             DebugUtility.AssertNotNull(_arms);
             DebugUtility.AssertNotNull(_additionalLight);
-
-            _mainCameraDefaultPriority = _mainCamera.m_Priority;
-            _additionalLight.gameObject.SetActive(false);
+            DebugUtility.AssertNotNull(_player);
         }
 
         private void Start()
         {
             EventManager.AddListener<OnGameStateChangedEvent>(OnGameStateChanged);
+
+            _mainCameraDefaultPriority = _mainCamera.m_Priority;
+            _additionalLight.gameObject.SetActive(false);
         }
 
         private void OnDestroy()
@@ -43,12 +44,17 @@ namespace LOK1game
 
         private void OnGameStateChanged(OnGameStateChangedEvent evt)
         {
+            if (_player.IsLocallyControlled == false)
+                return;
+
+            Debug.Log("On State changed");
+
             switch (evt.NewState)
             {
-                case Game.EGameState.Paused:
+                case Game.EGameStateId.Paused:
                     OnPause();
                     break;
-                case Game.EGameState.Gameplay:
+                case Game.EGameStateId.Gameplay:
                     OnResume();
                     break;
             }

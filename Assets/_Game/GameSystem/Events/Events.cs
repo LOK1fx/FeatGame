@@ -7,10 +7,10 @@ namespace LOK1game.Game.Events
 
     public class OnGameStateChangedEvent : GameEvent
     {
-        public readonly EGameState PreviousState;
-        public readonly EGameState NewState;
+        public readonly EGameStateId PreviousState;
+        public readonly EGameStateId NewState;
 
-        public OnGameStateChangedEvent(EGameState previousState, EGameState newState)
+        public OnGameStateChangedEvent(EGameStateId previousState, EGameStateId newState)
         {
             PreviousState = previousState;
             NewState = newState;

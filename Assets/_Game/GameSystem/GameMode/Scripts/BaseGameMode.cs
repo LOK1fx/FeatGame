@@ -87,7 +87,7 @@ namespace LOK1game.Game
             return newGameObject;
         }
 
-        protected PlayerController CreatePlayerController(IPawn controlledPawn)
+        protected PlayerController CreatePlayerController(IPawn controlledPawn, bool locallyControlled)
         {
             if (PlayerController == null)
             {
@@ -100,7 +100,7 @@ namespace LOK1game.Game
             if (playerController != null)
             {
                 playerController.name = $"[{nameof(PlayerController)}]";
-                playerController.SetControlledPawn(controlledPawn);
+                playerController.SetControlledPawn(controlledPawn, locallyControlled);
 
                 RegisterGameModeObject(playerController.gameObject);
             }

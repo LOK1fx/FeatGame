@@ -11,6 +11,7 @@ namespace LOK1game
         
         public bool IsInputProcessing = true;
         public IPawn ControlledPawn { get; private set; }
+        public PlayerCharacterInputContext InputContext { get; private set; }
 
         private static List<Controller> _controllers = new List<Controller>();
 
@@ -25,19 +26,15 @@ namespace LOK1game
         }
 
         protected abstract void Awake();
-        public virtual void ApplicationUpdate()
-        {
-            if (IsInputProcessing == false)
-                return;
-        }
+        public abstract void ApplicationUpdate();
         
-        public static T Create<T>(IPawn pawn = null) where T : Controller
+        public static T Create<T>(IPawn pawn = null, bool locallyControlled = false) where T : Controller
         {
             var controllerObject = new GameObject($"{pawn}^Controller");
             var controller = controllerObject.AddComponent<T>();
             
             if(pawn != null)
-                controller.SetControlledPawn(pawn);
+                controller.SetControlledPawn(pawn, locallyControlled);
 
             _controllers.Add(controller);
             
@@ -56,10 +53,16 @@ namespace LOK1game
             return false;
         }
         
-        public void SetControlledPawn(IPawn pawn)
+        public void SetControlledPawn(IPawn pawn, bool locallyControlled)
         {
+            InputContext = new PlayerCharacterInputContext();
+
             ControlledPawn = pawn;
-            ControlledPawn.OnPocces(this);
+
+            if (ControlledPawn != null && ControlledPawn as Pawn)
+                (ControlledPawn as Pawn).SetLocal(locallyControlled);
+
+            ControlledPawn?.OnPocces(this, InputContext);
             
             OnControlledPawnChanged?.Invoke(pawn);
         }

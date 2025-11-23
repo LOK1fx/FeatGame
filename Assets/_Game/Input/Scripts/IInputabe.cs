@@ -2,6 +2,6 @@ namespace LOK1game
 {
     public interface IInputabe
     {
-        void OnInput(object sender);
+        void OnInput(object sender, PlayerCharacterInputContext inputContext);
     }
 }

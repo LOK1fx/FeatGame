@@ -12,13 +12,13 @@ namespace LOK1game
                     gameObject.SetActive(false);
                     break;
                 case ENetworkVisibility.Client:
-                    if (sender.IsLocal)
+                    if (sender.IsLocallyControlled)
                         gameObject.SetActive(true);
                     else
                         gameObject.SetActive(false);
                     break;
                 case ENetworkVisibility.Others:
-                    if (sender.IsLocal)
+                    if (sender.IsLocallyControlled)
                         gameObject.SetActive(true);
                     else
                         gameObject.SetActive(false);

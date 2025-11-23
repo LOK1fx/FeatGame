@@ -130,7 +130,7 @@ namespace LOK1game.PlayerDomain
         {
             switch (evt.NewState)
             {
-                case Game.EGameState.Paused:
+                case Game.EGameStateId.Paused:
                     SetAxisInput(Vector2.zero);
                     break;
             }

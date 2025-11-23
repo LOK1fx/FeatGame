@@ -4,9 +4,9 @@ namespace LOK1game.Tools
 {
     public class GameObjectActivitySetterOnPauseState : GameObjectActivitySetterBase
     {
-        protected override void OnGameStateChanged(EGameState newGameState)
+        protected override void OnGameStateChanged(EGameStateId newGameState)
         {
-            if(newGameState != EGameState.Paused) { return; }
+            if(newGameState != EGameStateId.Paused) { return; }
 
             targetGameObject.SetActive(activateObject);
         }
