@@ -16,7 +16,7 @@ namespace LOK1game.Editor
         {
             if (Application.isPlaying) return;
 
-            var uniqueActorIds = Object.FindObjectsOfType<UniqueActorId>();
+            var uniqueActorIds = Object.FindObjectsByType<UniqueActorId>(FindObjectsSortMode.InstanceID);
             foreach (var uniqueActorId in uniqueActorIds)
             {
                 if (string.IsNullOrEmpty(uniqueActorId.Guid))

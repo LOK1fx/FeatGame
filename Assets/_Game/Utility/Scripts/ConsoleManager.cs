@@ -105,7 +105,11 @@ namespace LOK1game.Utility
                     {
                         if (i < args.Length)
                         {
-                            convertedArgs[i] = Convert.ChangeType(args[i], parameters[i].ParameterType);
+                            if (!ConsoleArgumentConverter.TryConvert(args[i], parameters[i].ParameterType, out convertedArgs[i], out var convertError))
+                            {
+                                LogError(convertError);
+                                return false;
+                            }
                         }
                         else if (parameters[i].HasDefaultValue)
                         {
@@ -113,7 +117,7 @@ namespace LOK1game.Utility
                         }
                         else
                         {
-                            LogError($"Not enoughn args for {commandName}");
+                            LogError($"Not enough args for {commandName}");
                             return false;
                         }
                     }

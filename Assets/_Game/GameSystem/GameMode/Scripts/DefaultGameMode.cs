@@ -32,14 +32,14 @@ namespace LOK1game.Game
             var playerRigidbody = player.Movement.Rigidbody;
             playerRigidbody.isKinematic = true;
 
-            if (spawnPoint != null )
+            if (spawnPoint != null)
             {
-                player.transform.position = spawnPoint.Position;
+                player.Teleport(spawnPoint.Position);
                 player.ApplyYaw(spawnPoint.Yaw);
             }
             else
             {
-                player.transform.position = Vector3.zero;
+                player.Teleport(spawnPoint.Position);
                 player.ApplyYaw(0);
 
                 GetLogger().PushWarning("Couldn't find a spawn point for player. Spawned at (0, 0, 0).");

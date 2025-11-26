@@ -17,7 +17,7 @@ namespace LOK1game.Tools
 
         public static Vector3 GetDirectionTo(this Vector3 a, Vector3 b)
         {
-            return (a - b).normalized;
+            return (b - a).normalized;
         }
     }
 }

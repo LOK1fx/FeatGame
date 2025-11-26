@@ -14,7 +14,7 @@ namespace LOK1game
                 player.Movement.StopSprint();
                 player.Movement.StopCrouch();
                 player.Movement.Rigidbody.linearVelocity = Vector3.zero;
-                player.transform.position = _teleportPosition;
+                player.Teleport(_teleportPosition);
                 player.Camera.SetFov(90f);
             }
         }

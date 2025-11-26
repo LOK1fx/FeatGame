@@ -61,6 +61,11 @@ namespace LOK1game
             transform.rotation.eulerAngles.Set(initalRot.x, initalRot.y, angle);
         }
 
+        public virtual void Teleport(Vector3 newPosition)
+        {
+            transform.position = newPosition;
+        }
+
         public virtual void ApplyRotation(Vector3 eulerAngles)
         {
             ApplyPitch(eulerAngles.x);

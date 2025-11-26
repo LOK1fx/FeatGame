@@ -1,3 +1,4 @@
+using Codice.CM.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,6 +66,9 @@ namespace LOK1game
             ControlledPawn?.OnPocces(this, InputContext);
             
             OnControlledPawnChanged?.Invoke(pawn);
+            OnPawnChanged(pawn);
         }
+
+        protected virtual void OnPawnChanged(IPawn newPawn) { }
     }
 }

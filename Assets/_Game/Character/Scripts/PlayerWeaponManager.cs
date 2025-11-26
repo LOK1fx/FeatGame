@@ -13,6 +13,7 @@ namespace LOK1game.PlayerDomain
 
 
         [SerializeField] private List<WeaponBase> _weaponPrefabs = new();
+        [SerializeField] private WeaponSway _weaponSway;
 
         private List<WeaponBase> _weapons = new(); 
 
@@ -38,6 +39,11 @@ namespace LOK1game.PlayerDomain
 
             _weapons[index].gameObject.SetActive(true);
             _weapons[index].Equip();
+        }
+
+        public void OnInput(PlayerCharacterInputContext input)
+        {
+            _weaponSway.OnInput(input);
         }
 
         public void Use()

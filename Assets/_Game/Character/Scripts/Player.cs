@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using System;
 using LOK1game.Game;
+using LOK1game.AI;
 
 namespace LOK1game.PlayerDomain
 {
@@ -15,13 +16,16 @@ namespace LOK1game.PlayerDomain
         public event Action OnStaminaOut;
         public event Action OnStaminaRecovered;
         public event Action<float> OnStaminaChanged;
-        
+
         public PlayerMovement Movement { get; private set; }
         public PlayerCamera Camera { get; private set; }
         public PlayerState State { get; private set; }
         public Health Health { get; private set; }
         public PlayerInteraction Interaction { get; private set; }
         public PlayerWeaponManager WeaponManager { get; private set; }
+
+        public readonly Blackboard Blackboard = new();
+        private BlackboardKey _velocityKey;
 
         public bool IsDead { get; private set; }
 
@@ -74,6 +78,8 @@ namespace LOK1game.PlayerDomain
             Movement.OnStartSlide += OnStartSliding;
             Movement.OnStartSprint += OnStartSprint;
             Movement.OnStopSprint += OnStopSprint;
+
+            _velocityKey = Blackboard.GetOrRegisterKey("Velocity");
 
             _defaultEyePosition = Camera.GetCameraTransform().localPosition;
             _localCharacterLayer = gameObject.layer;
@@ -157,6 +163,8 @@ namespace LOK1game.PlayerDomain
 
             if (Stamina != previousStamina)
                 OnStaminaChanged?.Invoke(Stamina);
+
+            Blackboard.SetValue(_velocityKey, Movement.Rigidbody.linearVelocity);
         }
 
         private void UpdateDirectionTransform()
@@ -177,8 +185,8 @@ namespace LOK1game.PlayerDomain
             inputContext.OnSprintButtonDown += TryStartSprint;
             inputContext.OnSprintButtonUp += Movement.StopSprint;
 
-            inputContext.OnFireButtonDown += WeaponManager.Use;
-            inputContext.OnAltFireButtonDown += WeaponManager.AltUse;
+            inputContext.OnFireButtonDown += TryToUseWeapon;
+            inputContext.OnAltFireButtonDown += TryToAltUseWeapon;
 
             Interaction.BindInputContext(inputContext);
 
@@ -197,8 +205,8 @@ namespace LOK1game.PlayerDomain
             inputContext.OnSprintButtonDown -= TryStartSprint;
             inputContext.OnSprintButtonUp -= Movement.StopSprint;
 
-            inputContext.OnFireButtonDown -= WeaponManager.Use;
-            inputContext.OnAltFireButtonDown -= WeaponManager.AltUse;
+            inputContext.OnFireButtonDown -= TryToUseWeapon;
+            inputContext.OnAltFireButtonDown -= TryToAltUseWeapon;
 
             Interaction.UnbindInputContext(inputContext);
 
@@ -217,13 +225,31 @@ namespace LOK1game.PlayerDomain
                 Movement.StartSprint();
         }
 
+        private void TryToUseWeapon()
+        {
+            if (IsDead)
+                return;
+            WeaponManager.Use();
+        }
+
+        private void TryToAltUseWeapon()
+        {
+            if (IsDead)
+                return;
+            WeaponManager.AltUse();
+        }
+
         public override void OnInput(object sender, PlayerCharacterInputContext inputContext)
         {
             if (IsDead)
                 return;
 
+            if (Input.GetKeyDown(KeyCode.H))
+                Blackboard.Debug();
+
             Camera.OnInput(this, inputContext);
             Movement.SetAxisInput(inputContext.MovementInput);
+            WeaponManager.OnInput(inputContext);
         }
 
         public bool TryGetPlayerController(out PlayerController controller)
@@ -245,6 +271,7 @@ namespace LOK1game.PlayerDomain
             Camera.ApplyYaw(angle);
             UpdateDirectionTransform();
         }
+        public override void Teleport(Vector3 newPosition) => Movement.Rigidbody.position = newPosition;
 
         public override IEnumerator OnActorDestroy()
         {
@@ -348,7 +375,7 @@ namespace LOK1game.PlayerDomain
 
             Health.ResetHealth();
 
-            transform.position = spawnPoint.Position;
+            Teleport(spawnPoint.Position);
             ApplyYaw(spawnPoint.Yaw);
             
             Movement.Rigidbody.isKinematic = false;
