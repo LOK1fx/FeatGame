@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -15,12 +16,18 @@ namespace LOK1game
         /// </summary>
         public bool IsLocallyControlled { get; private set; } = false;
 
-        private Controller _controller;
+        private Controller<IPawn> _controller;
 
         /// <summary>
         /// The controller currently possessing this pawn.
         /// </summary>
-        public Controller Controller => _controller;
+        //public Controller<IPawn> Controller => _controller;
+
+
+        /// <summary>
+        /// The controller currently possessing this pawn.
+        /// </summary>
+        public Controller<Pawntype> GetController<Pawntype>() where Pawntype: IPawn => _controller as Controller<Pawntype>;
 
         /// <summary>
         /// Called when input is received from the controller.
@@ -32,9 +39,9 @@ namespace LOK1game
         /// Called when a controller takes possession of this pawn.
         /// </summary>
         /// <param name="sender">The controller that is taking possession</param>
-        public virtual void OnPocces(Controller sender, PlayerCharacterInputContext inputContext)
+        public virtual void OnPocces<Pawntype>(Controller<Pawntype> sender, PlayerCharacterInputContext inputContext) where Pawntype : IPawn
         {
-            _controller = sender;
+            _controller = sender as Controller<IPawn>;
         }
 
         /// <summary>
@@ -74,7 +81,7 @@ namespace LOK1game
             if (spawnPoints.Count < 1)
                 return Vector3.zero;
             
-            var spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
+            var spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Count)];
 
             return spawnPoint.transform.position;
         }

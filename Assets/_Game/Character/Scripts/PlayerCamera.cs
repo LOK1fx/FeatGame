@@ -3,10 +3,8 @@ using Cinemachine;
 
 namespace LOK1game.PlayerDomain
 {
-    public class PlayerCamera : MonoBehaviour, IPawn
+    public class PlayerCamera : MonoBehaviour
     {
-        public Controller Controller { get; private set; }
-        
         public float Tilt;
         
         [SerializeField] private float _sensitivity = 16f;
@@ -186,16 +184,6 @@ namespace LOK1game.PlayerDomain
         public float GetMouseInputScale()
         {
             return GetSensivityMultiplier();
-        }
-
-        public void OnPocces(Controller sender, PlayerCharacterInputContext inputContext)
-        {
-            Controller = sender;
-        }
-        
-        public void OnUnpocces(PlayerCharacterInputContext inputContext)
-        {
-            Controller = null;
         }
 
         private void OnSensivityChanged(float newSens)

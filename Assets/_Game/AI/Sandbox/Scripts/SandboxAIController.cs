@@ -1,4 +1,3 @@
-using Codice.Client.Common.FsNodeReaders;
 using LOK1game.AI;
 using LOK1game.PlayerDomain;
 using LOK1game.Tools;
@@ -6,7 +5,7 @@ using UnityEngine;
 
 namespace LOK1game
 {
-    public class SandboxAIController : Controller
+    public class SandboxAIController : Controller<Player>
     {
         private readonly Arbiter _arbiter = new();
         private Blackboard _blackboard;
@@ -17,7 +16,7 @@ namespace LOK1game
 
         protected override void Awake() { }
 
-        protected override void OnPawnChanged(IPawn newPawn)
+        protected override void OnPawnChanged(Player newPawn)
         {
             if (newPawn == null)
             {
@@ -70,8 +69,6 @@ namespace LOK1game
                     }
                 }
             }
-
-            
 
             ControlledPawn?.OnInput(this, InputContext);
         }

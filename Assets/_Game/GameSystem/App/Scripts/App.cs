@@ -20,6 +20,7 @@ namespace LOK1game
         public static ProjectContext ProjectContext { get; private set; }
 
         public static ConsoleManager DevConsole { get; private set; }
+        public static FishNet.Managing.NetworkManager NetworkManager { get; private set; }
 
         /// <summary>
         /// Global access to the logging system.
@@ -33,6 +34,14 @@ namespace LOK1game
         [SerializeField]
         [Tooltip("If built as server, which scene should be opened first?")] 
         private string _serverStartSceneName = "ServerBoot";
+
+#if FISHNET
+
+        [Header("Fishnet")]
+        [SerializeField] private FishNet.Managing.NetworkManager _networkManager;
+
+#endif
+
 
         [Space]
         [SerializeField] private List<LoggerContainer> _loggerContainers = new List<LoggerContainer>();
@@ -114,8 +123,10 @@ namespace LOK1game
 
             InitializeLoggers();
 
-            PushLogInfo("Initializing ProjectContext..");
+            PushLogInfo("Setting up network manager..");
+            NetworkManager = _networkManager;
 
+            PushLogInfo("Initializing ProjectContext..");
             ProjectContext = _projectContext;
             ProjectContext.Initialize();
 

@@ -69,9 +69,6 @@ namespace LOK1game.AI
             _agent.destination = point;
 
             _blackboard.TryGetValue(_targetPointKey, out Vector3 boardpoint);
-
-            App.Loggers.GetLogger(ELoggerGroup.AI).Push($"Next point is {point}");
-            App.Loggers.GetLogger(ELoggerGroup.BaseInfo).Push($"Blackboard point is {boardpoint}");
         }
     }
 }

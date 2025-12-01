@@ -173,7 +173,7 @@ namespace LOK1game.PlayerDomain
             Movement.DirectionTransform.rotation = Quaternion.Euler(0f, cameraRotation.y, 0f);
         }
 
-        public override void OnPocces(Controller sender, PlayerCharacterInputContext inputContext)
+        public override void OnPocces<Pawntype>(Controller<Pawntype> sender, PlayerCharacterInputContext inputContext)
         {
             base.OnPocces(sender, inputContext);
 
@@ -254,14 +254,14 @@ namespace LOK1game.PlayerDomain
 
         public bool TryGetPlayerController(out PlayerController controller)
         {
-            if (Controller == null || Controller is PlayerController == false)
+            if (GetController<Player>() is PlayerController playerController)
             {
-                controller = null;
-                return false;
+                controller = playerController;
+                return true;
             }
 
-            controller = Controller as PlayerController;
-            return true;
+            controller = default;
+            return false;
         }
 
         public override void ApplyPitch(float angle) => Debug.LogWarning("Player cant apply pitch.");

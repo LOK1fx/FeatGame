@@ -46,5 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uiPrefab: {fileID: 4893007711138630574, guid: f10d462059f4f9249a55d0106ea41e3c, type: 3}
   _cameraPrefab: {fileID: 2998117770608552253, guid: fd10cca3a306ccb429ec4872094d544b, type: 3}
-  _playerPrefab: {fileID: 1038380040438825582, guid: 2b35df0463025624390c0dfbdacbdb8e, type: 3}
+  _playerPrefab: {fileID: 5384460987807690086, guid: 2b35df0463025624390c0dfbdacbdb8e, type: 3}
   _playerController: {fileID: 7781435581808558150, guid: afcad0c14a47a974fa8aeddf4b1be28d, type: 3}

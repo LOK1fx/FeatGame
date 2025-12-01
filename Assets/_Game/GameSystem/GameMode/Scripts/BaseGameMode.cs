@@ -6,6 +6,8 @@ using System.Linq;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 using LOK1game.Tools;
+using FishNet.Object;
+
 
 #if UNITY_EDITOR
 
@@ -36,12 +38,12 @@ namespace LOK1game.Game
 
         public GameObject UiPrefab => _uiPrefab;
         public GameObject CameraPrefab => _cameraPrefab;
-        public GameObject PlayerPrefab => _playerPrefab;
+        public NetworkObject PlayerPrefab => _playerPrefab;
         public PlayerController PlayerController => _playerController;
 
         [SerializeField] private GameObject _uiPrefab;
         [SerializeField] private GameObject _cameraPrefab;
-        [SerializeField] private GameObject _playerPrefab;
+        [SerializeField] private NetworkObject _playerPrefab;
         [SerializeField] private PlayerController _playerController;
 
         private bool _isGameModeObjectListInitialized;
@@ -69,25 +71,29 @@ namespace LOK1game.Game
             if (gameObject == null)
             {
                 GetLogger().PushError($"Attempted to spawn null prefab '{objectName}' in {GetType().Name}");
-                return null;
+                return default;
             }
 
-            var newGameObject = Instantiate(gameObject, position, rotation);
+            Object newGameObject;
+            if (gameObject is NetworkObject networkObject)
+                newGameObject = Instantiate(networkObject, position: position, rotation: rotation);
+            else
+                newGameObject = Instantiate(gameObject, position, rotation);
 
             if (newGameObject == null)
             {
                 GetLogger().PushError($"Failed to instantiate prefab '{objectName}' in {GetType().Name}");
-                return null;
+                return default;
             }
 
             newGameObject.name = $"{prefix}{objectName}{postfix}";
-            
+
             RegisterGameModeObject(newGameObject);
 
-            return newGameObject;
+            return newGameObject as T;
         }
 
-        protected PlayerController CreatePlayerController(IPawn controlledPawn, bool locallyControlled)
+        protected PlayerController CreatePlayerController(PlayerDomain.Player controlledPawn, bool locallyControlled)
         {
             if (PlayerController == null)
             {
@@ -160,7 +166,7 @@ namespace LOK1game.Game
             }
 
             GameModeSpawnedObjects.Add(gameObjectAsGameObject);
-            DontDestroyOnLoad(gameObjectAsGameObject);
+            //DontDestroyOnLoad(gameObjectAsGameObject);
 
             return gameObject;
         }

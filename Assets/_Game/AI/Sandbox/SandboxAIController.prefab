@@ -44,4 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16c7bad7ccffd2f4aa5c2afb322fc4ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 0
+  _addedNetworkObject: {fileID: 0}
+  _networkObjectCache: {fileID: 0}
   IsInputProcessing: 1
+  _maxMouseInputDelta: 30

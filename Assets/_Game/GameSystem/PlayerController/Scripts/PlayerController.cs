@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LOK1game
 {
-    public class PlayerController : Controller
+    public class PlayerController : Controller<PlayerDomain.Player>
     {
         private bool _isEscapedPressed;
 
@@ -19,7 +19,7 @@ namespace LOK1game
 
         public override void ApplicationUpdate()
         {
-            if (IsInputProcessing)
+            if (IsInputProcessing && IsOwner)
             {
                 InputContext.MovementInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 

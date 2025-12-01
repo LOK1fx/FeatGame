@@ -2,15 +2,15 @@ using UnityEngine;
 
 namespace LOK1game
 {
-    [RequireComponent(typeof(Controller))]
+    [RequireComponent(typeof(Controller<IPawn>))]
     public class ControllerGameObjectNameChanger : MonoBehaviour
     {
-        private Controller _controller;
+        private Controller<IPawn> _controller;
         private Pawn _currentPawn;
 
         private void Awake()
         {
-            _controller = GetComponent<Controller>();
+            _controller = GetComponent<Controller<IPawn>>();
             _controller.OnControlledPawnChanged += OnControlledPawnChanged;
             
             SetActualName();

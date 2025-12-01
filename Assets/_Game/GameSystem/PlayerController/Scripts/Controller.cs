@@ -1,4 +1,4 @@
-using Codice.CM.Common;
+using FishNet.Object;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,15 +6,15 @@ using UnityEngine;
 
 namespace LOK1game
 {
-    public abstract class Controller : MonoBehaviour, IApplicationUpdatable
+    public abstract class Controller<Pawntype> : NetworkBehaviour, IApplicationUpdatable where Pawntype : IPawn
     {
-        public event Action<IPawn> OnControlledPawnChanged;
+        public event Action<Pawntype> OnControlledPawnChanged;
         
         public bool IsInputProcessing = true;
-        public IPawn ControlledPawn { get; private set; }
+        public Pawntype ControlledPawn { get; private set; }
         public PlayerCharacterInputContext InputContext { get; private set; }
 
-        private static List<Controller> _controllers = new List<Controller>();
+        private static List<Controller<Pawntype>> _controllers = new();
 
         protected virtual void OnEnable()
         {
@@ -26,10 +26,13 @@ namespace LOK1game
             ApplicationUpdateManager.Unregister(this);
         }
 
-        protected abstract void Awake();
+        protected virtual void Awake()
+        {
+
+        }
         public abstract void ApplicationUpdate();
         
-        public static T Create<T>(IPawn pawn = null, bool locallyControlled = false) where T : Controller
+        public static T Create<T>(Pawntype pawn, bool locallyControlled = false) where T : Controller<Pawntype>
         {
             var controllerObject = new GameObject($"{pawn}^Controller");
             var controller = controllerObject.AddComponent<T>();
@@ -42,7 +45,7 @@ namespace LOK1game
             return controller;
         }
 
-        public static bool TryGetController<T>(out T foundController) where T : Controller
+        public static bool TryGetController<T>(out T foundController) where T : Controller<Pawntype>
         {
             foreach (var controller in _controllers.OfType<T>())
             {
@@ -54,14 +57,14 @@ namespace LOK1game
             return false;
         }
         
-        public void SetControlledPawn(IPawn pawn, bool locallyControlled)
+        public void SetControlledPawn(Pawntype pawn, bool locallyControlled)
         {
             InputContext = new PlayerCharacterInputContext();
 
             ControlledPawn = pawn;
 
             if (ControlledPawn != null && ControlledPawn as Pawn)
-                (ControlledPawn as Pawn).SetLocal(locallyControlled);
+                (ControlledPawn as Pawn).SetLocal(IsOwner);
 
             ControlledPawn?.OnPocces(this, InputContext);
             
@@ -69,6 +72,6 @@ namespace LOK1game
             OnPawnChanged(pawn);
         }
 
-        protected virtual void OnPawnChanged(IPawn newPawn) { }
+        protected virtual void OnPawnChanged(Pawntype newPawn) { }
     }
 }

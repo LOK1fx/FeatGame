@@ -2,8 +2,8 @@ using UnityEngine;
 
 namespace LOK1game
 {
-    public abstract class AiControllerBase : Controller
-    {
+    //public abstract class AiControllerBase : Controller
+    //{
         
-    }
+    //}
 }
