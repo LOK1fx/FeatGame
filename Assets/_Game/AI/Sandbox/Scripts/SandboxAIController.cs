@@ -10,6 +10,10 @@ namespace LOK1game
     {
         private readonly Arbiter _arbiter = new();
         private Blackboard _blackboard;
+        private const string TargetPointKeyName = "TargetPoint";
+        private const float MaxPitchAngle = 85f;
+        private const float WaypointDirectionEpsilon = 0.001f;
+        [SerializeField] private float _maxMouseInputDelta = 30f;
 
         protected override void Awake() { }
 
@@ -38,6 +42,12 @@ namespace LOK1game
 
         public override void ApplicationUpdate()
         {
+            if (ControlledPawn == null)
+                return;
+
+            InputContext.MovementInput = Vector2.zero;
+            InputContext.LookInput = Vector2.zero;
+
             if (_blackboard != null)
             {
                 foreach (var action in _arbiter.BlackboardIteration(_blackboard))
@@ -45,18 +55,100 @@ namespace LOK1game
                     action();
                 }
 
-                var waypointKey = _blackboard.GetOrRegisterKey("TargetPoint");
+                var waypointKey = _blackboard.GetOrRegisterKey(TargetPointKeyName);
                 
                 if (_blackboard.TryGetValue(waypointKey, out Vector3 waypoint))
                 {
-                    var point = ((Pawn)ControlledPawn).transform.position.GetDirectionTo(waypoint).normalized;
-                    InputContext.MovementInput = new Vector2(point.x, point.z);
+                    UpdateMovementInput(waypoint);
+                    UpdateLookInput(waypoint);
+
+
+                    if (ControlledPawn is Pawn pawn && Vector3.Distance(pawn.transform.position, waypoint) < 1.25f)
+                    {
+                        InputContext.FireFireButtonDown();
+                        InputContext.FireJumpButtonDown();
+                    }
                 }
             }
 
-            InputContext.LookInput = new Vector2(0f, Mathf.Cos(Time.time) * 5f);
+            
 
             ControlledPawn?.OnInput(this, InputContext);
+        }
+
+        private void UpdateMovementInput(Vector3 waypoint)
+        {
+            if (ControlledPawn is not Player player)
+                return;
+
+            var pawn = (Pawn)player;
+            var desiredDirection = waypoint - pawn.transform.position;
+            desiredDirection.y = 0f;
+
+            if (desiredDirection.sqrMagnitude <= WaypointDirectionEpsilon)
+            {
+                InputContext.MovementInput = Vector2.zero;
+                return;
+            }
+
+            desiredDirection.Normalize();
+
+            var cameraTransform = player.Camera?.GetCameraTransform();
+
+            if (cameraTransform == null)
+                return;
+
+            var cameraForward = cameraTransform.forward;
+            var cameraRight = cameraTransform.right;
+            cameraForward.y = 0f;
+            cameraRight.y = 0f;
+
+            if (cameraForward.sqrMagnitude <= Mathf.Epsilon || cameraRight.sqrMagnitude <= Mathf.Epsilon)
+                return;
+
+            cameraForward.Normalize();
+            cameraRight.Normalize();
+
+            var x = Vector3.Dot(desiredDirection, cameraRight);
+            var y = Vector3.Dot(desiredDirection, cameraForward);
+            var localInput = new Vector2(x, y);
+
+            if (localInput.sqrMagnitude > 1f)
+                localInput.Normalize();
+
+            InputContext.MovementInput = localInput;
+        }
+
+        private void UpdateLookInput(Vector3 waypoint)
+        {
+            if (ControlledPawn is not Player player || player.Camera == null)
+                return;
+
+            var cameraTransform = player.Camera.GetCameraTransform();
+
+            if (cameraTransform == null)
+                return;
+
+            var toWaypoint = waypoint - cameraTransform.position;
+
+            if (toWaypoint.sqrMagnitude <= WaypointDirectionEpsilon)
+                return;
+
+            var localDirection = cameraTransform.InverseTransformDirection(toWaypoint.normalized);
+
+            var yawError = Mathf.Atan2(localDirection.x, localDirection.z) * Mathf.Rad2Deg;
+            var pitchError = Mathf.Atan2(localDirection.y, localDirection.z) * Mathf.Rad2Deg;
+            pitchError = Mathf.Clamp(pitchError, -MaxPitchAngle, MaxPitchAngle);
+
+            var sensitivity = player.Camera.GetMouseInputScale();
+
+            if (sensitivity <= Mathf.Epsilon)
+                return;
+
+            var yawDelta = Mathf.Clamp(yawError / sensitivity, -_maxMouseInputDelta, _maxMouseInputDelta);
+            var pitchDelta = Mathf.Clamp(pitchError / sensitivity, -_maxMouseInputDelta, _maxMouseInputDelta);
+
+            InputContext.LookInput = new Vector2(yawDelta, pitchDelta);
         }
     }
 }

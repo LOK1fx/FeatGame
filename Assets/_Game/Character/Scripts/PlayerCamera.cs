@@ -183,6 +183,11 @@ namespace LOK1game.PlayerDomain
             return _defaultFov;
         }
 
+        public float GetMouseInputScale()
+        {
+            return GetSensivityMultiplier();
+        }
+
         public void OnPocces(Controller sender, PlayerCharacterInputContext inputContext)
         {
             Controller = sender;

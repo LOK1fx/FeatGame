@@ -51,7 +51,7 @@ namespace LOK1game
 
             foreach (var collider in damagableColliders)
             {
-                if (collider.gameObject.TryGetComponent<IDamagable>(out var damagable))
+                if (collider.gameObject.TryGetComponent<IDamagable>(out var damagable) && collider.gameObject != Player.gameObject)
                 {
                     var playerCameraPosition = Player.Camera.GetCameraTransform().position;
                     var damage = new Damage()

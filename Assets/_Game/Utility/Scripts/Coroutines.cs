@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using LOK1game.Utility;
 
 namespace LOK1game.Tools
 {
@@ -27,11 +28,15 @@ namespace LOK1game.Tools
 
         public static Coroutine StartRoutine(IEnumerator enumerator)
         {
+            Preconditions.CheckNotNull(enumerator);
+
             return _instance.StartCoroutine(enumerator);
         }
 
         public static void StopRoutine(Coroutine coroutine)
         {
+            Preconditions.CheckNotNull(coroutine);
+
             _instance.StopCoroutine(coroutine);
         }
     }
