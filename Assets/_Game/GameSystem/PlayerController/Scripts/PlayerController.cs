@@ -19,14 +19,17 @@ namespace LOK1game
 
         public override void ApplicationUpdate()
         {
-            if (IsInputProcessing && IsOwner)
+            if (IsOwner == false)
+                return;
+
+            if (IsInputProcessing && ControlledPawn != null)
             {
                 InputContext.MovementInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
                 var cameraInputX = 0f;
                 var cameraInputY = 0f;
 
-                if (!Application.isMobilePlatform && Cursor.lockState == CursorLockMode.Locked)
+                if (!Application.isMobilePlatform)
                 {
                     cameraInputX = Input.GetAxisRaw("Mouse X");
                     cameraInputY = Input.GetAxisRaw("Mouse Y");
@@ -61,8 +64,8 @@ namespace LOK1game
                 if (Input.GetKeyDown(KeyCode.F))
                     InputContext.FireInteractionButtonDown();
 
-
-                ControlledPawn?.OnInput(this, InputContext);
+                if (ControlledPawn)
+                    ControlledPawn.OnInput(this, InputContext);
             }
 
             if (Input.GetKeyDown(KeyCode.Escape))

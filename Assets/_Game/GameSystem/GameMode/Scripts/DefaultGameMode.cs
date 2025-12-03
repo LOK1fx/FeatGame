@@ -5,12 +5,26 @@ using FishNet.Object;
 using LOK1game.PlayerDomain;
 using LOK1game.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace LOK1game.Game
 {
     public sealed class DefaultGameMode : BaseGameMode
     {
+        private struct SpawnedPlayer
+        {
+            public PlayerController Controller;
+            public Player PlayerCharacter;
+
+            public SpawnedPlayer(Player playerCharacter, PlayerController controller)
+            {
+                Controller = controller;
+                PlayerCharacter = playerCharacter;
+            }
+        }
+
         private NetworkManager _networkManager;
+        private Dictionary<int, SpawnedPlayer> _spawnedPlayers = new();
 
         public override EGameModeId Id => EGameModeId.Default;
 
@@ -25,20 +39,18 @@ namespace LOK1game.Game
                 GetLogger().PushError("CameraPrefab is not assigned in DefaultGameMode");
                 yield break;
             }
-
-            App.Loggers.GetLogger(ELoggerGroup.Networking).Push("network logger test fuck");
-
             SpawnGameModeObject(CameraPrefab);
+
+            App.NetworkLog("network logger test fuck");
 
             if (PlayerPrefab == null)
             {
                 GetLogger().PushError("PlayerPrefab is not assigned in DefaultGameMode");
                 yield break;
             }
-
             _networkManager.SceneManager.OnClientLoadedStartScenes += SceneManager_OnClientLoadedStartScenes;
 
-            App.ProjectContext.GameStateManager.SetState(EGameStateId.Gameplay);
+            App.GetGameStateManager().SetState(EGameStateId.Gameplay);
 
             yield return null;
 
@@ -47,12 +59,12 @@ namespace LOK1game.Game
 
         private void SceneManager_OnClientLoadedStartScenes(NetworkConnection client, bool asServer)
         {
-            App.Loggers.GetLogger(ELoggerGroup.Networking).Push("OnClientLoadedStartScenes");
+            App.NetworkLog("OnClientLoadedStartScenes");
 
             if (asServer == false)
                 return;
 
-            App.Loggers.GetLogger(ELoggerGroup.Networking).Push("OnClientLoadedStartScenes asServer True");
+            App.NetworkLog("OnClientLoadedStartScenes asServer True");
 
             SpawnPlayers();
         }
@@ -74,6 +86,9 @@ namespace LOK1game.Game
                 if (client.IsAuthenticated == false)
                     continue;
 
+                if (_spawnedPlayers.ContainsKey(client.ClientId))
+                    continue;
+
                 var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
 
                 if (client.Scenes.Contains(scene) == false)
@@ -81,9 +96,13 @@ namespace LOK1game.Game
 
                 var player = SpawnPlayer();
                 _networkManager.ServerManager.Spawn(player, client, scene);
+                App.PlayerLog(player.IsOwner);
 
                 var controller = CreatePlayerController(player, false);
                 _networkManager.ServerManager.Spawn(controller, client, scene);
+                App.PlayerLog(player.IsOwner);
+
+                _spawnedPlayers.Add(client.ClientId, new SpawnedPlayer(player, controller));
             }
         }
 

@@ -12,7 +12,7 @@ namespace LOK1game
     /// This class is responsible for bootstrapping the application and managing its lifecycle.
     /// </summary>
     [RequireComponent(typeof(ApplicationUpdateManager))]
-    public sealed class App : MonoBehaviour
+    public sealed partial class App : MonoBehaviour
     {
         /// <summary>
         /// Global access to the project context, containing game-specific settings and managers.
@@ -78,7 +78,7 @@ namespace LOK1game
 
             // LOK1game logger initialized only in components
             // So we can use LOK1game logger only after bootstrap
-            PushLogInfo("Application bootstrap is done successfuly!");
+            ApplicationLog("Application bootstrap is done successfuly!");
 
 #if SERVER
 
@@ -120,18 +120,20 @@ namespace LOK1game
 
             if (Application.isMobilePlatform)
                 Application.targetFrameRate = (int)Screen.currentResolution.refreshRateRatio.value;
+            else
+                Application.targetFrameRate = 500;
 
             InitializeLoggers();
 
-            PushLogInfo("Setting up network manager..");
+            ApplicationLog("Setting up network manager..");
             NetworkManager = _networkManager;
 
-            PushLogInfo("Initializing ProjectContext..");
+            ApplicationLog("Initializing ProjectContext..");
             ProjectContext = _projectContext;
             ProjectContext.Initialize();
 
-            PushLogInfo("ProjectContext initialized!");
-            PushLogInfo("Application components initialized!");
+            ApplicationLog("ProjectContext initialized!");
+            ApplicationLog("Application components initialized!");
         }
 
         /// <summary>
@@ -141,13 +143,13 @@ namespace LOK1game
         {
             Loggers = new Loggers(_loggerContainers.ToArray());
 
-#if UNITY_EDITOR
-            Application.SetStackTraceLogType(LogType.Error | LogType.Exception | LogType.Log, StackTraceLogType.ScriptOnly);
-#else
-            Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
-#endif
+//#if UNITY_EDITOR
+//            Application.SetStackTraceLogType(LogType.Error | LogType.Exception | LogType.Log, StackTraceLogType.ScriptOnly);
+//#else
+//            Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
+//#endif
 
-            PushLogInfo("LOK1gameLogger initialized!");
+            ApplicationLog("LOK1gameLogger initialized!");
         }
 
         /// <summary>
@@ -158,34 +160,6 @@ namespace LOK1game
         private void SwapLoggers()
         {
             Loggers?.SwapLoggers(_loggerContainers.ToArray());
-        }
-
-        /// <summary>
-        /// Pushes a log message to the application logger.
-        /// </summary>
-        /// <param name="message">The message to log</param>
-        /// <param name="sender">The object that generated the log message</param>
-        /// <exception cref="ApplicationException">Thrown when no Application logger is found</exception>
-        public static void PushLogInfo(object message, UnityEngine.Object sender = null)
-        {
-            if (Loggers.TryGetLogger(ELoggerGroup.Application, out var logger))
-                logger.Push(message, sender);
-            else
-                throw new ApplicationException($"No Application logger container found. Caused by {sender}.//");
-        }
-
-        /// <summary>
-        /// Pushes a log error message to the application logger.
-        /// </summary>
-        /// <param name="message">The message to log</param>
-        /// <param name="sender">The object that generated the log message</param>
-        /// <exception cref="ApplicationException">Thrown when no Application logger is found</exception>
-        public static void PushLogError(object message, UnityEngine.Object sender = null)
-        {
-            if (Loggers.TryGetLogger(ELoggerGroup.Application, out var logger))
-                logger.PushError(message, sender);
-            else
-                throw new ApplicationException($"No Application logger container found. Caused by {sender}.//");
         }
     }
 }

@@ -1,4 +1,5 @@
 using FishNet.Object;
+using FishNet.Object.Synchronizing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace LOK1game
         public event Action<Pawntype> OnControlledPawnChanged;
         
         public bool IsInputProcessing = true;
-        public Pawntype ControlledPawn { get; private set; }
+        public Pawntype ControlledPawn { get; private set; } // TODO: We need to sync this bitch
         public PlayerCharacterInputContext InputContext { get; private set; }
 
         private static List<Controller<Pawntype>> _controllers = new();
@@ -37,8 +38,7 @@ namespace LOK1game
             var controllerObject = new GameObject($"{pawn}^Controller");
             var controller = controllerObject.AddComponent<T>();
             
-            if(pawn != null)
-                controller.SetControlledPawn(pawn, locallyControlled);
+            controller.SetControlledPawn(pawn, locallyControlled);
 
             _controllers.Add(controller);
             

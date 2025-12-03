@@ -40,10 +40,6 @@ namespace LOK1game.PlayerDomain
         public float RespawnTime => _respawnTime;
 
         [SerializeField] private float _respawnTime;
-
-        //[Tooltip("If player is not locally controlled, it will change their layer to this layer so other players can damage it.")]
-        //[SerializeField] private LayerMask _nonLocalCharacterLayer;
-        private int _localCharacterLayer;
         
 
         [Header("Stamina")]
@@ -82,7 +78,6 @@ namespace LOK1game.PlayerDomain
             _velocityKey = Blackboard.GetOrRegisterKey("Velocity");
 
             _defaultEyePosition = Camera.GetCameraTransform().localPosition;
-            _localCharacterLayer = gameObject.layer;
         }
 
         private void OnDestroy()
@@ -103,6 +98,13 @@ namespace LOK1game.PlayerDomain
 
             WeaponManager.Construct(this);
             WeaponManager.EquipSlot(0);
+        }
+
+        public override void OnStartClient()
+        {
+            base.OnStartClient();
+
+            Camera.OnStartClient();
         }
 
         public override void ApplicationUpdate()
@@ -189,8 +191,6 @@ namespace LOK1game.PlayerDomain
             inputContext.OnAltFireButtonDown += TryToAltUseWeapon;
 
             Interaction.BindInputContext(inputContext);
-
-            UpdatePhysicsLayer();
         }
 
         public override void OnUnpocces(PlayerCharacterInputContext inputContext)
@@ -209,8 +209,6 @@ namespace LOK1game.PlayerDomain
             inputContext.OnAltFireButtonDown -= TryToAltUseWeapon;
 
             Interaction.UnbindInputContext(inputContext);
-
-            UpdatePhysicsLayer();
         }
 
         private void TryStopCrouch()
@@ -245,7 +243,7 @@ namespace LOK1game.PlayerDomain
                 return;
 
             if (Input.GetKeyDown(KeyCode.H))
-                Blackboard.Debug();
+                App.PlayerLog(IsOwner);
 
             Camera.OnInput(this, inputContext);
             Movement.SetAxisInput(inputContext.MovementInput);
@@ -381,14 +379,6 @@ namespace LOK1game.PlayerDomain
             Movement.Rigidbody.isKinematic = false;
 
             OnRespawned?.Invoke();
-        }
-        
-        private void UpdatePhysicsLayer()
-        {
-            if (IsLocallyControlled)
-                gameObject.layer = _localCharacterLayer;
-            else
-                gameObject.layer = LayerMask.NameToLayer("Enemy");
         }
     }
 }

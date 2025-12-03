@@ -1,3 +1,5 @@
+using FishNet;
+using FishNet.Managing;
 using LOK1game;
 using LOK1game.Tools;
 using LOK1game.UI;
@@ -39,6 +41,7 @@ public class LevelManager
 
     public static IEnumerator LoadLevel(LevelData data)
     {
+        // Validation
         GetLogger().Push($"LoadLevel started with data: {data?.DisplayName ?? "null"}");
         
         if (data == null)
@@ -52,6 +55,14 @@ public class LevelManager
 
         GetLogger().Push($"-> {data.DisplayName} ({data.MainScene})");
 
+        // Multiplayer checks
+        if (InstanceFinder.TryGetInstance<NetworkManager>(out var networkManager))
+        {
+            if (networkManager.IsClientOnlyStarted)
+                networkManager.ClientManager.StopConnection();
+        }
+
+        // Do the job
         _loadingScreen.Show();
 
         GetLogger().Push($"Starting to load main scene: {data.MainScene}");

@@ -92,7 +92,7 @@ namespace LOK1game
                 }
                 else
                 {
-                    App.PushLogError($"{gameModePrefab.name} doesn't have {nameof(IGameMode)} interface! " +
+                    App.ApplicationLogError($"{gameModePrefab.name} doesn't have {nameof(IGameMode)} interface! " +
                                      $"Ensure that prefab has one.");
                     GameObject.Destroy(gameModeInstance);
                 }

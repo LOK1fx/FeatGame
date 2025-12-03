@@ -49,9 +49,9 @@ namespace LOK1game.PlayerDomain
             _player = player;
         }
 
-        private void Start()
+        public void OnStartClient()
         {
-            if (_player.IsLocallyControlled)
+            if (_player.IsOwner)
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
@@ -68,6 +68,11 @@ namespace LOK1game.PlayerDomain
             DesiredPosition = _cameraTransform.localPosition;
             _defaultFov = _camera.m_Lens.FieldOfView;
             _targetFov = _defaultFov;
+        }
+
+        private void Start()
+        {
+            
         }
 
         private void OnDestroy()
