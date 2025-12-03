@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LOK1game
 {
-    public class PlayerController : Controller<PlayerDomain.Player>
+    public class PlayerController : Controller<Pawn>
     {
         private bool _isEscapedPressed;
 

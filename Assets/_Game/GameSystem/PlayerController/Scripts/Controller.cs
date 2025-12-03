@@ -1,5 +1,7 @@
+using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
+using LOK1game.Game;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,6 +72,12 @@ namespace LOK1game
             
             OnControlledPawnChanged?.Invoke(pawn);
             OnPawnChanged(pawn);
+        }
+
+        [TargetRpc]
+        public void SyncControlledPawn(NetworkConnection _, NetworkPlayer player)
+        {
+            SetControlledPawn((Pawntype)(IPawn)player.PlayerCharacter, false);
         }
 
         protected virtual void OnPawnChanged(Pawntype newPawn) { }

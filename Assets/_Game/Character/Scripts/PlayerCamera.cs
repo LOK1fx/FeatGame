@@ -6,7 +6,9 @@ namespace LOK1game.PlayerDomain
     public class PlayerCamera : MonoBehaviour
     {
         public float Tilt;
-        
+        public int DefaultCameraPriority => _defaultCameraPriority;
+
+        [SerializeField] private int _defaultCameraPriority = 100;
         [SerializeField] private float _sensitivity = 16f;
         [SerializeField] private Transform _cameraTransform;
         [SerializeField] private CinemachineVirtualCamera _camera;
@@ -61,25 +63,22 @@ namespace LOK1game.PlayerDomain
 
                 Settings.OnSensivityChanged += OnSensivityChanged;
 
-                _camera.Priority = 100;
+                _camera.Priority = _defaultCameraPriority;
                 _camera.ForceCameraPosition(_camera.transform.position, _camera.transform.rotation);
             }
-
-            DesiredPosition = _cameraTransform.localPosition;
-            _defaultFov = _camera.m_Lens.FieldOfView;
-            _targetFov = _defaultFov;
         }
 
         private void Start()
         {
-            
+            DesiredPosition = _cameraTransform.localPosition;
+            _defaultFov = _camera.m_Lens.FieldOfView;
+            _targetFov = _defaultFov;
         }
 
         private void OnDestroy()
         {
             Settings.OnSensivityChanged -= OnSensivityChanged;
         }
-
 
         private void Update()
         {
@@ -97,8 +96,6 @@ namespace LOK1game.PlayerDomain
             _animationCamera.localRotation = new Quaternion(animationRotation.x, animationRotation.z, animationRotation.y, animationRotation.w)
                 * Quaternion.Euler(_animationCameraRotationOffset);
         }
-
-        
 
         private void FixedUpdate()
         {
@@ -124,20 +121,12 @@ namespace LOK1game.PlayerDomain
             _yRotation = ThreehoundredToZero(_yRotation);
         }
 
-        public void SetTargetFov(float fov)
-        {
-            _targetFov = fov;
-        }
+        public void SetTargetFov(float fov) => _targetFov = fov;
+        public void SetFov(float fov) => _camera.m_Lens.FieldOfView = fov;
+        public void ResetFov() => _targetFov = _defaultFov;
 
-        public void SetFov(float fov)
-        {
-            _camera.m_Lens.FieldOfView = fov;
-        }
-
-        public void ResetFov()
-        {
-            _targetFov = _defaultFov;
-        }
+        public void SetPriority(int priority) => _camera.Priority = priority;
+        public void ResetPriority() => _camera.Priority = DefaultCameraPriority;
 
         private float GetSensivityMultiplier()
         {
@@ -149,51 +138,25 @@ namespace LOK1game.PlayerDomain
             return _sensitivity * multiplier * Time.fixedDeltaTime;
         }
 
-        private float ThreehoundredToZero(float value)
-        {
-            if(value >= 360 || value <= -360)
-            {
-                return 0f;
-            }
-            else
-            {
-                return value;
-            }
-        }
+        private float ThreehoundredToZero(float value) => value % 360;
+        //{
+        //    if(value >= 360 || value <= -360)
+        //        return 0f;
+        //    else
+        //        return value;
+        //}
 
-        public void ApplyYaw(float angle)
-        {
-            _xRotation = angle;
-        }
+        public void ApplyYaw(float angle) => _xRotation = angle;
 
-        public void AddCameraOffset(Vector3 offset)
-        {
-            _cameraLerpOffset += offset;
-        }
+        public void AddCameraOffset(Vector3 offset) => _cameraLerpOffset += offset;
 
-        public Transform GetCameraTransform()
-        {
-            return _cameraTransform;
-        }
+        public Transform GetCameraTransform() => _cameraTransform;
+        public Transform GetRecoilCameraTransform() => _recoilCamera.transform;
 
-        public Transform GetRecoilCameraTransform()
-        {
-            return _recoilCamera.transform;
-        }
+        public float GetDefaultFov() => _defaultFov;
 
-        public float GetDefaultFov()
-        {
-            return _defaultFov;
-        }
+        public float GetMouseInputScale() => GetSensivityMultiplier();
 
-        public float GetMouseInputScale()
-        {
-            return GetSensivityMultiplier();
-        }
-
-        private void OnSensivityChanged(float newSens)
-        {
-            _sensitivity = newSens;
-        }
+        private void OnSensivityChanged(float newSens) => _sensitivity = newSens;
     }
 }

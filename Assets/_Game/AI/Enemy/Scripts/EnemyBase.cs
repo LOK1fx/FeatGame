@@ -35,8 +35,10 @@ namespace LOK1game
             EventManager.AddListener<OnGameStateChangedEvent>(OnGameStateChanged);
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
+
             EventManager.RemoveListener<OnGameStateChangedEvent>(OnGameStateChanged);
         }
 

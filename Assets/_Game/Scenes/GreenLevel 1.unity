@@ -6532,6 +6532,14 @@ PrefabInstance:
       propertyPath: _guid
       value: 95c48c84-0650-47fc-a378-4d64b503d2a7
       objectReference: {fileID: 0}
+    - target: {fileID: 7129525683942829140, guid: e24b53b29c623cf4883c59984a5739f3, type: 3}
+      propertyPath: SceneId
+      value: 4260495092
+      objectReference: {fileID: 0}
+    - target: {fileID: 7129525683942829140, guid: e24b53b29c623cf4883c59984a5739f3, type: 3}
+      propertyPath: WasActiveDuringEdit
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11943,6 +11951,14 @@ PrefabInstance:
     - target: {fileID: 2122263688999006028, guid: e24b53b29c623cf4883c59984a5739f3, type: 3}
       propertyPath: _guid
       value: fd3d07f4-e840-4bde-8b7c-9db729ef2d7d
+      objectReference: {fileID: 0}
+    - target: {fileID: 7129525683942829140, guid: e24b53b29c623cf4883c59984a5739f3, type: 3}
+      propertyPath: SceneId
+      value: 3589002869
+      objectReference: {fileID: 0}
+    - target: {fileID: 7129525683942829140, guid: e24b53b29c623cf4883c59984a5739f3, type: 3}
+      propertyPath: WasActiveDuringEdit
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -23821,6 +23837,10 @@ PrefabInstance:
       propertyPath: _guid
       value: fd3d07f4-e840-4bde-8b7c-9db729ef2d7d
       objectReference: {fileID: 0}
+    - target: {fileID: 7129525683942829140, guid: e24b53b29c623cf4883c59984a5739f3, type: 3}
+      propertyPath: SceneId
+      value: 3621738492
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -28450,6 +28470,14 @@ PrefabInstance:
     - target: {fileID: 2122263688999006028, guid: e24b53b29c623cf4883c59984a5739f3, type: 3}
       propertyPath: _guid
       value: cbfd9099-d58f-45d8-bc21-446fb059ad4d
+      objectReference: {fileID: 0}
+    - target: {fileID: 7129525683942829140, guid: e24b53b29c623cf4883c59984a5739f3, type: 3}
+      propertyPath: SceneId
+      value: 2515105780
+      objectReference: {fileID: 0}
+    - target: {fileID: 7129525683942829140, guid: e24b53b29c623cf4883c59984a5739f3, type: 3}
+      propertyPath: WasActiveDuringEdit
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

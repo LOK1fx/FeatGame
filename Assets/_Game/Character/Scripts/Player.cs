@@ -80,7 +80,7 @@ namespace LOK1game.PlayerDomain
             _defaultEyePosition = Camera.GetCameraTransform().localPosition;
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             Movement.OnLand -= OnLand;
             Movement.OnJump -= OnJump;
@@ -252,7 +252,7 @@ namespace LOK1game.PlayerDomain
 
         public bool TryGetPlayerController(out PlayerController controller)
         {
-            if (GetController<Player>() is PlayerController playerController)
+            if (GetController<Pawn>() is PlayerController playerController)
             {
                 controller = playerController;
                 return true;

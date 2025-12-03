@@ -33,7 +33,7 @@ namespace LOK1game
         {
             EventManager.AddListener<OnGameStateChangedEvent>(OnGameStateChanged);
 
-            _mainCameraDefaultPriority = _mainCamera.m_Priority;
+            _mainCameraDefaultPriority = _player.Camera.DefaultCameraPriority;
             _additionalLight.gameObject.SetActive(false);
         }
 
@@ -44,7 +44,7 @@ namespace LOK1game
 
         private void OnGameStateChanged(OnGameStateChangedEvent evt)
         {
-            if (_player.IsLocallyControlled == false)
+            if (_player.IsOwner == false)
                 return;
 
             Debug.Log("On State changed");

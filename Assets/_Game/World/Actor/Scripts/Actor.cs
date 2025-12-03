@@ -44,6 +44,11 @@ namespace LOK1game
             ApplicationUpdateManager.Unregister(this);
         }
 
+        protected virtual void OnDestroy()
+        {
+            ApplicationUpdateManager.Unregister(this);
+        }
+
         public virtual void ApplyPitch(float angle)
         {
             var initalRot = transform.rotation.eulerAngles;

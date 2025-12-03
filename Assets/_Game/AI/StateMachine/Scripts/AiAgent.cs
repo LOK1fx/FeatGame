@@ -33,6 +33,9 @@ namespace LOK1game.AI
 
         public override void ApplicationUpdate()
         {
+            if (gameObject.activeInHierarchy == false)
+                return;
+
             StateMachine.Update();
 
             OnUpdate();

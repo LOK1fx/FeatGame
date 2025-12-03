@@ -16,7 +16,7 @@ namespace LOK1game
         /// </summary>
         public bool IsLocallyControlled { get; private set; } = false;
 
-        private Controller<IPawn> _controller;
+        private Controller<Pawn> _controller;
 
         /// <summary>
         /// The controller currently possessing this pawn.
@@ -41,7 +41,7 @@ namespace LOK1game
         /// <param name="sender">The controller that is taking possession</param>
         public virtual void OnPocces<Pawntype>(Controller<Pawntype> sender, PlayerCharacterInputContext inputContext) where Pawntype : IPawn
         {
-            _controller = sender as Controller<IPawn>;
+            _controller = sender as Controller<Pawn>;
         }
 
         /// <summary>

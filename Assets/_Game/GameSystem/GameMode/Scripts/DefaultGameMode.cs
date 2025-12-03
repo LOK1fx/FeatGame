@@ -9,22 +9,24 @@ using System.Collections.Generic;
 
 namespace LOK1game.Game
 {
+    public struct NetworkPlayer
+    {
+        public PlayerController Controller;
+        public Player PlayerCharacter;
+        public NetworkConnection Connection;
+
+        public NetworkPlayer(Player playerCharacter, PlayerController controller, NetworkConnection connection)
+        {
+            Controller = controller;
+            PlayerCharacter = playerCharacter;
+            Connection = connection;
+        }
+    }
+
     public sealed class DefaultGameMode : BaseGameMode
     {
-        private struct SpawnedPlayer
-        {
-            public PlayerController Controller;
-            public Player PlayerCharacter;
-
-            public SpawnedPlayer(Player playerCharacter, PlayerController controller)
-            {
-                Controller = controller;
-                PlayerCharacter = playerCharacter;
-            }
-        }
-
         private NetworkManager _networkManager;
-        private Dictionary<int, SpawnedPlayer> _spawnedPlayers = new();
+        private Dictionary<int, NetworkPlayer> _spawnedPlayers = new();
 
         public override EGameModeId Id => EGameModeId.Default;
 
@@ -102,8 +104,19 @@ namespace LOK1game.Game
                 _networkManager.ServerManager.Spawn(controller, client, scene);
                 App.PlayerLog(player.IsOwner);
 
-                _spawnedPlayers.Add(client.ClientId, new SpawnedPlayer(player, controller));
+                RegisterPlayer(client, player, controller);
             }
+        }
+
+        private void RegisterPlayer(NetworkConnection client, Player playerCharacter, PlayerController controller)
+        {
+            var networkPlayer = new NetworkPlayer(playerCharacter, controller, client);
+            _spawnedPlayers.Add(client.ClientId, networkPlayer);
+
+            client.Objects.Add(playerCharacter);
+            client.Objects.Add(controller);
+
+            controller.SyncControlledPawn(client, networkPlayer);
         }
 
         private Player SpawnPlayer()
